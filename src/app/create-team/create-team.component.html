@@ -1,0 +1,94 @@
+<div class="teams-container">
+    <h1 style="text-align: center;">Pokémon Team Creator</h1>
+
+    <!-- 6 horizontal flex elements -->
+    <div class="party-list">
+
+        <div class="slot-1">
+            <!-- onclick change + box to text input -->
+            <!-- options: 1. on click change slot-1-box to text input and submit button 
+                          2. -->
+            <div class="slot-1-box" (click)="onClick(1)">+</div>
+            <div class="slot-1-input">
+                <input type="text" [formControl]="pokeName1" (keyup.enter)="onSubmit(1, pokeName1)">
+            </div>
+            <div class="invalid-pokemon"></div>
+            <div class="slot-1-info">
+
+                <div id="slot-1-sprite">
+                    <img id="front-Sprite" src="">
+                </div>
+
+                <p id="poke-Name"></p>
+                <div>
+                    <span id="poke-Type">Type: </span>
+                    <span class="type-container" id="type1"></span>
+                    <span class="type-container" id="type2"></span>
+                </div>
+                <p id="poke-Abilities"></p>
+                <select name="ability" class="slot-1-abilities">
+                    
+                </select>
+                
+                <div id="slot-1-stats">
+                    <div class="stat-hp">
+                        <span></span>
+                        <div></div>
+                    </div>
+                    <div class="stat-atk">
+                        <span></span>
+                        <div></div>
+                    </div>
+                    <div class="stat-def">
+                        <span></span>
+                        <div></div>
+                    </div>
+                    <div class="stat-spatk">
+                        <span></span>
+                        <div></div>
+                    </div>
+                    <div class="stat-spdef">
+                        <span></span>
+                        <div></div>
+                    </div>
+                    <div class="stat-spd">
+                        <span></span>
+                        <div></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="slot-2">
+            <div class="slot-2-box" (click)="onClick(2)">+</div>
+            <div class="slot-2-input">
+                <input type="text" [formControl]="pokeName2" (keyup.enter)="onSubmit(2, pokeName2)">
+            </div>
+            <div class="invalid-pokemon"></div>
+            <div class="slot-2-info"></div>
+        </div>
+
+        <div class="slot-3">
+            <div class="slot-3-box">+</div>
+            <div class="slot-3-info"></div>
+        </div>
+
+        <div class="slot-4">
+            <div class="slot-4-box">+</div>
+            <div class="slot-4-info"></div>
+        </div>
+
+        <div class="slot-5">
+            <div class="slot-5-box">+</div>
+            <div class="slot-5-info"></div>
+        </div>
+
+        <div class="slot-6">
+            <div class="slot-6-box">+</div>
+            <div class="slot-6-info"></div>
+        </div>
+
+    </div>
+
+</div>

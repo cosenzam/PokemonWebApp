@@ -1,0 +1,349 @@
+@tailwind components;
+@tailwind utilities;
+
+html, body{
+    margin: 0 auto;
+    color: white;
+}
+
+router-outlet{
+    /* hide router element, it is showing up as a grid column for some reason :) */
+    display: none;
+}
+
+#grid-container{
+    height: 100svh;
+    overflow: auto;
+    display: grid;
+    grid-template-columns: [col-start] 200px [col-1] 0px [col-2] 1fr [col-end]; /* change nav-bar.ts openNav() if changing grid columns */
+    grid-template-rows: 100%;
+    grid-template-areas:
+    "sidebar sidebar-collapse main";
+    transition: grid-template-columns 750ms;
+}
+
+#nav-bar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    white-space: nowrap;
+    position: sticky;
+    left: 0;
+    top: 0;
+}
+
+.nav-links{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 24px;
+    height: 160px;
+    width: 100%;
+}
+
+.nav-links > a{
+    height: 100%;
+    width: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.nav-about-link{
+
+}
+
+.nav-search-link{
+
+}
+
+.nav-team-link{
+
+}
+
+#nav-close-btn{
+    height: 40px;
+    width: 40px;
+    display: flex;
+    margin-left: 150px;
+    align-items: center; /* text node is a flex item within flex element, therefore align-items aligns text to center */
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#nav-collapse-col{
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: sticky;
+    left: 0;
+    top: 0;
+}
+
+#nav-open-btn{
+    height: 40px;
+    width: 40px;
+    display: flex;
+    min-height: 40px;
+    min-width: 40px;
+    margin-top: 80px;
+    cursor: pointer;
+    overflow: hidden;
+    align-self: center;
+}
+
+#logo{
+    height: 50px;
+    width: 50px;
+    align-self: flex-start;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.search-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-input{
+    height: 30px;
+    width: 235px;
+    border-radius: 15px;
+    border-style: none; /* remove weird gray border on only half of text box */
+    padding-left: 15px;
+    background-color: #3f3f46;
+    color: white;
+    outline: none;
+}
+
+.search-input:focus{
+    outline: 2px solid #67e8f9;
+}
+
+.search-input::placeholder{
+    color: white;
+    opacity: 0.5;
+}
+
+.search-btn-div{
+    padding-top: 20px;
+}
+
+.search-submit-btn{
+    height: 30px;
+    width: 100px;
+    border-radius: 15px;
+    background-color: #3f3f46;
+    color: white;
+    border-style: none;
+    cursor: pointer;
+    transition: background-color 200ms;
+}
+
+.search-submit-btn:hover{
+    outline: 2px solid #67e8f9;
+    background-color: #52525b;
+}
+
+.search-submit-btn:active{
+    background-color: #a1a1aa;
+}
+
+.form-requirements{
+    margin-top: 10px;
+}
+
+#poke-Info{
+    display: none;
+}
+
+#poke-Abilities{
+    /*text-align: center;*/
+}
+
+#stats, #slot-1-stats, #slot-2-stats, #slot-3-stats, #slot-4-stats, #slot-5-stats, #slot-6-stats{
+    display: flex;
+    width: 260px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 5px;
+}
+
+#stats > div > div, #slot-1-stats > div > div, #slot-2-stats > div > div, #slot-3-stats > div > div, 
+#slot-4-stats > div > div, #slot-5-stats > div > div, #slot-6-stats > div > div{
+    height: 25px;
+    background-color: white;
+}
+
+.type-container{
+    display: inline-block;
+    width: 70px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+#sprites-1, #sprites-2{
+    height: 150px;
+    width: 100%;
+    display: none;
+}
+
+#sprites-1 > img, #sprites-2 > img{
+    align-self: center; /* align to prevent vertical stretch of image from flex, flex will grow to fit if not applied */
+    border: 3px solid;
+}
+
+.teams-container{
+    
+}
+
+.party-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+    gap: 10px;
+}
+
+.slot-1, .slot-2, .slot-3, .slot-4, .slot-5, .slot-6{
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    width: 260px;
+    align-items: center;
+}
+
+.slot-1-box, .slot-2-box, .slot-3-box, .slot-4-box, .slot-5-box, .slot-6-box{
+    display: flex;
+    font-size: 48px;
+    height: 60px;
+    width: 60px;
+    justify-content: center;
+    place-items: center;
+    border: solid;
+}
+
+.slot-1-box:hover, .slot-2-box:hover, .slot-3-box:hover, .slot-4-box:hover, .slot-5-box:hover, .slot-6-box:hover{
+    background-color: #52525b;
+    cursor: pointer;
+}
+
+.slot-1-info, .slot-2-info, .slot-3-info, .slot-4-info, .slot-5-info, .slot-6-info{
+    border: solid;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+    display: none;
+}
+
+.slot-1-input, .slot-2-input, .slot-3-input, .slot-4-input, .slot-5-input, .slot-6-input{
+    display: none;
+}
+
+.slot-1-input > input, .slot-2-input > input, .slot-3-input > input, .slot-4-input > input, .slot-5-input > input, .slot-6-input > input{
+    height: 30px;
+    width: 150px;
+    border-radius: 15px;
+    border-style: none;
+    padding-left: 15px;
+    background-color: #3f3f46;
+    color: white;
+}
+
+#slot-1-sprite, #slot-2-sprite, #slot-3-sprite, #slot-4-sprite, #slot-5-sprite, #slot-6-sprite{
+    display: none;
+    border: 3px solid;
+}
+
+.slot-1-abilities{
+    width: 150px;
+}
+
+.about-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* pokemon type background colors */
+.normal{
+    background-color: #A8A77A;
+}
+
+.dark{
+    background-color: #705746;
+}
+
+.fire{
+    background-color: #EE8130;
+}
+
+.water{
+    background-color: #6390F0;
+}
+
+.grass{
+    background-color: #7AC74C;
+}
+
+.electric{
+    background-color: #F7D02C;
+}
+
+.ice{
+    background-color: #96D9D6;
+}
+
+.fighting{
+    background-color: #C22E28;
+}
+
+.poison{
+    background-color: #A33EA1;
+}
+
+.ground{
+    background-color: #E2BF65;
+}
+
+.flying{
+    background-color: #A98FF3;
+}
+
+.psychic{
+    background-color: #F95587;
+}
+
+.bug{
+    background-color: #A6B91A;
+}
+
+.rock{
+    background-color: #B6A136;
+}
+
+.ghost{
+    background-color: #735797;
+}
+
+.dragon{
+    background-color: #6F35FC;
+}
+
+.steel{
+    background-color: #B7B7CE;
+}
+
+.fairy{
+    background-color: #D685AD;
+}

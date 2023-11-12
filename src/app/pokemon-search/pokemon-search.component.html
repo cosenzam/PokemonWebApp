@@ -1,0 +1,76 @@
+<div class="search-container">
+
+    <h1>Pokémon Search</h1>
+    
+    <div>
+        <input class="search-input" type="text" [formControl]="textControl" placeholder="Pikachu" (keyup.enter)="onSubmit()">
+    </div>
+
+    <span class="search-btn-div"><button class="search-submit-btn" (click)="onSubmit()">Search</button></span>
+    <!--
+    <p>
+        Current value: {{ textControl.value }}
+    </p>
+    -->
+    <div class="invalid-pokemon"></div>
+
+    <div class="form-requirements">
+        <div *ngIf="textControl.errors?.['required']">Pokémon name required.</div> 
+        <div *ngIf="textControl.errors?.['minlength']">Name must be at least 3 characters long.</div>
+    </div>
+
+    <div id="poke-Info">
+
+        <div>
+            <p id="poke-Name"></p>
+            <span id="poke-Type">Type: </span>
+            <span class="type-container" id="type1"></span>
+            <span class="type-container" id="type2"></span>
+            <p id="poke-Abilities"></p>
+            <p id="poke-Height"></p>
+            <p id="poke-Weight"></p>
+
+            <div id="stats">
+                <!-- max base for a stat is 255, fill a bar up to some width in increments of 1-255 px -->
+                <div class="stat-hp">
+                    <span></span>
+                    <div></div>
+                </div>
+                <div class="stat-atk">
+                    <span></span>
+                    <div></div>
+                </div>
+                <div class="stat-def">
+                    <span></span>
+                    <div></div>
+                </div>
+                <div class="stat-spatk">
+                    <span></span>
+                    <div></div>
+                </div>
+                <div class="stat-spdef">
+                    <span></span>
+                    <div></div>
+                </div>
+                <div class="stat-spd">
+                    <span></span>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    
+        <div id="sprites-1">
+            <img id="front-Sprite" src="">
+            <img id="back-Sprite" src="">
+        </div>
+    
+        <div id="sprites-2">
+            <img id="front-Shiny" src="">
+            <img id="back-Shiny" src="">
+        </div>
+
+    </div>
+
+</div>
+
+<!--<app-pokemon-api [message]="message"> </app-pokemon-api>-->
