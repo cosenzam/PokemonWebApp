@@ -204,7 +204,8 @@ router-outlet{
 }
 
 .teams-container{
-    
+    display: flex;
+    justify-content: space-around;
 }
 
 .party-list{
@@ -217,10 +218,10 @@ router-outlet{
 
 .slot-1, .slot-2, .slot-3, .slot-4, .slot-5, .slot-6{
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     height: 300px;
     width: 260px;
-    align-items: center;
+    justify-content: center;
 }
 
 .slot-1-box, .slot-2-box, .slot-3-box, .slot-4-box, .slot-5-box, .slot-6-box{
@@ -241,7 +242,6 @@ router-outlet{
 .slot-1-info, .slot-2-info, .slot-3-info, .slot-4-info, .slot-5-info, .slot-6-info{
     border: solid;
     align-items: center;
-    flex-grow: 1;
     width: 100%;
     display: none;
 }

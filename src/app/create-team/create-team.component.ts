@@ -50,10 +50,18 @@ export class CreateTeamComponent {
         displayFrontSprite(response, `slot-${slotNum}-sprite`);
         displayTypes(pokeTypes);
         document.getElementById("poke-Name")!.innerHTML = "Pokémon: " + pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
-        document.getElementById("poke-Abilities")!.innerHTML = "Abilities: " + pokeAbilities.join(", ");
+        document.getElementById("poke-Abilities")!.innerHTML = "Ability: ";
         displayStats(response, "teams", slotNum);
 
         selectAbilities(pokeAbilities, slotNum);
+
+        // subscribe for ability descriptions
+        this.pokeAPIService.getAbilityInfo(response.abilities[0].ability.url).subscribe((response)=>{
+          console.log(response.effect_entries[1].effect);
+        }, 
+          (error: any) => {
+            console.log("ability error");
+          });
 
         // store response for later access
         this.apiResponses[slotNum - 1] = response; console.log(this.apiResponses[slotNum - 1]);

@@ -82,9 +82,13 @@ export function selectAbilities(pokeAbilities: string[], slotNum: number){
         // remove ALL child nodes
         element.innerHTML = "";
     }
-    // append options to select for each ability
-    var option = document.createElement("option");
-    option.text = "first option";
-    option.value = "first option value";
+
+    for (let ability of pokeAbilities){
+        // append options to select for each ability
+    let option = document.createElement("option");
+    option.text = ability;
+    option.value = ability;
     element.appendChild(option);
+    }
+
 }

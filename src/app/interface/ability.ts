@@ -1,4 +1,4 @@
 export interface Ability {
-    ability: {name: string}
+    ability: {name: string, url: string}
     is_hidden: boolean
 }
