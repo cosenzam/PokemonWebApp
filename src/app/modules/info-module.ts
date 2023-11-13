@@ -58,28 +58,7 @@ export function displayStats(response: any, route: string, slotNum: number = 0){
         var element = document.getElementById("stats");
     }
     else if(route == "teams"){ 
-        switch(slotNum){
-            case 1:
-                var element = document.getElementById("slot-1-stats");
-                break;
-            case 2:
-                var element = document.getElementById("slot-2-stats");
-                break;
-            case 3:
-                var element = document.getElementById("slot-3-stats");
-                break;
-            case 4:
-                var element = document.getElementById("slot-4-stats");
-                break;
-            case 5:
-                var element = document.getElementById("slot-5-stats");
-                break;
-            case 6:
-                var element = document.getElementById("slot-6-stats");
-                break;
-            default:
-                console.log("incorrect slot number");
-        }
+        var element = document.getElementById(`slot-${slotNum}-stats`);
     }
 
     (<HTMLElement>element!.querySelector(".stat-hp")!.children[0]).innerText = `HP: ${response.stats[0].base_stat}`;
@@ -98,7 +77,12 @@ export function displayStats(response: any, route: string, slotNum: number = 0){
 
 export function selectAbilities(pokeAbilities: string[], slotNum: number){
     // for each ability, append a child option to select tag
-    const element = (<HTMLElement>document.querySelector(".ability-select"));
+    const element = (<HTMLElement>document.querySelector(`.slot-${slotNum}-abilities`));
+    if (element.hasChildNodes()){
+        // remove ALL child nodes
+        element.innerHTML = "";
+    }
+    // append options to select for each ability
     var option = document.createElement("option");
     option.text = "first option";
     option.value = "first option value";
