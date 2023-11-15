@@ -55,15 +55,7 @@ export class CreateTeamComponent {
 
         selectAbilities(pokeAbilities, slotNum);
 
-        // subscribe for ability descriptions
-        this.pokeAPIService.getAbilityInfo(response.abilities[0].ability.url).subscribe((response)=>{
-          console.log(response.effect_entries[1].effect);
-        }, 
-          (error: any) => {
-            console.log("ability error");
-          });
-
-        // store response for later access
+        // store subscribe response for ?
         this.apiResponses[slotNum - 1] = response; console.log(this.apiResponses[slotNum - 1]);
       }, 
         (error: any) => {

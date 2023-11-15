@@ -14,10 +14,10 @@ import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 
 const appRoute: Routes = [
-  { path: '', component: HomeComponent},
-  { path: 'Search', component: PokemonSearchComponent},
-  { path: 'Team', component: CreateTeamComponent},
-  { path: 'About', component: AboutComponent},
+  { path: '', component: PokemonSearchComponent /*HomeComponent*/},
+  { path: 'search', component: PokemonSearchComponent},
+  { path: 'team', component: CreateTeamComponent},
+  { path: 'about', component: AboutComponent},
 ]
 
 @NgModule({

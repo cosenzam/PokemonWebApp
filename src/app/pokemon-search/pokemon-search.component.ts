@@ -21,10 +21,8 @@ export class PokemonSearchComponent {
 
     // subscribe to receive response from PokeAPI 
     if (this.textControl.value != ""){
-      this.pokeAPIService.getPokemon(this.textControl.value!.toLowerCase()).subscribe(
+      this.pokeAPIService.getPokemon(this.textControl.value!.toLowerCase()).subscribe((response)=>{
 
-        // do things if response received
-        function (response) {
           // add pkmn types and abilities to array for organization
           let pokeName = response.name;
           let pokeTypes: string[] = [];
@@ -42,17 +40,41 @@ export class PokemonSearchComponent {
           displayTypes(pokeTypes); // set type background color
           
           document.getElementById("poke-Name")!.innerHTML = "Pokémon: " + pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
+          // DO NOT change innerHTML here hence losing child divs
           document.getElementById("poke-Abilities")!.innerHTML = "Abilities: " + pokeAbilities.join(", ");
+          // append ability description tooltip to abilities div
+          //  <div class="poke-Abilities">Abilities: 
+          //    <span class="tooltip">pokeAbilities[0]
+          //      <span class="ability-tooltip-text">abilityDescription[0]</span>
+          //    </span>
+          //  </div>
           document.getElementById("poke-Height")!.innerHTML = "Height: " + (response.height * 0.1).toFixed(1) + " m";
           document.getElementById("poke-Weight")!.innerHTML = "Weight: " + (response.weight * 0.1).toFixed(1) + " kg";
           
           displayStats(response, "search");
 
-          },
+          // loop of nested subscribes, executed async to outer subscribe, bad!
+          // learn switchMap, mergeMap, pipe
+          for (let ability of response.abilities){
+            this.pokeAPIService.getAbilityInfo(ability.ability.url).subscribe((response)=>{
+              console.log(response.effect_entries[1].short_effect);
+            }, 
+              (error: any) => {
+                console.log("nested subscribe ability desc error");
+              },
+              () =>{
+                console.log("nested subscribe complete");
+              });
+          }
+
+      },
         (error: any) => {
           document.getElementById("poke-Info")!.style.cssText = "display:none;";
           (<HTMLElement>document.querySelector(".invalid-pokemon"))!.innerHTML = "Pokémon does not exist!";
           console.log("Pokémon not found")
+        },
+        () =>{
+          console.log("outer subscribe complete");
         });
       // any code here will be **likely** executed before subscribe response | do not use
     }

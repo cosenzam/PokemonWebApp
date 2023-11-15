@@ -167,6 +167,11 @@ router-outlet{
     /*text-align: center;*/
 }
 
+.ability-tooltip .ability-tooltip-text{
+    visibility: hidden;
+    text-align: center;
+}
+
 #stats, #slot-1-stats, #slot-2-stats, #slot-3-stats, #slot-4-stats, #slot-5-stats, #slot-6-stats{
     display: flex;
     width: 260px;
@@ -219,7 +224,6 @@ router-outlet{
 .slot-1, .slot-2, .slot-3, .slot-4, .slot-5, .slot-6{
     display: flex;
     flex-wrap: wrap;
-    height: 300px;
     width: 260px;
     justify-content: center;
 }

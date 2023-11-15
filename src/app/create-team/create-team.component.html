@@ -5,9 +5,6 @@
     <div class="party-list">
 
         <div class="slot-1">
-            <!-- onclick change + box to text input -->
-            <!-- options: 1. on click change slot-1-box to text input and submit button 
-                          2. -->
             <div class="slot-1-box" (click)="onClick(1)">+</div>
             <div class="slot-1-input">
                 <input type="text" [formControl]="pokeName1" (keyup.enter)="onSubmit(1, pokeName1)">
