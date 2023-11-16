@@ -1,6 +1,6 @@
 // reponse variable is of <Pokemon> interface type
 
-export function displaySprites(response: any) {
+export function setSprites(response: any) {
     document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
     document.getElementById("back-Sprite")!.setAttribute('src', response.sprites.back_default);
     document.getElementById("front-Shiny")!.setAttribute('src', response.sprites.front_shiny);
@@ -9,13 +9,13 @@ export function displaySprites(response: any) {
     document.getElementById("sprites-2")!.style.cssText = "display:flex;justify-content:space-around;";
 }
 
-export function displayFrontSprite(response: any, element: string){
+export function setFrontSprite(response: any, element: string){
     document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
     document.getElementById(element)!.style.cssText = "display:flex;justify-content:space-between;";
 }
 
 // set css attributes depending on the pokemon types
-export function displayTypes(pokeTypes: string[]) {
+export function setTypes(pokeTypes: string[]) {
 
     if (pokeTypes.length < 2){
         // remove type 2 bg if not dual type
@@ -40,7 +40,7 @@ export function displayTypes(pokeTypes: string[]) {
     }
 }
 
-export function displayTeamsSprites(response: any){
+export function setTeamsSprites(response: any){
     return
 }
 
@@ -53,7 +53,7 @@ export function autocompleteMoves(){
 }
 
 // can use on any page with a stats div
-export function displayStats(response: any, route: string, slotNum: number = 0){
+export function setStats(response: any, route: string, slotNum: number = 0){
     if (route == "search"){ 
         var element = document.getElementById("stats");
     }
@@ -91,4 +91,11 @@ export function selectAbilities(pokeAbilities: string[], slotNum: number){
     element.appendChild(option);
     }
 
+}
+
+export function setAbilityTooltip(abilityDescription: string, slotNum: number = 0){
+    const element = document.getElementById("poke-Abilities");
+    
+    let abilityTooltip = document.createElement("span");
+    let abilityTooltipText = document.createElement("span");
 }

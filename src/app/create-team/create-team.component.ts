@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { Pokemon } from '../interface/pokemon';
-import { displayTypes, displayFrontSprite, displayStats, selectAbilities } from '../modules/info-module';
+import { setTypes, setFrontSprite, setStats, selectAbilities } from '../modules/info-module';
 import { pokeNatures } from '../globals/global-constants';
 
 @Component({
@@ -47,11 +47,11 @@ export class CreateTeamComponent {
 
         (<HTMLElement>document.querySelector(`.slot-${slotNum}`)).querySelector(".invalid-pokemon")!.innerHTML = "";
         (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:flex; flex-direction:column;";
-        displayFrontSprite(response, `slot-${slotNum}-sprite`);
-        displayTypes(pokeTypes);
+        setFrontSprite(response, `slot-${slotNum}-sprite`);
+        setTypes(pokeTypes);
         document.getElementById("poke-Name")!.innerHTML = "Pokémon: " + pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
         document.getElementById("poke-Abilities")!.innerHTML = "Ability: ";
-        displayStats(response, "teams", slotNum);
+        setStats(response, "teams", slotNum);
 
         selectAbilities(pokeAbilities, slotNum);
 
