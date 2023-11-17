@@ -167,9 +167,28 @@ router-outlet{
     /*text-align: center;*/
 }
 
+.ability-tooltip{
+    display: inline-block;
+    padding-right: 5px;
+}
+
+.ability-tooltip-text{
+    position: absolute;
+    z-index: 1;
+    width: 160px;
+    margin-left: -40px;
+    overflow: hidden;
+    background-color: white;
+    color: black;
+}
+
 .ability-tooltip .ability-tooltip-text{
-    visibility: hidden;
+    display: none;
     text-align: center;
+}
+
+.ability-tooltip:hover .ability-tooltip-text{
+    display: block;
 }
 
 #stats, #slot-1-stats, #slot-2-stats, #slot-3-stats, #slot-4-stats, #slot-5-stats, #slot-6-stats{

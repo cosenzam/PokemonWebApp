@@ -40,34 +40,32 @@ export class PokemonSearchComponent {
         setTypes(pokeTypes); // set type background color
         
         document.getElementById("poke-Name")!.innerHTML = "Pokémon: " + pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
-        // DO NOT change innerHTML here hence losing child divs
-        document.getElementById("poke-Abilities")!.innerHTML = "Abilities: " + pokeAbilities.join(", ");
-        // append ability description tooltip to abilities div
-        //  <div class="poke-Abilities">Abilities: 
-        //    <span class="tooltip">pokeAbilities[0]
-        //      <span class="ability-tooltip-text">abilityDescription[0]</span>
-        //    </span>
-        //    <span class="tooltip">pokeAbilities[1]
-        //      <span class="ability-tooltip-text">abilityDescription[1]</span>
-        //    </span>
-        //  </div>
+        //document.getElementById("poke-Abilities")!.innerHTML = "Abilities: " + pokeAbilities.join(", ");
+
         document.getElementById("poke-Height")!.innerHTML = "Height: " + (response.height * 0.1).toFixed(1) + " m";
         document.getElementById("poke-Weight")!.innerHTML = "Weight: " + (response.weight * 0.1).toFixed(1) + " kg";
         
         setStats(response, "search");
 
+        // remove previous abilities because things are appended to this element rather than changed
+        let elPokeAbilities = document.getElementById("poke-Abilities");
+        elPokeAbilities!.innerHTML = "Abilities: ";
+
         // loop of nested subscribes, executed async to outer subscribe, bad!
         // learn switchMap, mergeMap, pipe
-        for (let ability of response.abilities){
+        for (let [index, ability] of response.abilities.entries()){
+          let length = response.abilities.length;
+          let isLastIndex = false;
+          if (index == length - 1){ isLastIndex = true; } // do not concat a comma to tooltip <span> if is last ability in list
           // add description tooltips to abilties
           this.pokeAPIService.getAbilityInfo(ability.ability.url).subscribe((response)=>{
-            setAbilityTooltip(response.effect_entries[1].short_effect);
+            setAbilityTooltip(ability.ability.name, response.effect_entries[1].short_effect, isLastIndex);
           }, 
             (error: any) => {
               console.log("nested subscribe ability desc error");
             },
             () =>{
-              console.log("nested subscribe complete");
+              //console.log("nested subscribe complete");
             });
         }
 
@@ -78,7 +76,7 @@ export class PokemonSearchComponent {
           console.log("Pokémon not found")
         },
         () =>{
-          console.log("outer subscribe complete");
+          //console.log("outer subscribe complete");
         });
       // any code here will be **likely** executed before subscribe response | do not use
     }

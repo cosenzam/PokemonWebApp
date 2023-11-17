@@ -32,7 +32,7 @@ export function setTypes(pokeTypes: string[]) {
         let type = pokeTypes[i];
 
         try{ 
-            document.getElementById(element)!.setAttribute('class', `${type} type-container`);
+            document.getElementById(element)!.setAttribute("class", `${type} type-container`);
             document.getElementById(element)!.innerHTML = pokeTypes[i].charAt(0).toUpperCase() + pokeTypes[i].slice(1); 
         }
         catch{ console.log("not a valid type") ;}
@@ -93,9 +93,23 @@ export function selectAbilities(pokeAbilities: string[], slotNum: number){
 
 }
 
-export function setAbilityTooltip(abilityDescription: string, slotNum: number = 0){
+export function setAbilityTooltip(abilityName: string, abilityDescription: string, isLastIndex = false, slotNum: number = 0){
     const element = document.getElementById("poke-Abilities");
     
     let abilityTooltip = document.createElement("span");
+    if (!isLastIndex){ 
+        abilityTooltip.innerText = abilityName + ","; // using padding instead of spaces between each tooltip <span>
+    }
+    else{ 
+        abilityTooltip.innerText = abilityName;
+    }
+    abilityTooltip.setAttribute("class", "ability-tooltip");
+
     let abilityTooltipText = document.createElement("span");
+    abilityTooltipText.innerText = abilityDescription;
+    abilityTooltipText.setAttribute("class", "ability-tooltip-text");
+
+    abilityTooltip.appendChild(abilityTooltipText);
+    element!.appendChild(abilityTooltip);
+
 }
