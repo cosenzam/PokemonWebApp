@@ -58,11 +58,11 @@ export class CreateTeamComponent {
         // store subscribe response for ?
         this.apiResponses[slotNum - 1] = response; console.log(this.apiResponses[slotNum - 1]);
       }, 
-        (error: any) => {
-          (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:none;";
-          (<HTMLElement>document.querySelector(`.slot-${slotNum}`)).querySelector(".invalid-pokemon")!.innerHTML = "Pokémon does not exist!";
-          console.log("Pokémon not found")
-        });
+      (error: any) => {
+        (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:none;";
+        (<HTMLElement>document.querySelector(`.slot-${slotNum}`)).querySelector(".invalid-pokemon")!.innerHTML = "Pokémon does not exist!";
+        console.log("Pokémon not found")
+      });
     }
     //console.log(this.apiResponses[0].moves[0].move.name);
 

@@ -93,12 +93,13 @@ export function selectAbilities(pokeAbilities: string[], slotNum: number){
 
 }
 
-export function setAbilityTooltip(abilityName: string, abilityDescription: string, isLastIndex = false, slotNum: number = 0){
+export function setAbilityTooltip(abilityName: string, abilityDescription: string, isLastIndex: boolean = false, slotNum: number = 0){
     const element = document.getElementById("poke-Abilities");
+    abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     
     let abilityTooltip = document.createElement("span");
     if (!isLastIndex){ 
-        abilityTooltip.innerText = abilityName + ","; // using padding instead of spaces between each tooltip <span>
+        abilityTooltip.innerText = abilityName + ","; // using margin instead of spaces after each ","
     }
     else{ 
         abilityTooltip.innerText = abilityName;
@@ -111,5 +112,12 @@ export function setAbilityTooltip(abilityName: string, abilityDescription: strin
 
     abilityTooltip.appendChild(abilityTooltipText);
     element!.appendChild(abilityTooltip);
+    // calculate abilityTooltipText's margin-left to center tooltip under parent
+    let tooltipMarginLeft = -100 + (abilityTooltip.offsetWidth / 2);
+    abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+}
 
+export function setPokedexEntry(entryDescription: string){
+    const element = (<HTMLElement>document.getElementById("poke-Pokedex"))!.children[0];
+    element!.innerHTML = "Pokédex Entry: " + entryDescription;
 }
