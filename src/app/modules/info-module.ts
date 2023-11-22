@@ -5,8 +5,8 @@ export function setSprites(response: any) {
     document.getElementById("back-Sprite")!.setAttribute('src', response.sprites.back_default);
     document.getElementById("front-Shiny")!.setAttribute('src', response.sprites.front_shiny);
     document.getElementById("back-Shiny")!.setAttribute('src', response.sprites.back_shiny);
-    document.getElementById("sprites-1")!.style.cssText = "display:flex;justify-content:space-around;";
-    document.getElementById("sprites-2")!.style.cssText = "display:flex;justify-content:space-around;";
+    document.getElementById("sprites-1")!.style.cssText = "display:flex;";
+    document.getElementById("sprites-2")!.style.cssText = "display:flex;";
 }
 
 export function setFrontSprite(response: any, element: string){
@@ -98,12 +98,15 @@ export function setAbilityTooltip(abilityName: string, abilityDescription: strin
     abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     
     let abilityTooltip = document.createElement("span");
-    if (!isLastIndex){ 
+    /*
+    if (!isLastIndex){ // not working every time because subscribe can return out of order/async! ****
         abilityTooltip.innerText = abilityName + ","; // using margin instead of spaces after each ","
     }
     else{ 
         abilityTooltip.innerText = abilityName;
     }
+    */
+    abilityTooltip.innerText = abilityName; // not using commas for now
     abilityTooltip.setAttribute("class", "ability-tooltip");
 
     let abilityTooltipText = document.createElement("span");
@@ -118,6 +121,6 @@ export function setAbilityTooltip(abilityName: string, abilityDescription: strin
 }
 
 export function setPokedexEntry(entryDescription: string){
-    const element = (<HTMLElement>document.getElementById("poke-Pokedex"))!.children[0];
-    element!.innerHTML = "Pokédex Entry: " + entryDescription;
+    const element = (<HTMLElement>document.getElementById("poke-Pokedex"));
+    element!.innerHTML = entryDescription;
 }

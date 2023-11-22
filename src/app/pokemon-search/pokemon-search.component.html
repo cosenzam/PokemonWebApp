@@ -21,55 +21,71 @@
 
     <div id="poke-Info">
 
-        <div>
-            <div id="poke-Name"></div>
-            <span id="poke-Type">Type: </span>
-            <span class="type-container" id="type1"></span>
-            <span class="type-container" id="type2"></span>
-            <div id="poke-Abilities"></div>
-            <div id="poke-Pokedex">
+        <div class="sm-flex-group"> <!-- First row --> <!-- Flex these 3 divs-->
+            <div>
+                <div class="sm-header-cyan">Pokémon Name:</div>
+                <div id="poke-Name"></div>
+            </div>
+            <!-- Type classes change the bg color of a type container -->
+            <div>
+                <div id="poke-Type" class="sm-header-cyan">Type:</div>
+                <span class="type-container" id="type1"></span>
+                <span class="type-container" id="type2"></span>
+            </div>
+            <div id="poke-Abilities">
+                <div class="sm-header-cyan">Abilities:</div>
+            </div>
+            
+        </div>
+        
+        <!-- Second Row -->
+        <div class="lg-flex-group">
+            <div class="lg-header-cyan">Sprites:</div>
+            <div id="sprites-1">Default:
+                <img id="front-Sprite" src="">
+                <img id="back-Sprite" src="">
+            </div>
+            <div id="sprites-2">Shiny:
+                <img id="front-Shiny" src="">
+                <img id="back-Shiny" src="">
+            </div>
+        </div>
+        <!-- Third Row -->
+        <div class="lg-flex-group">
+            <div class="lg-header-cyan">Pokédex Entry:</div>
+            <div id="poke-Pokedex"></div>
+        </div>
+        <!-- Fourth Row -->
+        <div id="stats"> <!-- Flex these 6 divs-->
+            <div class="stat-hp">
                 <span></span>
+                <div></div>
             </div>
-            <div id="poke-Height"></div>
+            <div class="stat-atk">
+                <span></span>
+                <div></div>
+            </div>
+            <div class="stat-def">
+                <span></span>
+                <div></div>
+            </div>
+            <div class="stat-spatk">
+                <span></span>
+                <div></div>
+            </div>
+            <div class="stat-spdef">
+                <span></span>
+                <div></div>
+            </div>
+            <div class="stat-spd">
+                <span></span>
+                <div></div>
+            </div>
+        </div>
+        <!-- Fifth Row -->
+        <div>
+            <div id="poke-Height"></div> <!-- Flex these 2 divs-->
             <div id="poke-Weight"></div>
-
-            <div id="stats">
-                <!-- max base for a stat is 255, fill a bar up to some width in increments of 1-255 px -->
-                <div class="stat-hp">
-                    <span></span>
-                    <div></div>
-                </div>
-                <div class="stat-atk">
-                    <span></span>
-                    <div></div>
-                </div>
-                <div class="stat-def">
-                    <span></span>
-                    <div></div>
-                </div>
-                <div class="stat-spatk">
-                    <span></span>
-                    <div></div>
-                </div>
-                <div class="stat-spdef">
-                    <span></span>
-                    <div></div>
-                </div>
-                <div class="stat-spd">
-                    <span></span>
-                    <div></div>
-                </div>
-            </div>
-        </div>
-    
-        <div id="sprites-1">
-            <img id="front-Sprite" src="">
-            <img id="back-Sprite" src="">
-        </div>
-    
-        <div id="sprites-2">
-            <img id="front-Shiny" src="">
-            <img id="back-Shiny" src="">
         </div>
 
     </div>

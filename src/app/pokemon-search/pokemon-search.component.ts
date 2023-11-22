@@ -10,12 +10,12 @@ import { setSprites, setTypes, setStats, setAbilityTooltip, setPokedexEntry } fr
 })
 export class PokemonSearchComponent {
   
-  textControl = new FormControl('', [Validators.required, Validators.minLength(3)]);
+  textControl = new FormControl("Pikachu", [Validators.required, Validators.minLength(3)]);
   //message : any = '';
 
   // PokeAPIService constuctor
   constructor(private pokeAPIService: PokeAPIService) {}
-
+  
   onSubmit(): void {
 
     if (this.textControl.value != ""){
@@ -27,11 +27,11 @@ export class PokemonSearchComponent {
         // remove text if previous input was invalid
         (<HTMLElement>document.querySelector(".invalid-pokemon"))!.innerHTML = "";
 
-        document.getElementById("poke-Info")!.style.cssText = "display:flex; flex-direction:column;";
+        document.getElementById("poke-Info")!.style.cssText = "display:flex;";
 
         // Pokemon Name
         let pokeName = response.name;
-        document.getElementById("poke-Name")!.innerHTML = "Pokémon: " + pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
+        document.getElementById("poke-Name")!.innerHTML = pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
 
         // Pokemon Sprites
         setSprites(response); // set image src to front and back sprites
@@ -45,11 +45,13 @@ export class PokemonSearchComponent {
         let pokeAbilities: string[] = [];
         response.abilities.forEach((item, index) => pokeAbilities.push(response.abilities[index].ability.name));
         let elPokeAbilities = document.getElementById("poke-Abilities");
-        elPokeAbilities!.innerHTML = "Abilities: "; // remove previous children in case there was a previous search
+        while (elPokeAbilities!.childNodes.length > 1){// remove previous children in case there was a previous search
+          elPokeAbilities!.removeChild((<HTMLElement>elPokeAbilities!.lastChild));
+        }
 
+        // Ability Tooltips
         // loop of nested subscribes, executed async to outer subscribe, bad! ** Observables can be returned in different orders
         // learn switchMap, mergeMap, pipe
-        // Ability Tooltips
         for (let [index, ability] of response.abilities.entries()){
           let length = response.abilities.length;
           let isLastIndex = false;

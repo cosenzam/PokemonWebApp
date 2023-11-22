@@ -159,16 +159,52 @@ router-outlet{
     margin-top: 10px;
 }
 
+.sm-flex-group{
+    display: flex;
+    justify-content: space-around;
+    border: solid;
+    width: 100%;
+}
+
+.sm-header-cyan{
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius: 15px;
+    background-color: #0E7490;
+    font-size: 20px;
+    text-align: center;
+    min-width: 140px;
+}
+
+.lg-flex-group{
+    width: 100%;
+    border: solid;
+}
+
+.lg-header-cyan{
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-radius: 15px;
+    background-color: #0E7490;
+    font-size: 20px;
+    text-align: center;
+    min-width: 140px;
+}
+
 #poke-Info{
     display: none;
+    flex-direction:column;
+    border: solid;
+    align-items: center;
+    max-width: 800px;
 }
 
 #poke-Abilities{
-    /*text-align: center;*/
+    
 }
 
 #poke-Pokedex{
-    width: 260px;
+
 }
 
 .ability-tooltip{
@@ -179,10 +215,10 @@ router-outlet{
     text-underline-offset: 4px;
 }
 
-.ability-tooltip-text{
+.ability-tooltip-text{ /* if there is a scrollbar, tooltip is too low horizontally. probably can't be sol without JS? */
     display: none;
     text-align: center;
-    position: absolute;
+    position: fixed; /* removed from document flow, not positioned based on parent location, bad! */
     z-index: 1;
     width: 200px;
     overflow: hidden;
@@ -231,13 +267,10 @@ router-outlet{
 }
 
 #sprites-1, #sprites-2{
-    height: 150px;
-    width: 100%;
     display: none;
 }
 
 #sprites-1 > img, #sprites-2 > img{
-    align-self: center; /* align to prevent vertical stretch of image from flex, flex will grow to fit if not applied */
     border: 3px solid;
 }
 
