@@ -169,16 +169,19 @@ router-outlet{
 .sm-flex-group > div{
     width: 100%;
     max-width: 200px;
-    flex-grow: 1;
 }
 
 .sm-header-cyan{
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     border-radius: 15px;
     background-color: #0E7490;
     font-size: 20px;
     text-align: center;
+    min-width: 140px;
+}
+
+.sm-header-blank{
     min-width: 140px;
 }
 
@@ -191,8 +194,8 @@ router-outlet{
 }
 
 .lg-header-cyan{
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     border-radius: 15px;
     background-color: #0E7490;
     font-size: 20px;
@@ -209,8 +212,8 @@ router-outlet{
     width: 100%; /* Always fill 800px even if contents are not 800px width, except when window is smaller */
     max-width: 800px;
 }
-
-#poke-Name{
+/* Search Classes */
+#poke-Name, #poke-Height, #poke-Weight{
     text-align: center;
 }
 
@@ -286,7 +289,30 @@ router-outlet{
 #stats > div > div, #slot-1-stats > div > div, #slot-2-stats > div > div, #slot-3-stats > div > div, 
 #slot-4-stats > div > div, #slot-5-stats > div > div, #slot-6-stats > div > div{
     height: 25px;
-    background-color: white;
+}
+
+.stat-hp > div{
+    background-color: #CA3F3F;
+}
+
+.stat-atk > div{
+    background-color: #13538D;
+}
+
+.stat-def > div{
+    background-color: #038E00;
+}
+
+.stat-spatk > div{
+    background-color: #80008B;
+}
+
+.stat-spdef > div{
+    background-color: #FF9900;
+}
+
+.stat-spd > div{
+    background-color: #F172D5;
 }
 
 #sprites-1, #sprites-2{
@@ -296,7 +322,7 @@ router-outlet{
 #sprites-1 > img, #sprites-2 > img{
     border: 3px solid;
 }
-
+/* Teams Classes */
 .teams-container{
     display: flex;
     justify-content: space-around;

@@ -81,8 +81,8 @@ export class PokemonSearchComponent {
           //console.log("entry subscribe complete");
         });
 
-        document.getElementById("poke-Height")!.innerHTML = "Height: " + (response.height * 0.1).toFixed(1) + " m";
-        document.getElementById("poke-Weight")!.innerHTML = "Weight: " + (response.weight * 0.1).toFixed(1) + " kg";
+        document.getElementById("poke-Height")!.innerHTML = (response.height * 0.1).toFixed(1) + " m";
+        document.getElementById("poke-Weight")!.innerHTML = (response.weight * 0.1).toFixed(1) + " kg";
         
         setStats(response, "search");
 
