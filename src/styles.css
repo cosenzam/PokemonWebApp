@@ -166,6 +166,12 @@ router-outlet{
     width: 100%;
 }
 
+.sm-flex-group > div{
+    width: 100%;
+    max-width: 200px;
+    flex-grow: 1;
+}
+
 .sm-header-cyan{
     padding-top: 3px;
     padding-bottom: 3px;
@@ -177,6 +183,9 @@ router-outlet{
 }
 
 .lg-flex-group{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     border: solid;
 }
@@ -188,6 +197,7 @@ router-outlet{
     background-color: #0E7490;
     font-size: 20px;
     text-align: center;
+    width: 100%;
     min-width: 140px;
 }
 
@@ -196,15 +206,39 @@ router-outlet{
     flex-direction:column;
     border: solid;
     align-items: center;
+    width: 100%; /* Always fill 800px even if contents are not 800px width, except when window is smaller */
     max-width: 800px;
 }
 
+#poke-Name{
+    text-align: center;
+}
+
+.type-container{
+    display: inline-block;
+    width: 70px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.types-wrapper{
+    display: flex;
+    justify-content: space-around;
+}
+
 #poke-Abilities{
-    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    line-height: 1.4rem;
 }
 
 #poke-Pokedex{
-
+    max-width: 90%;
 }
 
 .ability-tooltip{
@@ -253,17 +287,6 @@ router-outlet{
 #slot-4-stats > div > div, #slot-5-stats > div > div, #slot-6-stats > div > div{
     height: 25px;
     background-color: white;
-}
-
-.type-container{
-    display: inline-block;
-    width: 70px;
-    height: 25px;
-    line-height: 25px;
-    text-align: center;
-    color: white;
-    font-size: 18px;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 #sprites-1, #sprites-2{

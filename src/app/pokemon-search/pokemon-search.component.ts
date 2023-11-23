@@ -45,9 +45,7 @@ export class PokemonSearchComponent {
         let pokeAbilities: string[] = [];
         response.abilities.forEach((item, index) => pokeAbilities.push(response.abilities[index].ability.name));
         let elPokeAbilities = document.getElementById("poke-Abilities");
-        while (elPokeAbilities!.childNodes.length > 1){// remove previous children in case there was a previous search
-          elPokeAbilities!.removeChild((<HTMLElement>elPokeAbilities!.lastChild));
-        }
+        elPokeAbilities!.innerHTML = "" // remove previous children in case there was a previous search
 
         // Ability Tooltips
         // loop of nested subscribes, executed async to outer subscribe, bad! ** Observables can be returned in different orders
