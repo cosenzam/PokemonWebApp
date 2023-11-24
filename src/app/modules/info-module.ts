@@ -1,5 +1,3 @@
-// reponse variable is of <Pokemon> interface type
-
 export function setSprites(response: any) {
     if (response.sprites.front_default){
         document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
@@ -68,19 +66,7 @@ export function setTypes(pokeTypes: string[]) {
     }
 }
 
-export function setTeamsSprites(response: any){
-    return
-}
-
-export function toggleShiny(){
-    return
-}
-
-export function autocompleteMoves(){
-    
-}
-
-// can use on any page with a stats div
+// response.stats[0] - [5] = hp, atk, def, spatk, spdef, spd
 export function setStats(response: any, route: string, slotNum: number = 0){
     if (route == "search"){ 
         var element = document.getElementById("stats");
@@ -89,18 +75,29 @@ export function setStats(response: any, route: string, slotNum: number = 0){
         var element = document.getElementById(`slot-${slotNum}-stats`);
     }
 
-    (<HTMLElement>element!.querySelector(".stat-hp")!.children[0]).innerText = `HP: ${response.stats[0].base_stat}`;
+    //(<HTMLElement>element!.querySelector(".stat-hp")!.children[0]).innerText = `HP: ${response.stats[0].base_stat}`;
     (<HTMLElement>element!.querySelector(".stat-hp")!.children[1]).style.width = `${response.stats[0].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-atk")!.children[0]).innerText = `Attack: ${response.stats[1].base_stat}`;
+    (<HTMLElement>element!.querySelector(".stat-hp")!.children[1].children[0]).innerText = `${response.stats[0].base_stat}`;
+
+    //(<HTMLElement>element!.querySelector(".stat-atk")!.children[0]).innerText = `Attack: ${response.stats[1].base_stat}`;
     (<HTMLElement>element!.querySelector(".stat-atk")!.children[1]).style.width = `${response.stats[1].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-def")!.children[0]).innerText = `Defense: ${response.stats[2].base_stat}`;
+    (<HTMLElement>element!.querySelector(".stat-atk")!.children[1].children[0]).innerText = `${response.stats[1].base_stat}`;
+
+    //(<HTMLElement>element!.querySelector(".stat-def")!.children[0]).innerText = `Defense: ${response.stats[2].base_stat}`;
     (<HTMLElement>element!.querySelector(".stat-def")!.children[1]).style.width = `${response.stats[2].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-spatk")!.children[0]).innerText = `Special Attack: ${response.stats[3].base_stat}`;
+    (<HTMLElement>element!.querySelector(".stat-def")!.children[1].children[0]).innerText = `${response.stats[2].base_stat}`;
+
+    //(<HTMLElement>element!.querySelector(".stat-spatk")!.children[0]).innerText = `Special Attack: ${response.stats[3].base_stat}`;
     (<HTMLElement>element!.querySelector(".stat-spatk")!.children[1]).style.width = `${response.stats[3].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-spdef")!.children[0]).innerText = `Special Defense: ${response.stats[4].base_stat}`;
+    (<HTMLElement>element!.querySelector(".stat-spatk")!.children[1].children[0]).innerText = `${response.stats[3].base_stat}`;
+
+    //(<HTMLElement>element!.querySelector(".stat-spdef")!.children[0]).innerText = `Special Defense: ${response.stats[4].base_stat}`;
     (<HTMLElement>element!.querySelector(".stat-spdef")!.children[1]).style.width = `${response.stats[4].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-spd")!.children[0]).innerText = `Speed: ${response.stats[5].base_stat}`;
+    (<HTMLElement>element!.querySelector(".stat-spdef")!.children[1].children[0]).innerText = `${response.stats[4].base_stat}`;
+    
+    //(<HTMLElement>element!.querySelector(".stat-spd")!.children[0]).innerText = `Speed: ${response.stats[5].base_stat}`;
     (<HTMLElement>element!.querySelector(".stat-spd")!.children[1]).style.width = `${response.stats[5].base_stat * 1.4}px`;
+    (<HTMLElement>element!.querySelector(".stat-spd")!.children[1].children[0]).innerText = `${response.stats[5].base_stat}`;
 }
 
 export function selectAbilities(pokeAbilities: string[], slotNum: number){
@@ -151,4 +148,16 @@ export function setAbilityTooltip(abilityName: string, abilityDescription: strin
 export function setPokedexEntry(entryDescription: string){
     const element = (<HTMLElement>document.getElementById("poke-Pokedex"));
     element!.innerHTML = entryDescription;
+}
+
+export function setTeamsSprites(response: any){
+    return
+}
+
+export function toggleShiny(){
+    return
+}
+
+export function autocompleteMoves(){
+    
 }

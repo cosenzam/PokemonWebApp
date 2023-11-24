@@ -163,7 +163,7 @@ router-outlet{
     display: flex;
     justify-content: space-around;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .sm-flex-group > div{
@@ -194,7 +194,7 @@ router-outlet{
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .lg-header-cyan{
@@ -289,7 +289,7 @@ router-outlet{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    max-height: 150px;
+    max-height: 130px;
     width: 100%;
     margin-left: 15px;
 }
@@ -304,7 +304,8 @@ router-outlet{
 
 #stats > div > div, #slot-1-stats > div > div, #slot-2-stats > div > div, #slot-3-stats > div > div, 
 #slot-4-stats > div > div, #slot-5-stats > div > div, #slot-6-stats > div > div{
-    height: 25px;
+    max-height: 25px;
+    height: 100%;
 }
 
 .stat-hp > div{
@@ -331,6 +332,12 @@ router-outlet{
     background-color: #F172D5;
 }
 
+.stat-hp > div > div, .stat-atk > div > div, .stat-def > div > div, .stat-spatk > div > div,
+.stat-spdef > div > div, .stat-spd > div > div{
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    text-align: end;
+}
+
 #sprites-1, #sprites-2{
     display: none;
     flex-wrap: wrap;
@@ -347,6 +354,8 @@ router-outlet{
 }
 
 .sprites-header{
+    padding-top: 3px;
+    padding-bottom: 3px;
     width: 100%;
 }
 
