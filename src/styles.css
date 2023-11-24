@@ -132,7 +132,7 @@ router-outlet{
 }
 
 .search-btn-div{
-    padding-top: 20px;
+    margin-top: 10px;
 }
 
 .search-submit-btn{
@@ -333,11 +333,29 @@ router-outlet{
 
 #sprites-1, #sprites-2{
     display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#sprites-1 > div, #sprites-2 > div{
+    background-color: #27272A;
+    text-align: center;
 }
 
 #sprites-1 > img, #sprites-2 > img{
-    border: 3px solid;
+    /*border: 3px solid;*/
 }
+
+.sprites-header{
+    width: 100%;
+}
+
+.sprites-wrapper{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
 /* Teams Classes */
 .teams-container{
     display: flex;

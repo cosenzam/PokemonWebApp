@@ -1,10 +1,38 @@
 // reponse variable is of <Pokemon> interface type
 
 export function setSprites(response: any) {
-    document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
-    document.getElementById("back-Sprite")!.setAttribute('src', response.sprites.back_default);
-    document.getElementById("front-Shiny")!.setAttribute('src', response.sprites.front_shiny);
-    document.getElementById("back-Shiny")!.setAttribute('src', response.sprites.back_shiny);
+    if (response.sprites.front_default){
+        document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
+    }
+    else{
+        console.log("No front default sprite");
+        document.getElementById("front-Sprite")!.setAttribute('src', '');
+    }
+
+    if (response.sprites.back_default){
+        document.getElementById("back-Sprite")!.setAttribute('src', response.sprites.back_default);
+    }
+    else{
+        console.log("No back default sprite");
+        document.getElementById("back-Sprite")!.setAttribute('src', '');
+    }
+    
+    if (response.sprites.front_shiny){
+        document.getElementById("front-Shiny")!.setAttribute('src', response.sprites.front_shiny);
+    }
+    else{
+        console.log("No front shiny sprite");
+        document.getElementById("front-Shiny")!.setAttribute('src', '');
+    }
+
+    if (response.sprites.back_shiny){
+        document.getElementById("back-Shiny")!.setAttribute('src', response.sprites.back_shiny);
+    }
+    else{
+        console.log("No back shiny sprite");
+        document.getElementById("back-Shiny")!.setAttribute('src', '');
+    }
+
     document.getElementById("sprites-1")!.style.cssText = "display:flex;";
     document.getElementById("sprites-2")!.style.cssText = "display:flex;";
 }
