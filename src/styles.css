@@ -105,21 +105,32 @@ router-outlet{
     margin-top: 10px;
 }
 
+.header-main{
+    width: 100%;
+    text-align: center;
+}
+
 .search-container{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.search-input-wrapper{
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .search-input{
-    height: 30px;
+    height: 35px;
     width: 235px;
-    border-radius: 15px;
     border-style: none; /* remove weird gray border on only half of text box */
     padding-left: 15px;
     background-color: #3f3f46;
     color: white;
     outline: none;
+    box-sizing:border-box
 }
 
 .search-input:focus{
@@ -132,18 +143,22 @@ router-outlet{
 }
 
 .search-btn-div{
-    margin-top: 10px;
+    
 }
 
 .search-submit-btn{
-    height: 30px;
-    width: 100px;
-    border-radius: 15px;
+    height: 35px;
+    width: 35px;
     background-color: #3f3f46;
     color: white;
     border-style: none;
     cursor: pointer;
     transition: background-color 200ms;
+    margin-left: 5px;
+}
+
+.search-icon{
+    margin-top: 3px;
 }
 
 .search-submit-btn:hover{
@@ -291,14 +306,13 @@ router-outlet{
     flex-wrap: wrap;
     max-height: 130px;
     width: 100%;
-    margin-left: 15px;
+    background-color: #27272A;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #stats > div{
-    /*
     margin-left: 10px;
-    margin-right: 10px;
-    */
     width: 50%;
 }
 
