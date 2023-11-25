@@ -55,7 +55,7 @@ export class PokemonSearchComponent {
           let isLastIndex = false;
           if (index == length - 1){ isLastIndex = true; } // do not concat a comma to tooltip <span> if is last ability in list
           this.pokeAPIService.getAbilityInfo(ability.ability.url).subscribe((response)=>{
-            setAbilityTooltip(ability.ability.name, response.effect_entries[index].short_effect, isLastIndex);
+            setAbilityTooltip(ability.ability.name, response.effect_entries[1].short_effect, isLastIndex);
           }, 
           (error: any) => {
             console.log("nested subscribe ability desc error");
