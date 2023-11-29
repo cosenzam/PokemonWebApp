@@ -27,7 +27,7 @@ export class PokemonSearchComponent {
         // remove text if previous input was invalid
         (<HTMLElement>document.querySelector(".invalid-pokemon"))!.innerHTML = "";
 
-        document.getElementById("poke-Info")!.style.cssText = "display:flex;";
+        document.getElementById("poke-info-search")!.style.cssText = "display:flex;";
 
         // Pokemon Name
         let pokeName = response.name;
@@ -89,7 +89,7 @@ export class PokemonSearchComponent {
 
       },
       (error: any) =>{
-        document.getElementById("poke-Info")!.style.cssText = "display:none;";
+        document.getElementById("poke-info-search")!.style.cssText = "display:none;";
         (<HTMLElement>document.querySelector(".invalid-pokemon"))!.innerHTML = "Pokémon does not exist!";
         console.log("Pokémon not found")
       },

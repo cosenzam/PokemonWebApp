@@ -1,4 +1,5 @@
 export function setSprites(response: any) {
+    // prevent invalid images from entering document
     if (response.sprites.front_default){
         document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
     }
@@ -30,9 +31,19 @@ export function setSprites(response: any) {
         console.log("No back shiny sprite");
         document.getElementById("back-Shiny")!.setAttribute('src', '');
     }
-
-    document.getElementById("sprites-1")!.style.cssText = "display:flex;";
-    document.getElementById("sprites-2")!.style.cssText = "display:flex;";
+    // if both sprites are missing, do not show sprites div
+    if (!response.sprites.front_default && !response.sprites.back_default){
+        document.getElementById("sprites-1")!.style.cssText = "display:none;";
+    }
+    else{
+        document.getElementById("sprites-1")!.style.cssText = "display:flex;";
+    }
+    if (!response.sprites.front_shiny && !response.sprites.back_shiny){
+        document.getElementById("sprites-2")!.style.cssText = "display:none;";
+    }
+    else{
+        document.getElementById("sprites-2")!.style.cssText = "display:flex;";
+    }
 }
 
 export function setFrontSprite(response: any, element: string){

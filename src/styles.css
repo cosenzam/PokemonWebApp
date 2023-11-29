@@ -118,6 +118,7 @@ router-outlet{
 
 .search-input-wrapper{
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     width: 100%;
 }
@@ -170,12 +171,18 @@ router-outlet{
     background-color: #a1a1aa;
 }
 
+.invalid-pokemon{
+    width: 100%;
+    text-align: center;
+}
+
 .form-requirements{
     margin-top: 10px;
 }
 
 .sm-flex-group{
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     width: 100%;
     margin-top: 20px;
@@ -226,15 +233,15 @@ router-outlet{
 .lg-header-cyan + div{
     margin-top: 10px;
 }
-
-#poke-Info{
+/* Search Classes */
+#poke-info-search{
     display: none;
     flex-direction:column;
     align-items: center;
     width: 100%; /* Always fill 800px even if contents are not 800px width, except when window is smaller */
     max-width: 800px;
 }
-/* Search Classes */
+
 #poke-Name, #poke-Height, #poke-Weight{
     text-align: center;
 }
@@ -362,19 +369,17 @@ router-outlet{
     justify-content: center;
 }
 
-#sprites-1 > div, #sprites-2 > div{
-    background-color: #27272A;
-    text-align: center;
-}
-
 #sprites-1 > img, #sprites-2 > img{
     /*border: 3px solid;*/
 }
 
 .sprites-header{
+    background-color: #27272A;
+    text-align: center;
     padding-top: 3px;
     padding-bottom: 3px;
     width: 100%;
+    max-height: 20px;
 }
 
 .sprites-wrapper{
@@ -397,10 +402,19 @@ router-outlet{
     gap: 10px;
 }
 
+.party-group{
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+    max-width: 1100px;
+}
+
 .slot-1, .slot-2, .slot-3, .slot-4, .slot-5, .slot-6{
     display: flex;
     flex-wrap: wrap;
-    width: 260px;
+    width: 100%;
+    max-width: 500px;
     justify-content: center;
 }
 
@@ -420,7 +434,7 @@ router-outlet{
 }
 
 .slot-1-info, .slot-2-info, .slot-3-info, .slot-4-info, .slot-5-info, .slot-6-info{
-    border: solid;
+    flex-direction: column;
     align-items: center;
     width: 100%;
     display: none;

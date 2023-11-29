@@ -46,7 +46,7 @@ export class CreateTeamComponent {
         pokeAbilities.forEach((item, index) => pokeAbilities[index] = pokeAbilities[index].charAt(0).toUpperCase() + pokeAbilities[index].slice(1));
 
         (<HTMLElement>document.querySelector(`.slot-${slotNum}`)).querySelector(".invalid-pokemon")!.innerHTML = "";
-        (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:flex; flex-direction:column;";
+        (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:flex;";
         setFrontSprite(response, `slot-${slotNum}-sprite`);
         setTypes(pokeTypes);
         document.getElementById("poke-Name")!.innerHTML = "Pokémon: " + pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
