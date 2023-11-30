@@ -12,12 +12,14 @@ import { PokemonAPIComponent } from './pokemon-api/pokemon-api.component';
 import { CreateTeamComponent } from './create-team/create-team.component';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
+import { PokedexComponent } from './pokedex/pokedex.component';
 
 const appRoute: Routes = [
   { path: '', component: PokemonSearchComponent /*HomeComponent*/},
   { path: 'search', component: PokemonSearchComponent},
   { path: 'team', component: CreateTeamComponent},
   { path: 'about', component: AboutComponent},
+  { path: 'pokedex', component: PokedexComponent},
 ]
 
 @NgModule({
@@ -28,6 +30,7 @@ const appRoute: Routes = [
     CreateTeamComponent,
     AboutComponent,
     HomeComponent,
+    PokedexComponent,
   ],
   imports: [
     BrowserModule,

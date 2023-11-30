@@ -129,7 +129,7 @@ export function selectAbilities(pokeAbilities: string[], slotNum: number){
 
 }
 
-export function setAbilityTooltip(abilityName: string, abilityDescription: string, isLastIndex: boolean = false, slotNum: number = 0){
+export function setAbilityTooltip(abilityName: string, abilityDescription: string = "", isLastIndex: boolean = false, slotNum: number = 0){
     const element = document.getElementById("poke-Abilities");
     abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     
@@ -145,15 +145,18 @@ export function setAbilityTooltip(abilityName: string, abilityDescription: strin
     abilityTooltip.innerText = abilityName; // not using commas for now
     abilityTooltip.setAttribute("class", "ability-tooltip");
 
-    let abilityTooltipText = document.createElement("span");
-    abilityTooltipText.innerText = abilityDescription;
-    abilityTooltipText.setAttribute("class", "ability-tooltip-text");
-
-    abilityTooltip.appendChild(abilityTooltipText);
     element!.appendChild(abilityTooltip);
     // calculate abilityTooltipText's margin-left to center tooltip under parent
     let tooltipMarginLeft = -100 + (abilityTooltip.offsetWidth / 2);
-    abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+
+    if (abilityDescription){
+        let abilityTooltipText = document.createElement("span");
+        abilityTooltipText.innerText = abilityDescription;
+        abilityTooltipText.setAttribute("class", "ability-tooltip-text");
+        abilityTooltip.appendChild(abilityTooltipText);
+        abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+    }
+
 }
 
 export function setPokedexEntry(entryDescription: string){

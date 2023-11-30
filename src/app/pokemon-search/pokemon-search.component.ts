@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { setSprites, setTypes, setStats, setAbilityTooltip, setPokedexEntry } from '../modules/info-module';
@@ -8,13 +8,32 @@ import { setSprites, setTypes, setStats, setAbilityTooltip, setPokedexEntry } fr
   templateUrl: './pokemon-search.component.html',
   styleUrls: ['./pokemon-search.component.css']
 })
-export class PokemonSearchComponent {
+export class PokemonSearchComponent implements OnInit{
   
   textControl = new FormControl("Pikachu", [Validators.required, Validators.minLength(3)]);
   //message : any = '';
+  nationalPokedex = new Map();
 
   // PokeAPIService constuctor
   constructor(private pokeAPIService: PokeAPIService) {}
+
+  
+  ngOnInit(){
+    /*
+    this.pokeAPIService.getPokedexNational().subscribe((response)=>{
+      response.pokemon_entries.forEach((item: any, index: any) => this.nationalPokedex.set(item.pokemon_species.name, item.entry_number));
+    },
+    (error: any) =>{
+      console.log("Failed to retrieve national pokedex")
+    },
+    () =>{
+      console.log("national pokedex retrieved");
+      console.log(this.nationalPokedex.get("bulbasaur"));
+      console.log(this.nationalPokedex.get("snivy"));
+    });
+    */
+  }
+  
   
   onSubmit(): void {
 
@@ -55,7 +74,13 @@ export class PokemonSearchComponent {
           let isLastIndex = false;
           if (index == length - 1){ isLastIndex = true; } // do not concat a comma to tooltip <span> if is last ability in list
           this.pokeAPIService.getAbilityInfo(ability.ability.url).subscribe((response)=>{
-            setAbilityTooltip(ability.ability.name, response.effect_entries[1].short_effect, isLastIndex);
+            if (response.effect_entries.length > 0){
+              setAbilityTooltip(ability.ability.name, response.effect_entries[1].short_effect, isLastIndex);
+            }
+            else{
+              setAbilityTooltip(ability.ability.name, "", isLastIndex);
+              console.log("no ability description found");
+            }
           }, 
           (error: any) => {
             console.log("nested subscribe ability desc error");

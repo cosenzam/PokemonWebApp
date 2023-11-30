@@ -27,4 +27,8 @@ export class PokeAPIService {
     return this.http.get<PokedexEntry>(`${this.apiURL}pokemon-species/${pokemonName}`);
   }
 
+  getPokedexNational(): Observable<any>{
+    return this.http.get<any>(`${this.apiURL}pokedex/national`);
+  }
+
 }
