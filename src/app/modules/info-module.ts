@@ -77,38 +77,51 @@ export function setTypes(pokeTypes: string[]) {
     }
 }
 
-// response.stats[0] - [5] = hp, atk, def, spatk, spdef, spd
+// response.stats[0] - [5] and lstStatElements[0] - [5] = hp, atk, def, spatk, spdef, spd
 export function setStats(response: any, route: string, slotNum: number = 0){
     if (route == "search"){ 
-        var element = document.getElementById("stats");
+        var elStats = document.getElementById("stats");
     }
     else if(route == "teams"){ 
-        var element = document.getElementById(`slot-${slotNum}-stats`);
+        var elStats = document.getElementById(`slot-${slotNum}-stats`);
+    }
+    let lstStatElements = [];
+    lstStatElements.push(elStats!.querySelector(".stat-hp"));
+    lstStatElements.push(elStats!.querySelector(".stat-atk"));
+    lstStatElements.push(elStats!.querySelector(".stat-def"));
+    lstStatElements.push(elStats!.querySelector(".stat-spatk"));
+    lstStatElements.push(elStats!.querySelector(".stat-spdef"));
+    lstStatElements.push(elStats!.querySelector(".stat-spd"));
+    // reset or change margins if necessary
+    for (let i = 0; i <= 5; i++){
+        if (response.stats[i].base_stat >= 15){
+            (<HTMLElement>lstStatElements[i]!.children[1].children[0]).style.cssText = "margin-right:0px;";
+        } 
+        else if (response.stats[i].base_stat >= 10){
+            (<HTMLElement>lstStatElements[i]!.children[1].children[0]).style.cssText = "margin-right:-20px;";
+        }
+        else{
+            (<HTMLElement>lstStatElements[i]!.children[1].children[0]).style.cssText = "margin-right:-15px;";
+        }
     }
 
-    //(<HTMLElement>element!.querySelector(".stat-hp")!.children[0]).innerText = `HP: ${response.stats[0].base_stat}`;
-    (<HTMLElement>element!.querySelector(".stat-hp")!.children[1]).style.width = `${response.stats[0].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-hp")!.children[1].children[0]).innerText = `${response.stats[0].base_stat}`;
+    (<HTMLElement>lstStatElements[0]!.children[1]).style.maxWidth = `${response.stats[0].base_stat * 1.4}px`; // max width is 255 * 1.4 px
+    (<HTMLElement>lstStatElements[0]!.children[1].children[0]).innerText = `${response.stats[0].base_stat}`;
 
-    //(<HTMLElement>element!.querySelector(".stat-atk")!.children[0]).innerText = `Attack: ${response.stats[1].base_stat}`;
-    (<HTMLElement>element!.querySelector(".stat-atk")!.children[1]).style.width = `${response.stats[1].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-atk")!.children[1].children[0]).innerText = `${response.stats[1].base_stat}`;
+    (<HTMLElement>lstStatElements[1]!.children[1]).style.maxWidth= `${response.stats[1].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[1]!.children[1].children[0]).innerText = `${response.stats[1].base_stat}`;
 
-    //(<HTMLElement>element!.querySelector(".stat-def")!.children[0]).innerText = `Defense: ${response.stats[2].base_stat}`;
-    (<HTMLElement>element!.querySelector(".stat-def")!.children[1]).style.width = `${response.stats[2].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-def")!.children[1].children[0]).innerText = `${response.stats[2].base_stat}`;
+    (<HTMLElement>lstStatElements[2]!.children[1]).style.maxWidth = `${response.stats[2].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[2]!.children[1].children[0]).innerText = `${response.stats[2].base_stat}`;
 
-    //(<HTMLElement>element!.querySelector(".stat-spatk")!.children[0]).innerText = `Special Attack: ${response.stats[3].base_stat}`;
-    (<HTMLElement>element!.querySelector(".stat-spatk")!.children[1]).style.width = `${response.stats[3].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-spatk")!.children[1].children[0]).innerText = `${response.stats[3].base_stat}`;
+    (<HTMLElement>lstStatElements[3]!.children[1]).style.maxWidth = `${response.stats[3].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[3]!.children[1].children[0]).innerText = `${response.stats[3].base_stat}`;
 
-    //(<HTMLElement>element!.querySelector(".stat-spdef")!.children[0]).innerText = `Special Defense: ${response.stats[4].base_stat}`;
-    (<HTMLElement>element!.querySelector(".stat-spdef")!.children[1]).style.width = `${response.stats[4].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-spdef")!.children[1].children[0]).innerText = `${response.stats[4].base_stat}`;
+    (<HTMLElement>lstStatElements[4]!.children[1]).style.maxWidth = `${response.stats[4].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[4]!.children[1].children[0]).innerText = `${response.stats[4].base_stat}`;
     
-    //(<HTMLElement>element!.querySelector(".stat-spd")!.children[0]).innerText = `Speed: ${response.stats[5].base_stat}`;
-    (<HTMLElement>element!.querySelector(".stat-spd")!.children[1]).style.width = `${response.stats[5].base_stat * 1.4}px`;
-    (<HTMLElement>element!.querySelector(".stat-spd")!.children[1].children[0]).innerText = `${response.stats[5].base_stat}`;
+    (<HTMLElement>lstStatElements[5]!.children[1]).style.maxWidth = `${response.stats[5].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[5]!.children[1].children[0]).innerText = `${response.stats[5].base_stat}`;
 }
 
 export function selectAbilities(pokeAbilities: string[], slotNum: number){

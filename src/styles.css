@@ -53,18 +53,6 @@ router-outlet{
     text-decoration: none;
 }
 
-.nav-about-link{
-
-}
-
-.nav-search-link{
-
-}
-
-.nav-team-link{
-
-}
-
 #nav-close-btn{
     height: 40px;
     width: 40px;
@@ -123,11 +111,22 @@ router-outlet{
     width: 100%;
 }
 
-.search-input{
+.search-input-wrapper span:first-child{ /* .search-input's parent */
+    display: flex;
     height: 35px;
-    width: 235px;
+    min-width: 50px;
+    max-width: 275px;
+    width: 100%;
+    padding-left: 4px; /* for outline overflow (outline thickness * 2) */
+    padding-right: 4px;
+}
+
+.search-input{
+    height: 100%;
+    width: 100%;
     border-style: none; /* remove weird gray border on only half of text box */
-    padding-left: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: #3f3f46;
     color: white;
     outline: none;
@@ -216,7 +215,7 @@ router-outlet{
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .lg-header-cyan{
@@ -329,6 +328,9 @@ router-outlet{
 
 #stats > div > div, #slot-1-stats > div > div, #slot-2-stats > div > div, #slot-3-stats > div > div, 
 #slot-4-stats > div > div, #slot-5-stats > div > div, #slot-6-stats > div > div{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     max-height: 25px;
     height: 100%;
 }
@@ -360,7 +362,8 @@ router-outlet{
 .stat-hp > div > div, .stat-atk > div > div, .stat-def > div > div, .stat-spatk > div > div,
 .stat-spdef > div > div, .stat-spd > div > div{
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    text-align: end;
+    padding-right: 3px;
+    /* margin changed in JS if parent of this div is too small*/
 }
 
 #sprites-1, #sprites-2{
@@ -471,7 +474,28 @@ router-outlet{
 }
 
 .card-container{
+    display: flex;
+}
 
+.card{
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 280px;
+    max-width: 280px;
+    background-color: #3f3f46;
+}
+
+.card-header-cyan{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.card-sprite{
+    max-height: 112px;
+    max-width: 112px;
 }
 
 .about-container{
