@@ -164,14 +164,14 @@ export function setPokedexEntry(entryDescription: string){
     element!.innerHTML = entryDescription;
 }
 
+export function createCard(pokeName: string, pokedexNumber: number, pokeTypes: string[], spriteURL: string){
+
+}
+
 export function setTeamsSprites(response: any){
     return
 }
 
 export function toggleShiny(){
     return
-}
-
-export function autocompleteMoves(){
-    
 }

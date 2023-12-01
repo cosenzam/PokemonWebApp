@@ -275,19 +275,19 @@ router-outlet{
 
 .ability-tooltip{
     display: inline-block;
+    position: relative; /* keeps tooltip text's position relative to this wrapper*/
     margin-left: 5px;
     text-decoration-line: underline;
     text-decoration-style: dotted;
     text-underline-offset: 4px;
 }
 
-.ability-tooltip-text{ /* if there is a scrollbar, tooltip is too low horizontally. probably can't be sol without JS? */
+.ability-tooltip-text{
     display: none;
     text-align: center;
-    position: fixed; /* removed from document flow, not positioned based on parent location, bad! */
+    position: absolute;
     z-index: 1;
     width: 200px;
-    overflow: hidden;
     background-color: #52525b;
     border-radius: 5px;
     margin-top: 10px;
@@ -299,7 +299,7 @@ router-outlet{
 
 .ability-tooltip-text::before{
     content: "";
-    position: fixed;
+    position: absolute;
     border-width: 8px;
     border-style: solid;
     border-color: transparent transparent #52525b transparent;
@@ -471,7 +471,7 @@ router-outlet{
 }
 
 .card-container{
-    
+
 }
 
 .about-container{

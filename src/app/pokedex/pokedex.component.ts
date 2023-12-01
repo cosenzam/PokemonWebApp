@@ -14,6 +14,7 @@ export class PokedexComponent implements OnInit {
   constructor(private pokeAPIService: PokeAPIService) {}
 
   ngOnInit(){
+    /*
     this.pokeAPIService.getPokedexNational().subscribe((response)=>{
       response.pokemon_entries.forEach((item: any, index: any) => this.nationalPokedex.set(item.pokemon_species.name, item.entry_number));
     },
@@ -26,6 +27,7 @@ export class PokedexComponent implements OnInit {
       console.log(this.nationalPokedex.get("bulbasaur"));
       console.log(this.nationalPokedex.get("snivy"));
     });
+    */
   }
 
   // load 20 at a time? worst case for large screen sizes
