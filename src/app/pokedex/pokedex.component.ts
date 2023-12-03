@@ -10,6 +10,7 @@ export class PokedexComponent implements OnInit {
 
   currentIndex = 0; // last pokedex index loaded, for listing more pokemon onscroll
   nationalPokedex = new Map();
+  searchInput : string = ""; // sent to search component onClick(searchInput) of a card
 
   constructor(private pokeAPIService: PokeAPIService) {}
 
@@ -31,6 +32,7 @@ export class PokedexComponent implements OnInit {
   }
 
   // load 20 at a time? worst case for large screen sizes
+
 
 
 }

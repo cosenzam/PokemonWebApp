@@ -1,5 +1,7 @@
-export function setSprites(response: any) {
+export function setSprites(response : any) {
     // prevent invalid images from entering document
+    /* can shorten with Map(["front-Sprite", response.sprites.front_default], ["back-Sprite", response.sprites.back_default]...)
+    then loop map and set sprites | for (let [key, val] of spriteMap) || maybe a similar solution with lists?*/
     if (response.sprites.front_default){
         document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
     }
@@ -46,13 +48,13 @@ export function setSprites(response: any) {
     }
 }
 
-export function setFrontSprite(response: any, element: string){
+export function setFrontSprite(response : any, element : string){
     document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
     document.getElementById(element)!.style.cssText = "display:flex;justify-content:space-between;";
 }
 
 // set css attributes depending on the pokemon types
-export function setTypes(pokeTypes: string[]) {
+export function setTypes(pokeTypes : string[]) {
 
     if (pokeTypes.length < 2){
         // remove type 2 bg if not dual type
@@ -78,7 +80,7 @@ export function setTypes(pokeTypes: string[]) {
 }
 
 // response.stats[0] - [5] and lstStatElements[0] - [5] = hp, atk, def, spatk, spdef, spd
-export function setStats(response: any, route: string, slotNum: number = 0){
+export function setStats(response : any, route : string, slotNum : number = 0){
     if (route == "search"){ 
         var elStats = document.getElementById("stats");
     }
@@ -104,27 +106,28 @@ export function setStats(response: any, route: string, slotNum: number = 0){
             (<HTMLElement>lstStatElements[i]!.children[1].children[0]).style.cssText = "margin-right:-15px;";
         }
     }
-
-    (<HTMLElement>lstStatElements[0]!.children[1]).style.maxWidth = `${response.stats[0].base_stat * 1.4}px`; // max width is 255 * 1.4 px
+    // Change to a percent scale (instead of px) relative to its parent to ensure streching and shrinking
+    // calc((${response.stats[0].base_stat}/255) * 100%)
+    (<HTMLElement>lstStatElements[0]!.children[1]).style.width = `calc((${response.stats[0].base_stat}/255) * 100%)`;
     (<HTMLElement>lstStatElements[0]!.children[1].children[0]).innerText = `${response.stats[0].base_stat}`;
 
-    (<HTMLElement>lstStatElements[1]!.children[1]).style.maxWidth= `${response.stats[1].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[1]!.children[1]).style.width = `calc((${response.stats[1].base_stat}/255) * 100%)`;
     (<HTMLElement>lstStatElements[1]!.children[1].children[0]).innerText = `${response.stats[1].base_stat}`;
 
-    (<HTMLElement>lstStatElements[2]!.children[1]).style.maxWidth = `${response.stats[2].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[2]!.children[1]).style.width = `calc((${response.stats[2].base_stat}/255) * 100%)`;
     (<HTMLElement>lstStatElements[2]!.children[1].children[0]).innerText = `${response.stats[2].base_stat}`;
 
-    (<HTMLElement>lstStatElements[3]!.children[1]).style.maxWidth = `${response.stats[3].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[3]!.children[1]).style.width = `calc((${response.stats[3].base_stat}/255) * 100%)`;
     (<HTMLElement>lstStatElements[3]!.children[1].children[0]).innerText = `${response.stats[3].base_stat}`;
 
-    (<HTMLElement>lstStatElements[4]!.children[1]).style.maxWidth = `${response.stats[4].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[4]!.children[1]).style.width = `calc((${response.stats[4].base_stat}/255) * 100%)`;
     (<HTMLElement>lstStatElements[4]!.children[1].children[0]).innerText = `${response.stats[4].base_stat}`;
     
-    (<HTMLElement>lstStatElements[5]!.children[1]).style.maxWidth = `${response.stats[5].base_stat * 1.4}px`;
+    (<HTMLElement>lstStatElements[5]!.children[1]).style.width = `calc((${response.stats[5].base_stat}/255) * 100%)`;
     (<HTMLElement>lstStatElements[5]!.children[1].children[0]).innerText = `${response.stats[5].base_stat}`;
 }
 
-export function selectAbilities(pokeAbilities: string[], slotNum: number){
+export function selectAbilities(pokeAbilities : string[], slotNum : number){
     // for each ability, append a child option to select tag
     const element = (<HTMLElement>document.querySelector(`.slot-${slotNum}-abilities`));
     if (element.hasChildNodes()){
@@ -142,7 +145,7 @@ export function selectAbilities(pokeAbilities: string[], slotNum: number){
 
 }
 
-export function setAbilityTooltip(abilityName: string, abilityDescription: string = "", isLastIndex: boolean = false, slotNum: number = 0){
+export function setAbilityTooltip(abilityName : string, abilityDescription : string = "", isLastIndex : boolean = false, slotNum : number = 0){
     const element = document.getElementById("poke-Abilities");
     abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     
@@ -172,16 +175,16 @@ export function setAbilityTooltip(abilityName: string, abilityDescription: strin
 
 }
 
-export function setPokedexEntry(entryDescription: string){
+export function setPokedexEntry(entryDescription : string){
     const element = (<HTMLElement>document.getElementById("poke-Pokedex"));
     element!.innerHTML = entryDescription;
 }
 
-export function createCard(pokeName: string, pokedexNumber: number, pokeTypes: string[], spriteURL: string){
+export function createCard(pokeName : string, pokedexNumber : number, pokeTypes : string[], spriteURL : string){
 
 }
 
-export function setTeamsSprites(response: any){
+export function setTeamsSprites(response : any){
     return
 }
 

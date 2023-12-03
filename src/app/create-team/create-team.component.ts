@@ -23,13 +23,13 @@ export class CreateTeamComponent {
   pokeNames: string[] = [];
   apiResponses: Pokemon[] = [];
   
-  onClick(slotNum: number): void{
+  onClick(slotNum : number): void{
     console.log(`teams element ${slotNum} clicked`);
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-box`)).style.cssText = "display:none;";
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`)).style.cssText = "display:flex;";
   }
 
-  onSubmit(slotNum: number, pokeName: FormControl): void{
+  onSubmit(slotNum : number, pokeName : FormControl): void{
     // store all moves in a list for autocomplete
     // when clicking on moves form, show all moves if nothing is typed in, autocomplete for each letter typed
     console.log(`slot ${slotNum} input: ${pokeName.value}`)
@@ -39,8 +39,8 @@ export class CreateTeamComponent {
         // dropdown to choose ability
         // autocomplete to choose moves
         let pokeName = response.name;
-        let pokeTypes: string[] = [];
-        let pokeAbilities: string[] = [];
+        let pokeTypes : string[] = [];
+        let pokeAbilities : string[] = [];
         response.types.forEach((item, index) => pokeTypes.push(response.types[index].type.name));
         response.abilities.forEach((item, index) => pokeAbilities.push(response.abilities[index].ability.name));
         pokeAbilities.forEach((item, index) => pokeAbilities[index] = pokeAbilities[index].charAt(0).toUpperCase() + pokeAbilities[index].slice(1));

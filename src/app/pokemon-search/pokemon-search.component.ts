@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { setSprites, setTypes, setStats, setAbilityTooltip, setPokedexEntry } from '../modules/info-module';
@@ -11,14 +11,19 @@ import { setSprites, setTypes, setStats, setAbilityTooltip, setPokedexEntry } fr
 export class PokemonSearchComponent implements OnInit{
   
   textControl = new FormControl("Pikachu", [Validators.required, Validators.minLength(3)]);
-  //message : any = '';
+  //message : any = ''; // this is the sending/parent line
+  //@Input() message !: string; // this is the receiving/child line
   nationalPokedex = new Map();
 
   // PokeAPIService constuctor
-  constructor(private pokeAPIService: PokeAPIService) {}
+  constructor(private pokeAPIService : PokeAPIService) {}
 
-  
   ngOnInit(){
+    /*
+    if (this.textControl.value != ""){
+      this.onSubmit();
+    }
+    */
     /*
     this.pokeAPIService.getPokedexNational().subscribe((response)=>{
       response.pokemon_entries.forEach((item: any, index: any) => this.nationalPokedex.set(item.pokemon_species.name, item.entry_number));
@@ -56,12 +61,12 @@ export class PokemonSearchComponent implements OnInit{
         setSprites(response); // set image src to front and back sprites
 
         // Pokemon Types
-        let pokeTypes: string[] = [];
+        let pokeTypes : string[] = [];
         response.types.forEach((item, index) => pokeTypes.push(response.types[index].type.name));
         setTypes(pokeTypes); // set type background color
 
         // Pokemon Abilities
-        let pokeAbilities: string[] = [];
+        let pokeAbilities : string[] = [];
         response.abilities.forEach((item, index) => pokeAbilities.push(response.abilities[index].ability.name));
         let elPokeAbilities = document.getElementById("poke-Abilities");
         elPokeAbilities!.innerHTML = "" // remove previous children in case there was a previous search
