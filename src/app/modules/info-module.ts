@@ -38,13 +38,13 @@ export function setSprites(response : any) {
         document.getElementById("sprites-1")!.style.cssText = "display:none;";
     }
     else{
-        document.getElementById("sprites-1")!.style.cssText = "display:flex;";
+        document.getElementById("sprites-1")!.style.cssText = "display:inline-block;";
     }
     if (!response.sprites.front_shiny && !response.sprites.back_shiny){
         document.getElementById("sprites-2")!.style.cssText = "display:none;";
     }
     else{
-        document.getElementById("sprites-2")!.style.cssText = "display:flex;";
+        document.getElementById("sprites-2")!.style.cssText = "display:inline-block;";
     }
 }
 
@@ -137,10 +137,10 @@ export function selectAbilities(pokeAbilities : string[], slotNum : number){
 
     for (let ability of pokeAbilities){
         // append options to select for each ability
-    let option = document.createElement("option");
-    option.text = ability;
-    option.value = ability;
-    element.appendChild(option);
+        let option = document.createElement("option");
+        option.text = ability;
+        option.value = ability;
+        element.appendChild(option);
     }
 
 }
@@ -176,7 +176,7 @@ export function setAbilityTooltip(abilityName : string, abilityDescription : str
 }
 
 export function setPokedexEntry(entryDescription : string){
-    const element = (<HTMLElement>document.getElementById("poke-Pokedex"));
+    const element = (<HTMLElement>document.getElementById("poke-pokedex-text"));
     element!.innerHTML = entryDescription;
 }
 

@@ -130,7 +130,7 @@ router-outlet{
     background-color: #3f3f46;
     color: white;
     outline: none;
-    box-sizing:border-box
+    box-sizing: border-box
 }
 
 .search-input:focus{
@@ -211,9 +211,6 @@ router-outlet{
 }
 
 .lg-flex-group{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     width: 100%;
     margin-top: 10px;
 }
@@ -268,8 +265,14 @@ router-outlet{
     line-height: 1.4rem;
 }
 
-#poke-Pokedex{
-    max-width: 90%;
+.poke-pokedex{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#poke-pokedex-text{
+    width: 90%;
 }
 
 .ability-tooltip{
@@ -306,29 +309,31 @@ router-outlet{
     margin-top: -15px;
 }
 
-#stats, #slot-1-stats, #slot-2-stats, #slot-3-stats, #slot-4-stats, #slot-5-stats, #slot-6-stats{
+#stats{
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
-    height: 100%;
+    justify-content: space-between;
     width: 100%;
-    max-height: 145px;
     background-color: #27272A;
-    justify-content: center;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
 #stats > div{
+    width: 50%;
+    height: 135px;
+    min-width: 255px; /* flex wrap at min width */
+}
+
+#stats > div > div{ /* awful readability, I know */ 
     height: 100%;
-    width: 45%;
+    width: 100%;
     min-width: 255px;
     max-height: 45px;
     margin-left: 10px;
 }
 
-#stats > div > div, #slot-1-stats > div > div, #slot-2-stats > div > div, #slot-3-stats > div > div, 
-#slot-4-stats > div > div, #slot-5-stats > div > div, #slot-6-stats > div > div{
+#stats > div > div > div{
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -369,8 +374,7 @@ router-outlet{
 
 #sprites-1, #sprites-2{
     display: none;
-    flex-wrap: wrap;
-    justify-content: center;
+    
 }
 
 #sprites-1 > img, #sprites-2 > img{
@@ -383,7 +387,7 @@ router-outlet{
     padding-top: 3px;
     padding-bottom: 3px;
     width: 100%;
-    max-height: 20px;
+    height: 20px;
 }
 
 .sprites-wrapper{

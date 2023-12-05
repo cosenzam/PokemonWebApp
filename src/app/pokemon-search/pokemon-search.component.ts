@@ -19,6 +19,7 @@ export class PokemonSearchComponent implements OnInit{
   constructor(private pokeAPIService : PokeAPIService) {}
 
   ngOnInit(){
+    // submits form OnInit if form is already filled (used on redirect from Pokedex component to Search component)
     /*
     if (this.textControl.value != ""){
       this.onSubmit();
@@ -95,7 +96,7 @@ export class PokemonSearchComponent implements OnInit{
           });
         }
 
-        // Pokedex Entry Description | pokedex # probably too inconsistent?
+        // Pokedex Entry Description
         this.pokeAPIService.getPokedexEntry(pokeName).subscribe((response)=>{
           let lastEntryIndex = response.flavor_text_entries.length - 1; // last entry with language.name == "en" is newest one
           while (response.flavor_text_entries[lastEntryIndex].language.name != "en"){
@@ -106,7 +107,7 @@ export class PokemonSearchComponent implements OnInit{
         },
         (error: any) =>{
           console.log("invalid pokemon name (pokedex)");
-          (<HTMLElement>document.getElementById("poke-Pokedex")).innerHTML = "";
+          (<HTMLElement>document.getElementById("poke-pokedex-text")).innerHTML = "";
         },
         ()=>{
           //console.log("entry subscribe complete");
