@@ -374,7 +374,7 @@ router-outlet{
 
 #sprites-1, #sprites-2{
     display: none;
-    
+    text-align: center;
 }
 
 #sprites-1 > img, #sprites-2 > img{
