@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { PokeAPIService } from '../service/poke-api.service';
+import { createCard } from '../modules/info-module';
 
 @Component({
   selector: 'app-pokedex',
@@ -17,22 +18,26 @@ export class PokedexComponent implements OnInit {
   ngOnInit(){
     /*
     this.pokeAPIService.getPokedexNational().subscribe((response)=>{
-      response.pokemon_entries.forEach((item: any, index: any) => this.nationalPokedex.set(item.pokemon_species.name, item.entry_number));
+      response.pokemon_entries.forEach((item: any, index: any) => this.nationalPokedex.set(item.entry_number, item.pokemon_species.name));
+      // create first 16 cards
+      for (let i=1; i<=16; i++){
+        //createCard(this.nationalPokedex.get(nationalPokedex[i]), i, pokeTypes, urlFrontSprite);
+        console.log(this.nationalPokedex.get(i));
+      }
+
     },
     (error: any) =>{
       console.log("Failed to retrieve national pokedex")
     },
     () =>{
-      console.log("national pokedex retrieved");
-      console.log(this.nationalPokedex);
-      console.log(this.nationalPokedex.get("bulbasaur"));
-      console.log(this.nationalPokedex.get("snivy"));
+      //console.log("national pokedex retrieved");
+      //console.log(this.nationalPokedex);
+      //console.log(this.nationalPokedex.get("bulbasaur"));
+      //console.log(this.nationalPokedex.get("snivy"));
     });
     */
   }
 
   // load 20 at a time? worst case for large screen sizes
-
-
 
 }

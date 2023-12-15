@@ -56,7 +56,8 @@ export class CreateTeamComponent {
         selectAbilities(pokeAbilities, slotNum);
 
         // store subscribe response for ?
-        this.apiResponses[slotNum - 1] = response; console.log(this.apiResponses[slotNum - 1]);
+        this.apiResponses[slotNum - 1] = response; 
+        console.log(this.apiResponses[slotNum - 1]);
       }, 
       (error: any) => {
         (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:none;";

@@ -238,7 +238,7 @@ router-outlet{
     max-width: 800px;
 }
 
-#poke-Name, #poke-Height, #poke-Weight{
+#poke-name, #poke-height, #poke-weight{
     text-align: center;
 }
 
@@ -258,10 +258,9 @@ router-outlet{
     justify-content: space-around;
 }
 
-#poke-Abilities{
+#poke-abilities{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     line-height: 1.4rem;
 }
 
@@ -320,9 +319,10 @@ router-outlet{
 }
 
 #stats > div{
-    width: 50%;
+    width: 45%;
     height: 135px;
     min-width: 255px; /* flex wrap at min width */
+    margin-left: 10px;
 }
 
 #stats > div > div{ /* awful readability, I know */ 
@@ -330,7 +330,6 @@ router-outlet{
     width: 100%;
     min-width: 255px;
     max-height: 45px;
-    margin-left: 10px;
 }
 
 #stats > div > div > div{
@@ -480,6 +479,11 @@ router-outlet{
 
 .card-container{
     display: flex;
+    flex-wrap: wrap;
+    max-width: 1195px;
+    gap: 65px 65px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .card{
@@ -487,16 +491,49 @@ router-outlet{
     flex-wrap: wrap;
     justify-content: center;
     height: 250px;
-    max-width: 250px;
+    width: 250px;
+    background-color: #7AC74C;
+    border-radius: 10px;
+    user-select: none;
+}
+
+.card-inner{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
     background-color: #27272a;
-    box-shadow: 10px 10px #3f3f46;
+    border-radius: 10px;
+    transform: translate(-2px, -2px);
+    transition: transform 150ms;
 }
 
 .card:hover{
-    transform: translate(-10%);
+    cursor: pointer;
 }
 
-.card > div{ /* all wrappers */
+.card:hover .card-inner{
+    transform: translate(-2%, -2%);
+}
+
+.card-inner2{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: #27272a;
+    border-radius: 10px;
+    transform: translate(-2px, -2px);
+    transition: transform 150ms;
+}
+
+.card:hover .card-inner2{
+    transform: translate(-2%, -2%);
+}
+
+.card > div > div{ /* all wrappers */
     width: 90%;
 }
 
@@ -504,6 +541,11 @@ router-outlet{
     height: 112px;
     width: 112px;
     text-align: center;
+}
+
+.card-sprite-wrapper > img{
+    max-height:112px;
+    max-width:112px;
 }
 
 .card-header-cyan{

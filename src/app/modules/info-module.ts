@@ -146,7 +146,7 @@ export function selectAbilities(pokeAbilities : string[], slotNum : number){
 }
 
 export function setAbilityTooltip(abilityName : string, abilityDescription : string = "", isLastIndex : boolean = false, slotNum : number = 0){
-    const element = document.getElementById("poke-Abilities");
+    const element = document.getElementById("poke-abilities");
     abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     
     let abilityTooltip = document.createElement("span");
@@ -181,7 +181,59 @@ export function setPokedexEntry(entryDescription : string){
 }
 
 export function createCard(pokeName : string, pokedexNumber : number, pokeTypes : string[], spriteURL : string){
+    // wrapper1 2 and 3 appended to elCardInner, elCard Inner appended to elCard
+    let elCard = document.createElement("div");
 
+    let elCardInner = document.createElement("div");
+    // pokedex num and name
+    let elWrapper = document.createElement("div");
+
+    let elCardHeader = document.createElement("div");
+
+    let elPokedexNumber = document.createElement("span");
+
+    let elPokemonName = document.createElement("span");
+    //sprite
+    let elWrapper2 = document.createElement("div");
+    
+    let elSprite = document.createElement("img");
+    // type
+    let elWrapper3 = document.createElement("div");
+
+    let elTypes = document.createElement("div");
+
+    let elTypeLabel = document.createElement("div");
+
+    let elTypesWrapper = document.createElement("div");
+
+    let elType1 = document.createElement("span");
+
+    let elType2 = document.createElement("span");
+
+    /*
+    <div class="card">
+            <div class="card-inner">
+                <div>
+                    <div class="card-header-cyan">
+                        <span>#1</span>
+                        <span>Bulbasaur</span>
+                    </div>
+                </div>
+
+                <div class="card-sprite-wrapper">
+                    <img src="../assets/images/1200px-DP142.png">
+                </div>
+
+                <div>
+                    <div>Type:</div>
+                    <div class="types-wrapper">
+                        <span class="type-container grass" id="type1">Grass</span>
+                        <span class="type-container poison" id="type2">Poison</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    */
 }
 
 export function setTeamsSprites(response : any){
