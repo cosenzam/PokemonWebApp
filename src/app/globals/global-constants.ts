@@ -25,3 +25,11 @@ export const pokeNatures = {
     "careful": ["spdef", "spatk"],
     "quirky": ["", ""]
 };
+
+export const pokeForms = new Map([
+    ["giratina", ["giratina-altered", "giratina"]],
+    ["giratina-altered", ["giratina-altered", "giratina"]],
+    ["urshifu", ["urshifu-single-strike", "urshifu"]],
+    ["urshifu-single-strike", ["urshifu-single-strike", "urshifu"]],
+    ["urshifu-rapid-strike", ["urshifu-rapid-strike", "urshifu"]],
+]);

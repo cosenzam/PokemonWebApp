@@ -1,3 +1,5 @@
+import { pokeNatures, pokeForms} from "../globals/global-constants";
+
 export function setSprites(response : any) {
     // prevent invalid images from entering document
     /* can shorten with Map(["front-Sprite", response.sprites.front_default], ["back-Sprite", response.sprites.back_default]...)
@@ -183,57 +185,86 @@ export function setPokedexEntry(entryDescription : string){
 export function createCard(pokeName : string, pokedexNumber : number, pokeTypes : string[], spriteURL : string){
     // wrapper1 2 and 3 appended to elCardInner, elCard Inner appended to elCard
     let elCard = document.createElement("div");
+    elCard.setAttribute("class", "card");
 
     let elCardInner = document.createElement("div");
+    elCardInner.setAttribute("class", "card-inner");
+    
     // pokedex num and name
     let elWrapper = document.createElement("div");
 
     let elCardHeader = document.createElement("div");
+    elCardHeader.setAttribute("class", "card-header-cyan");
 
     let elPokedexNumber = document.createElement("span");
+    elPokedexNumber.innerText = pokedexNumber.toString();
 
     let elPokemonName = document.createElement("span");
+    elPokemonName.innerText = pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
+
     //sprite
     let elWrapper2 = document.createElement("div");
+    elWrapper2.setAttribute("class", "card-sprite-wrapper");
     
     let elSprite = document.createElement("img");
-    // type
-    let elWrapper3 = document.createElement("div");
+    elSprite.setAttribute("src", spriteURL);
 
+    // type
     let elTypes = document.createElement("div");
 
     let elTypeLabel = document.createElement("div");
+    elTypeLabel.innerText = "Types:";
 
     let elTypesWrapper = document.createElement("div");
+    elTypesWrapper.setAttribute("class", "types-wrapper");
 
     let elType1 = document.createElement("span");
+    elType1.innerText = pokeTypes[0].charAt(0).toUpperCase() + pokeTypes[0].slice(1);
+    elType1.setAttribute("class", `${pokeTypes[0]} type-container`);
 
-    let elType2 = document.createElement("span");
+    if (pokeTypes.length == 2){
+        // add type2 if dual type
+        let elType2 = document.createElement("span");
+        elType2.innerText = pokeTypes[1].charAt(0).toUpperCase() + pokeTypes[1].slice(1);
+        elType2.setAttribute("class", `${pokeTypes[1]} type-container`); 
+    }
 
     /*
-    <div class="card">
-            <div class="card-inner">
-                <div>
-                    <div class="card-header-cyan">
-                        <span>#1</span>
-                        <span>Bulbasaur</span>
-                    </div>
+    <div class="card"> | elCard
+        <div class="card-inner"> | elCardInner
+            <div> elWrapper
+                <div class="card-header-cyan"> | elCardHeader
+                    <span>#1</span> | elPokdexNumber
+                    <span>Bulbasaur</span> | elPokemonName
                 </div>
+            </div>
 
-                <div class="card-sprite-wrapper">
-                    <img src="../assets/images/1200px-DP142.png">
-                </div>
+            <div class="card-sprite-wrapper"> | elWrapper2
+                <img src="../assets/images/1200px-DP142.png"> | elSprite
+            </div>
 
-                <div>
-                    <div>Type:</div>
-                    <div class="types-wrapper">
-                        <span class="type-container grass" id="type1">Grass</span>
-                        <span class="type-container poison" id="type2">Poison</span>
-                    </div>
+            <div> | elWrapper3
+                <div>Type:</div> | elTypesLabel
+                <div class="types-wrapper"> | elTypesWrapper
+                    <span class="type-container grass">Grass</span> | elType1
+                    <span class="type-container poison">Poison</span> | elType2
                 </div>
             </div>
         </div>
+    </div>
     */
+}
+
+export function correctPokemonForms (pokeName : string){
+    // pokemon with multiple forms such as Giratina have different valid request params e.g /pokemon/giratina-altered and /pokemon-species/giratina
+    // this will allow for requesting for both general pokemon info and pokedex entries
+    // key = user input, value = ["pokeName", "pokeSpeciesName"]
+    if (pokeForms.get(pokeName)){
+        return pokeForms.get(pokeName);
+    }
+    else{
+        return [pokeName, pokeName];
+    }
 }
 
 export function setTeamsSprites(response : any){
