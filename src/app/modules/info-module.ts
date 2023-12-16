@@ -35,6 +35,7 @@ export function setSprites(response : any) {
         console.log("No back shiny sprite");
         document.getElementById("back-Shiny")!.setAttribute('src', '');
     }
+
     // if both sprites are missing, do not show sprites div
     if (!response.sprites.front_default && !response.sprites.back_default){
         document.getElementById("sprites-1")!.style.cssText = "display:none;";
@@ -182,10 +183,10 @@ export function setPokedexEntry(entryDescription : string){
     element!.innerHTML = entryDescription;
 }
 
-export function createCard(pokeName : string, pokedexNumber : number, pokeTypes : string[], spriteURL : string){
+export function createCard(pokeName : string, pokedexNumber : number, pokeTypes : string[], spriteURL : string) : HTMLElement {
     // wrapper1 2 and 3 appended to elCardInner, elCard Inner appended to elCard
     let elCard = document.createElement("div");
-    elCard.setAttribute("class", "card");
+    elCard.setAttribute("class", `card ${pokeTypes[0]}`);
 
     let elCardInner = document.createElement("div");
     elCardInner.setAttribute("class", "card-inner");
@@ -197,7 +198,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     elCardHeader.setAttribute("class", "card-header-cyan");
 
     let elPokedexNumber = document.createElement("span");
-    elPokedexNumber.innerText = pokedexNumber.toString();
+    elPokedexNumber.innerText = "#" + pokedexNumber.toString();
 
     let elPokemonName = document.createElement("span");
     elPokemonName.innerText = pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
@@ -210,24 +211,42 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     elSprite.setAttribute("src", spriteURL);
 
     // type
-    let elTypes = document.createElement("div");
+    let elWrapper3 = document.createElement("div");
 
     let elTypeLabel = document.createElement("div");
     elTypeLabel.innerText = "Types:";
 
-    let elTypesWrapper = document.createElement("div");
-    elTypesWrapper.setAttribute("class", "types-wrapper");
+    let elTypeWrapper = document.createElement("div");
+    elTypeWrapper.setAttribute("class", "types-wrapper");
 
     let elType1 = document.createElement("span");
     elType1.innerText = pokeTypes[0].charAt(0).toUpperCase() + pokeTypes[0].slice(1);
     elType1.setAttribute("class", `${pokeTypes[0]} type-container`);
 
+    // append header to card inner
+    elCardHeader.appendChild(elPokedexNumber);
+    elCardHeader.appendChild(elPokemonName);
+    elWrapper.appendChild(elCardHeader);
+    elCardInner.appendChild(elWrapper);
+    // append front sprite to card inner
+    elWrapper2.appendChild(elSprite);
+    elCardInner.appendChild(elWrapper2);
+    // append types wrapper to card inner
+    elTypeWrapper.appendChild(elType1);
+    // add type2 if dual type
     if (pokeTypes.length == 2){
-        // add type2 if dual type
         let elType2 = document.createElement("span");
         elType2.innerText = pokeTypes[1].charAt(0).toUpperCase() + pokeTypes[1].slice(1);
-        elType2.setAttribute("class", `${pokeTypes[1]} type-container`); 
+        elType2.setAttribute("class", `${pokeTypes[1]} type-container`);
+        elTypeWrapper.appendChild(elType2);
     }
+    elWrapper3.appendChild(elTypeLabel);
+    elWrapper3.appendChild(elTypeWrapper);
+    elCardInner.appendChild(elWrapper3);
+    // append card inner to card
+    elCard.appendChild(elCardInner);
+
+    return elCard;
 
     /*
     <div class="card"> | elCard
@@ -244,8 +263,8 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
             </div>
 
             <div> | elWrapper3
-                <div>Type:</div> | elTypesLabel
-                <div class="types-wrapper"> | elTypesWrapper
+                <div>Type:</div> | elTypeLabel
+                <div class="types-wrapper"> | elTypeWrapper
                     <span class="type-container grass">Grass</span> | elType1
                     <span class="type-container poison">Poison</span> | elType2
                 </div>
@@ -255,7 +274,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     */
 }
 
-export function correctPokemonForms (pokeName : string){
+export function correctPokemonForms(pokeName : string){
     // pokemon with multiple forms such as Giratina have different valid request params e.g /pokemon/giratina-altered and /pokemon-species/giratina
     // this will allow for requesting for both general pokemon info and pokedex entries
     // key = user input, value = ["pokeName", "pokeSpeciesName"]

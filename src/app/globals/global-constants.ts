@@ -29,6 +29,7 @@ export const pokeNatures = {
 export const pokeForms = new Map([
     ["giratina", ["giratina-altered", "giratina"]],
     ["giratina-altered", ["giratina-altered", "giratina"]],
+    ["giratina-origin", ["giratina-origin", "giratina"]],
     ["urshifu", ["urshifu-single-strike", "urshifu"]],
     ["urshifu-single-strike", ["urshifu-single-strike", "urshifu"]],
     ["urshifu-rapid-strike", ["urshifu-rapid-strike", "urshifu"]],
