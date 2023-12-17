@@ -6,14 +6,17 @@ html, body{
     color: white;
 }
 
+html{
+    height: 100svh;
+    overflow: auto;
+}
+
 router-outlet{
     /* hide router element, it is showing up as a grid column for some reason :) */
     display: none;
 }
 
 #grid-container{
-    height: 100svh;
-    overflow: auto;
     display: grid;
     grid-template-columns: [col-start] 200px [col-1] 0px [col-2] 1fr [col-end]; /* change nav-bar.ts openNav() if changing grid columns */
     grid-template-rows: 100%;
@@ -99,16 +102,16 @@ router-outlet{
 }
 
 .search-container{
-    display: flex;
+    display: block;
     flex-wrap: wrap;
-    justify-content: center;
+    height: 100svh;
+    overflow: auto;
 }
 
 .search-input-wrapper{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    width: 100%;
 }
 
 .search-input-wrapper span:first-child{ /* .search-input's parent */
@@ -230,6 +233,12 @@ router-outlet{
     margin-top: 10px;
 }
 /* Search Classes */
+.poke-info-search-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
 #poke-info-search{
     display: none;
     flex-direction:column;
@@ -475,6 +484,12 @@ router-outlet{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+}
+
+#infinite-scroll-btn{
+    text-align: center;
+    margin-top: 20px;
+    padding-bottom: 20px;
 }
 
 .card-container{

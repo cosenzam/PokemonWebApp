@@ -29,114 +29,116 @@
         -->
     </div>
 
-    <div id="poke-info-search">
-        <!-- First row -->
-        <div class="sm-flex-group">
-            <div>
-                <div class="sm-header-cyan">Pokémon Name:</div>
-                <div id="poke-name"></div>
-            </div>
-            <!-- Type classes change the bg color of a type container -->
-            <div>
-                <div id="poke-Type" class="sm-header-cyan">Type:</div>
-                <div class="types-wrapper">
-                    <span class="type-container" id="type1"></span>
-                    <span class="type-container" id="type2"></span>
-                </div>
-            </div>
-            <div>
-                <div class="sm-header-cyan">Abilities:</div>
-                <div id="poke-abilities"></div>
-            </div>
-            
-        </div>
-        <!-- Second Row -->
-        <div class="lg-flex-group">
-            <div class="lg-header-cyan">Sprites:</div>
-            <div class="sprites-wrapper"> <!-- wrapper needed? maybe-->
-                <div id="sprites-1">
-                    <div class="sprites-header">Default:</div>
-                    <img id="front-Sprite" src="">
-                    <img id="back-Sprite" src="">
-                </div>
-                <div id="sprites-2">
-                    <div class="sprites-header">Shiny:</div>
-                    <img id="front-Shiny" src="">
-                    <img id="back-Shiny" src="">
-                </div>
-            </div>
-        </div>
-        <!-- Third Row -->
-        <div class="lg-flex-group">
-            <div class="lg-header-cyan">Pokédex Entry:</div>
-            <div class="poke-pokedex">
-                <div id="poke-pokedex-text"></div>
-            </div>
-        </div>
-        <!-- Fourth Row -->
-        <div class="lg-flex-group">
-            <div class="lg-header-cyan">Stats:</div>
-            <div id="stats">
-
+    <div class="poke-info-search-wrapper">
+        <div id="poke-info-search">
+            <!-- First row -->
+            <div class="sm-flex-group">
                 <div>
-                    <div class="stat-hp">
-                        <span>HP:</span>
-                        <div>
-                            <div></div> <!-- Stat value as text inside stat bar -->
-                        </div>
-                    </div>
-                    <div class="stat-atk">
-                        <span>Attack:</span>
-                        <div>
-                            <div></div>
-                        </div>
-                    </div>
-                    <div class="stat-def">
-                        <span>Defense:</span>
-                        <div>
-                            <div></div>
-                        </div>
-                    </div>
+                    <div class="sm-header-cyan">Pokémon Name:</div>
+                    <div id="poke-name"></div>
                 </div>
-
+                <!-- Type classes change the bg color of a type container -->
                 <div>
-                    <div class="stat-spatk">
-                        <span>Special Attack:</span>
-                        <div>
-                            <div></div>
-                        </div>
-                    </div>
-                    <div class="stat-spdef">
-                        <span>Special Defense:</span>
-                        <div>
-                            <div></div>
-                        </div>
-                    </div>
-                    <div class="stat-spd">
-                        <span>Speed:</span>
-                        <div>
-                            <div></div>
-                        </div>
+                    <div id="poke-Type" class="sm-header-cyan">Type:</div>
+                    <div class="types-wrapper">
+                        <span class="type-container" id="type1"></span>
+                        <span class="type-container" id="type2"></span>
                     </div>
                 </div>
+                <div>
+                    <div class="sm-header-cyan">Abilities:</div>
+                    <div id="poke-abilities"></div>
+                </div>
+                
+            </div>
+            <!-- Second Row -->
+            <div class="lg-flex-group">
+                <div class="lg-header-cyan">Sprites:</div>
+                <div class="sprites-wrapper"> <!-- wrapper needed? maybe-->
+                    <div id="sprites-1">
+                        <div class="sprites-header">Default:</div>
+                        <img id="front-Sprite" src="">
+                        <img id="back-Sprite" src="">
+                    </div>
+                    <div id="sprites-2">
+                        <div class="sprites-header">Shiny:</div>
+                        <img id="front-Shiny" src="">
+                        <img id="back-Shiny" src="">
+                    </div>
+                </div>
+            </div>
+            <!-- Third Row -->
+            <div class="lg-flex-group">
+                <div class="lg-header-cyan">Pokédex Entry:</div>
+                <div class="poke-pokedex">
+                    <div id="poke-pokedex-text"></div>
+                </div>
+            </div>
+            <!-- Fourth Row -->
+            <div class="lg-flex-group">
+                <div class="lg-header-cyan">Stats:</div>
+                <div id="stats">
 
-            </div>
-        </div>
-        <!-- Fifth Row -->
-        <div class="sm-flex-group">
-            <div>
-                <div class="sm-header-cyan">Height:</div>
-                <div id="poke-height"></div>
-            </div>
-            <div>
-                <div class="sm-header-cyan">Weight:</div>
-                <div id="poke-weight"></div>
-            </div>
-            <div>
-                <div class="sm-header-blank"></div>
-            </div>
-        </div>
+                    <div>
+                        <div class="stat-hp">
+                            <span>HP:</span>
+                            <div>
+                                <div></div> <!-- Stat value as text inside stat bar -->
+                            </div>
+                        </div>
+                        <div class="stat-atk">
+                            <span>Attack:</span>
+                            <div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <div class="stat-def">
+                            <span>Defense:</span>
+                            <div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div>
+                        <div class="stat-spatk">
+                            <span>Special Attack:</span>
+                            <div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <div class="stat-spdef">
+                            <span>Special Defense:</span>
+                            <div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <div class="stat-spd">
+                            <span>Speed:</span>
+                            <div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Fifth Row -->
+            <div class="sm-flex-group">
+                <div>
+                    <div class="sm-header-cyan">Height:</div>
+                    <div id="poke-height"></div>
+                </div>
+                <div>
+                    <div class="sm-header-cyan">Weight:</div>
+                    <div id="poke-weight"></div>
+                </div>
+                <div>
+                    <div class="sm-header-blank"></div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
 </div>

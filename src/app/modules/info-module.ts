@@ -214,7 +214,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     let elWrapper3 = document.createElement("div");
 
     let elTypeLabel = document.createElement("div");
-    elTypeLabel.innerText = "Types:";
+    elTypeLabel.innerText = "Type:";
 
     let elTypeWrapper = document.createElement("div");
     elTypeWrapper.setAttribute("class", "types-wrapper");
