@@ -491,6 +491,7 @@ router-outlet{
     text-align: center;
     margin-top: 20px;
     padding-bottom: 20px;
+    width: 100%;
 }
 
 .card-container{
