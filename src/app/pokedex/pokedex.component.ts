@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener} from '@angular/core';
 import { PokeAPIService } from '../service/poke-api.service';
-import { createCard } from '../modules/info-module';
+import { createCard, correctPokemonForms} from '../modules/info-module';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -32,8 +32,8 @@ export class PokedexComponent implements OnInit {
         // create first 16 cards
         for (let i=this.currentIndex; i <= this.currentIndex + 15; i++){
           // API request for first 16 cards (4 rows)
-          lstObsPokemon.push(this.pokeAPIService.getPokemon(this.pokedexMap.get(i)));
-          console.log(typeof(this.pokedexMap.get(i)));
+          let pokeName = correctPokemonForms(this.pokedexMap.get(i))![0];
+          lstObsPokemon.push(this.pokeAPIService.getPokemon(pokeName));
         }
         let elCardContainer = <HTMLElement>document.querySelector(".card-container");
         // forkJoin() lstObsPokemon then create cards
@@ -84,18 +84,20 @@ export class PokedexComponent implements OnInit {
   onScroll(){
     let scrollPosY = window.innerHeight + window.scrollY;
     let windowHeight = document.body.offsetHeight;
+    //console.log(scrollPosY, windowHeight);
 
     if (scrollPosY >= windowHeight && this.infiniteScrolling == true){
-      console.log(scrollPosY, windowHeight);
-      console.log("triggered");
+      //console.log(scrollPosY, windowHeight);
+      //console.log("triggered");
 
       if (this.isLoading == false && this.currentIndex <= 1017){
         this.isLoading = true;
         let lstObsPokemon : any[] = []; // Observable<Pokemon>[]
-        for (let i=this.currentIndex; i <= this.currentIndex + 15; i++){
+        for (let i=this.currentIndex; i <= this.currentIndex + 15 && i <= 1017; i++){
+          console.log(i, this.currentIndex);
           // API request for first 16 cards (4 rows)
-          lstObsPokemon.push(this.pokeAPIService.getPokemon(this.pokedexMap.get(i)));
-          console.log(typeof(this.pokedexMap.get(i)));
+          let pokeName = correctPokemonForms(this.pokedexMap.get(i))![0];
+          lstObsPokemon.push(this.pokeAPIService.getPokemon(pokeName));
         }
         let elCardContainer = <HTMLElement>document.querySelector(".card-container");
         // forkJoin() lstObsPokemon then create cards
@@ -119,7 +121,7 @@ export class PokedexComponent implements OnInit {
         });
       }
       else{
-        console.log("already loading...");
+        console.log("already loading or max pokedex # reached");
       }
 
     }

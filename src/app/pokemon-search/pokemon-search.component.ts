@@ -16,6 +16,7 @@ export class PokemonSearchComponent implements OnInit{
   //@Input() message !: string; // this is the receiving/child line
   nationalPokedex = new Map();
   isLoading = false; // flag for allowing the start of the next API request
+  lastSearch : string | null = ""; // avoid submitting same input more than once
 
   // PokeAPIService constuctor
   constructor(private pokeAPIService : PokeAPIService) {}
@@ -45,7 +46,8 @@ export class PokemonSearchComponent implements OnInit{
   
   onSubmit(): void {
     if (this.isLoading == false){
-      if (this.textControl.value != ""){
+      if (this.textControl.value != "" && this.lastSearch != this.textControl.value){
+        this.lastSearch = this.textControl.value;
         let pokeName = this.textControl.value!.toLowerCase();
         let obsPokeInfo : any;
         let obsPokedexEntry : any;
@@ -53,7 +55,7 @@ export class PokemonSearchComponent implements OnInit{
         // correct names for pokemon with different forms
         // pokemon to account for: giratina, shaymin, basculin, landrous and friends, urshifu...
         const lstPokeNames = correctPokemonForms(pokeName);
-        pokeName = lstPokeNames![1]; // change pokeName to species name/non-form name
+        pokeName = lstPokeNames![2];
         obsPokeInfo = this.pokeAPIService.getPokemon(lstPokeNames![0]);
         obsPokedexEntry = this.pokeAPIService.getPokedexEntry(lstPokeNames![1]);
 

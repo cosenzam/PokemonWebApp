@@ -278,12 +278,29 @@ export function correctPokemonForms(pokeName : string){
     // pokemon with multiple forms such as Giratina have different valid request params e.g /pokemon/giratina-altered and /pokemon-species/giratina
     // this will allow for requesting for both general pokemon info and pokedex entries
     // key = user input, value = ["pokeName", "pokeSpeciesName"]
+    // some pokemon have form descriptions /pokemon-species/pokeName {form_descriptions[i].description}
+    // if response.form_descriptions[i].description {append new div in pokedex entry section?}
     if (pokeForms.get(pokeName)){
         return pokeForms.get(pokeName);
     }
     else{
-        return [pokeName, pokeName];
+        return [pokeName, pokeName, pokeName];
     }
+}
+
+export function toHyphenFormat(pokeName : string){
+    // correct names like mr. mime to mr-mime, mr. rime, chien pao to chien-pao, porygon z to porygon-z, jangmo-o line, farfetch'd, sirfetch'd
+    // remove periods, change spaces to hyphens
+    // hisuian arcanine -> arcanine-hisui
+    // giratina origin -> giratina-origin
+    // kyurem, deoxys, meowstic-male, meowstic-female, zygarde, hoopa, rotom, castform, tauros, basculin,
+    // giratina, dialga, palkia, shaymin, darmanitan, genie legendaries, enamorus, keldeo, hoopa, meloetta, urshifu,
+    // oricorio, lycanroc, wishiwashi, mimkyu, necrozma, cramorant, toxtricity, eiscue, indeedee, calyrex, oinkologne
+    // palafin, gimmighoul, ogerpon, wormadam
+
+    // special colors: minior, squawkabilly, maushold, tatsugiri, dudunsparce, gourgeist
+
+    // change to hyphen format, then correctPokemonForms
 }
 
 export function setTeamsSprites(response : any){
