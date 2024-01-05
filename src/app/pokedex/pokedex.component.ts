@@ -23,39 +23,13 @@ export class PokedexComponent implements OnInit {
   constructor(private pokeAPIService: PokeAPIService) {}
 
   ngOnInit(){
-    let lstObsPokemon : any[] = []; // Observable<Pokemon>[]
-  
     if (this.isLoading == false){
       this.pokeAPIService.getPokedexNational().subscribe((response)=>{
         this.isLoading = true;
         response.pokemon_entries.forEach((item: any, index: number) => this.pokedexMap.set(item.entry_number, item.pokemon_species.name));
         // create first 16 cards
-        for (let i=this.currentIndex; i <= this.currentIndex + 15; i++){
-          // API request for first 16 cards (4 rows)
-          let pokeName = correctPokemonForms(this.pokedexMap.get(i))![0];
-          lstObsPokemon.push(this.pokeAPIService.getPokemon(pokeName));
-        }
-        let elCardContainer = <HTMLElement>document.querySelector(".card-container");
-        // forkJoin() lstObsPokemon then create cards
-        const obsForkJoin = forkJoin(lstObsPokemon);
-
-        obsForkJoin.subscribe((response : any[]) => {
-          response.forEach((jsonResponse: any, index: number) => {
-            let pokeTypes : string[] = [];
-            jsonResponse.types.forEach((item : any, typeIndex : number) => pokeTypes.push(jsonResponse.types[typeIndex].type.name));
-            const elPokemonCard = createCard(this.pokedexMap.get(this.currentIndex), this.currentIndex, pokeTypes, jsonResponse.sprites.front_default);
-            elCardContainer.appendChild(elPokemonCard);
-            this.currentIndex++;
-          })
-          this.isLoading = false;
-        },
-        (error : any) => {
-          console.log("API request error");
-        },
-        () =>{
-
-        });
-
+        let lstObsPokemon : any[] = []; // Observable<Pokemon>[]
+        this.loadCards(lstObsPokemon, 16);
       },
       (error: any) =>{
         console.log("Failed to retrieve national pokedex")
@@ -64,8 +38,6 @@ export class PokedexComponent implements OnInit {
       () =>{
         //console.log("national pokedex retrieved");
         //console.log(this.pokedexMap);
-        //console.log(this.pokedexMap.get(1));
-        //console.log(this.pokedexMap.get(363));
       });
     }
   }
@@ -93,39 +65,41 @@ export class PokedexComponent implements OnInit {
       if (this.isLoading == false && this.currentIndex <= 1017){
         this.isLoading = true;
         let lstObsPokemon : any[] = []; // Observable<Pokemon>[]
-        for (let i=this.currentIndex; i <= this.currentIndex + 15 && i <= 1017; i++){
-          console.log(i, this.currentIndex);
-          // API request for first 16 cards (4 rows)
-          let pokeName = correctPokemonForms(this.pokedexMap.get(i))![0];
-          lstObsPokemon.push(this.pokeAPIService.getPokemon(pokeName));
-        }
-        let elCardContainer = <HTMLElement>document.querySelector(".card-container");
-        // forkJoin() lstObsPokemon then create cards
-        const obsForkJoin = forkJoin(lstObsPokemon);
-
-        obsForkJoin.subscribe((response : any[]) => {
-          response.forEach((jsonResponse: any, index: number) => {
-            let pokeTypes : string[] = [];
-            jsonResponse.types.forEach((item : any, typeIndex : number) => pokeTypes.push(jsonResponse.types[typeIndex].type.name));
-            const elPokemonCard = createCard(this.pokedexMap.get(this.currentIndex), this.currentIndex, pokeTypes, jsonResponse.sprites.front_default);
-            elCardContainer.appendChild(elPokemonCard);
-            this.currentIndex++;
-          })
-          this.isLoading = false;
-        },
-        (error : any) => {
-          console.log("API request error");
-        },
-        () =>{
-
-        });
+        this.loadCards(lstObsPokemon, 16);
       }
       else{
         console.log("already loading or max pokedex # reached");
       }
-
     }
-    
+  }
+
+  loadCards(lstObsPokemon : any[], numToLoad : number){
+
+    for (let i=this.currentIndex; i < this.currentIndex + numToLoad && i <= 1017; i++){
+      // API request for first 16 cards (4 rows)
+      let pokeName = correctPokemonForms(this.pokedexMap.get(i))![0];
+      lstObsPokemon.push(this.pokeAPIService.getPokemon(pokeName));
+    }
+    let elCardContainer = <HTMLElement>document.querySelector(".card-container");
+    // forkJoin() to re-sync lstObsPokemon then create cards
+    const obsForkJoin = forkJoin(lstObsPokemon);
+
+    obsForkJoin.subscribe((response : any[]) => {
+      response.forEach((jsonResponse: any, index: number) => {
+        let pokeTypes : string[] = [];
+        jsonResponse.types.forEach((item : any, typeIndex : number) => pokeTypes.push(jsonResponse.types[typeIndex].type.name));
+        const elPokemonCard = createCard(this.pokedexMap.get(this.currentIndex), this.currentIndex, pokeTypes, jsonResponse.sprites.front_default);
+        elCardContainer.appendChild(elPokemonCard);
+        this.currentIndex++;
+      })
+      this.isLoading = false;
+    },
+    (error : any) => {
+      console.log("API request error");
+    },
+    () =>{
+
+    });
   }
 
 }

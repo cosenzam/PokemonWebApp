@@ -104,7 +104,8 @@ router-outlet{
 .search-container{
     display: block;
     flex-wrap: wrap;
-    height: 100svh;
+    min-height: 100svh;
+    height: 100%;
     overflow: auto;
 }
 
@@ -407,7 +408,10 @@ router-outlet{
 /* Teams Classes */
 .teams-container{
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
+    min-height: 100svh;
+    height: 100%;
 }
 
 .party-list{
@@ -484,6 +488,7 @@ router-outlet{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    min-height: 100svh;
     height: 100%;
 }
 
@@ -575,8 +580,9 @@ router-outlet{
 
 .about-container{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
+    min-height: 100svh;
+    height: 100%;
 }
 
 /* pokemon type background colors */
