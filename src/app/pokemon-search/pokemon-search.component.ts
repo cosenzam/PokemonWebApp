@@ -1,7 +1,7 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
-import { setSprites, setTypes, setStats, setAbilityTooltip, setPokedexEntry, correctPokemonForms } from '../modules/info-module';
+import { setSprites, setTypes, setStats, setAbilityTooltip, setPokedexEntry, correctPokemonForms, autocompletePokedex, toHyphenFormat } from '../modules/info-module';
 import { forkJoin, pipe, Observable } from 'rxjs';
 
 @Component({
@@ -28,7 +28,7 @@ export class PokemonSearchComponent implements OnInit{
       this.onSubmit();
     }
     */
-    /*
+    
     this.pokeAPIService.getPokedexNational().subscribe((response)=>{
       response.pokemon_entries.forEach((item: any, index: any) => this.nationalPokedex.set(item.pokemon_species.name, item.entry_number));
     },
@@ -36,24 +36,26 @@ export class PokemonSearchComponent implements OnInit{
       console.log("Failed to retrieve national pokedex")
     },
     () =>{
-      console.log("national pokedex retrieved");
-      console.log(this.nationalPokedex.get("bulbasaur"));
-      console.log(this.nationalPokedex.get("snivy"));
+      autocompletePokedex(this.nationalPokedex); 
+      //console.log("national pokedex retrieved");
+      //console.log(this.nationalPokedex.get("bulbasaur"));
+      //console.log(this.nationalPokedex.get("snivy"));
     });
-    */
+    
   }
   
   
   onSubmit(): void {
     if (this.isLoading == false){
       if (this.textControl.value != "" && this.lastSearch != this.textControl.value){
-        this.lastSearch = this.textControl.value;
-        let pokeName = this.textControl.value!.toLowerCase();
+        //console.log(this.textControl.value);
+        let pokeName = toHyphenFormat(this.textControl.value!.toLowerCase());
+        //console.log(pokeName);
+        this.lastSearch = pokeName;
         let obsPokeInfo : any;
         let obsPokedexEntry : any;
 
         // correct names for pokemon with different forms
-        // pokemon to account for: giratina, shaymin, basculin, landrous and friends, urshifu...
         const lstPokeNames = correctPokemonForms(pokeName);
         pokeName = lstPokeNames![2];
         obsPokeInfo = this.pokeAPIService.getPokemon(lstPokeNames![0]);

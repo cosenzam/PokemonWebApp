@@ -146,10 +146,6 @@ router-outlet{
     opacity: 0.5;
 }
 
-.search-btn-div{
-    
-}
-
 .search-submit-btn{
     height: 35px;
     width: 35px;
@@ -492,11 +488,26 @@ router-outlet{
     height: 100%;
 }
 
-#infinite-scroll-btn{
+#infinite-scroll-btn-wrapper{
     text-align: center;
     margin-top: 20px;
     padding-bottom: 20px;
     width: 100%;
+}
+
+#infinite-scroll-btn-wrapper > button{
+    height: 35px;
+    width: 150px;
+    background-color: #3f3f46;
+    color: white;
+    border-style: none;
+    cursor: pointer;
+    transition: background-color 200ms;
+}
+
+#infinite-scroll-btn-wrapper > button:hover{
+    outline: 2px solid #67e8f9;
+    background-color: #52525b;
 }
 
 .card-container{

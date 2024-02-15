@@ -4,7 +4,8 @@
 
     <div class="search-input-wrapper">
         <span>
-            <input class="search-input" type="text" [formControl]="textControl" placeholder="Pikachu" (keyup.enter)="onSubmit()">
+            <input list="pokemon-list" class="search-input" type="text" [formControl]="textControl" placeholder="Pikachu" (keyup.enter)="onSubmit()">
+            <datalist id="pokemon-list"></datalist>
             <span class="search-btn-div">
                 <button class="search-submit-btn" (click)="onSubmit()">
                     <div class="search-icon">

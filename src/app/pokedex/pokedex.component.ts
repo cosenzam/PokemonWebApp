@@ -45,7 +45,7 @@ export class PokedexComponent implements OnInit {
   onClickToggleOnScroll(){
     if (this.infiniteScrolling == false){
       this.infiniteScrolling = true;
-      document.getElementById("infinite-scroll-btn")!.remove();
+      document.getElementById("infinite-scroll-btn-wrapper")!.remove();
     }
     else{
       console.log("infinite scrolling already toggled");

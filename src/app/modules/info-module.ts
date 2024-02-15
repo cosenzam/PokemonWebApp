@@ -276,23 +276,18 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
 
 export function correctPokemonForms(pokeName : string){
     // pokemon with multiple forms such as Giratina have different valid request params e.g /pokemon/giratina-altered and /pokemon-species/giratina
-    // this will allow for requesting for both general pokemon info and pokedex entries
-    // key = user input, value = ["pokeName", "pokeSpeciesName"]
-    // some pokemon have form descriptions /pokemon-species/pokeName {form_descriptions[i].description}
-    // if response.form_descriptions[i].description {append new div in pokedex entry section?}
+    
+    // get list from pokeForms if in Map
     if (pokeForms.get(pokeName)){
         return pokeForms.get(pokeName);
     }
     else{
-        return [pokeName, pokeName, pokeName];
+        return [pokeName, pokeName, pokeName.charAt(0).toUpperCase() + pokeName.slice(1)];
     }
 }
 
-export function toHyphenFormat(pokeName : string){
+export function toHyphenFormat(pokeName : string) : string{
     // correct names like mr. mime to mr-mime, mr. rime, chien pao to chien-pao, porygon z to porygon-z, jangmo-o line, farfetch'd, sirfetch'd
-    // remove periods, change spaces to hyphens
-    // hisuian arcanine -> arcanine-hisui
-    // giratina origin -> giratina-origin
     // kyurem, deoxys, meowstic-male, meowstic-female, zygarde, hoopa, rotom, castform, tauros, basculin,
     // giratina, dialga, palkia, shaymin, darmanitan, genie legendaries, enamorus, keldeo, hoopa, meloetta, urshifu,
     // oricorio, lycanroc, wishiwashi, mimkyu, necrozma, cramorant, toxtricity, eiscue, indeedee, calyrex, oinkologne
@@ -300,7 +295,48 @@ export function toHyphenFormat(pokeName : string){
 
     // special colors: minior, squawkabilly, maushold, tatsugiri, dudunsparce, gourgeist
 
-    // change to hyphen format, then correctPokemonForms
+    let formMap = new Map([
+        ["alolan", "alola"],
+        ["galarian", "galar"],
+        ["hisuian", "hisui"],
+        ["paldean", "paldea"],
+    ]);
+    
+    // remove punctuation
+    let lstPunctuation = [".", "'"];
+    let index = 0;
+    for(let char of pokeName){
+        if(char == "("){ // remove parenthesis from datalist values
+            pokeName = pokeName.slice(0, index - 1);
+        }
+        else if(lstPunctuation.includes(char)){
+            pokeName = pokeName.replace(char, "");
+        }
+        index++;
+    }
+
+    let lstWords = pokeName.split(" ");
+    if(formMap.get(lstWords[0])){
+        lstWords.push(`${formMap.get(lstWords[0])}`);
+        lstWords.shift();
+    }
+    pokeName = lstWords.join("-");
+    
+    console.log(pokeName);
+    
+    return pokeName;
+}
+
+export function autocompletePokedex(nationalPokedex : Map<any, any>){
+    // append to data list element
+    nationalPokedex.forEach((index: any, item: any) => {
+        // create option
+        let elOption = document.createElement("option");
+        elOption.setAttribute("label", "#" + index + ". ");
+        elOption.setAttribute("value", correctPokemonForms(item)![2]);
+        // append option to pokemon-list
+        document.getElementById("pokemon-list")?.appendChild(elOption);
+    });
 }
 
 export function setTeamsSprites(response : any){
