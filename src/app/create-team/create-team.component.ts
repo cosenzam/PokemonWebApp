@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { Pokemon } from '../interface/pokemon';
-import { setTypes, setFrontSprite, setStats, selectAbilities } from '../modules/info-module';
+import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilityTooltip, setAbilitiesTeams } from '../modules/info-module';
 import { pokeNatures } from '../globals/global-constants';
+import { forkJoin, pipe, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-team',
@@ -14,7 +15,7 @@ export class CreateTeamComponent {
 
   constructor(private pokeAPIService: PokeAPIService) {}
 
-  pokeName1 = new FormControl('');
+  pokeName1 = new FormControl("Pikachu");
   pokeName2 = new FormControl('');
   pokeName3 = new FormControl('');
   pokeName4 = new FormControl('');
@@ -22,6 +23,9 @@ export class CreateTeamComponent {
   pokeName6 = new FormControl('');
   pokeNames: string[] = [];
   apiResponses: Pokemon[] = [];
+  nationalPokedex = new Map();
+  isLoading = false; // flag for preventing/allowing the start of the next API request OR execution of functions in parallel
+  lastSearch : string | null = ""; // avoid submitting same input more than once
   
   onClick(slotNum : number): void{
     console.log(`teams element ${slotNum} clicked`);
@@ -29,43 +33,81 @@ export class CreateTeamComponent {
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`)).style.cssText = "display:flex;";
   }
 
-  onSubmit(slotNum : number, pokeName : FormControl): void{
-    // store all moves in a list for autocomplete
-    // when clicking on moves form, show all moves if nothing is typed in, autocomplete for each letter typed
-    console.log(`slot ${slotNum} input: ${pokeName.value}`)
-    if (pokeName.value != ""){
-      this.pokeAPIService.getPokemon(pokeName.value!.toLowerCase()).subscribe((response)=>{
-        // update slot info if response recieved, display error if pokemon does not exist
-        // dropdown to choose ability
-        // autocomplete to choose moves
-        let pokeName = response.name;
-        let pokeTypes : string[] = [];
-        let pokeAbilities : string[] = [];
-        response.types.forEach((item, index) => pokeTypes.push(response.types[index].type.name));
-        response.abilities.forEach((item, index) => pokeAbilities.push(response.abilities[index].ability.name));
-        pokeAbilities.forEach((item, index) => pokeAbilities[index] = pokeAbilities[index].charAt(0).toUpperCase() + pokeAbilities[index].slice(1));
+  onSubmit(slotNum : number, formPokeName : FormControl): void{
+    if (this.isLoading == false){
+      if (formPokeName.value != "" && this.lastSearch != formPokeName.value){
+        //console.log(this.textControl.value);
+        let pokeName = toHyphenFormat(formPokeName.value!.toLowerCase());
+        //console.log(pokeName);
+        this.lastSearch = pokeName;
+        let obsPokeInfo : any;
+        var elSlotDiv = document.getElementById("slot-"+`${slotNum}`);
 
-        (<HTMLElement>document.querySelector(`.slot-${slotNum}`)).querySelector(".invalid-pokemon")!.innerHTML = "";
-        (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:flex;";
-        setFrontSprite(response, `slot-${slotNum}-sprite`);
-        setTypes(pokeTypes);
-        document.getElementById("poke-Name")!.innerHTML = "Pokémon: " + pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
-        document.getElementById("poke-Abilities")!.innerHTML = "Ability: ";
-        setStats(response, "teams", slotNum);
+        // correct names for pokemon with different forms
+        const lstPokeNames = correctPokemonForms(pokeName);
+        pokeName = lstPokeNames![2];
+        obsPokeInfo = this.pokeAPIService.getPokemon(lstPokeNames![0]);
 
-        selectAbilities(pokeAbilities, slotNum);
+        let obsAbilityDescriptions : any[] = []; // list of observables
+        const obsForkJoin1 = forkJoin(obsPokeInfo);
+        
+        // forkJoin() then subscribe to re-sync async API requests and keep the order they were called in
+        // response[0] = pokeAPIService.getPokemon(), response[1] = pokeAPIService.getPokedexEntry()
+        obsForkJoin1.subscribe((response : any) => {
+          this.isLoading = true;
+          (<HTMLElement>document.querySelector(".slot-"+`${slotNum}`+"-input"))!.style.cssText = "display:none;";
+          (<HTMLElement>elSlotDiv!.querySelector(".slot-"+`${slotNum}`+"-info"))!.style.cssText = "display:none;";
+          (<HTMLElement>elSlotDiv!.querySelector(".remove-btn-wrapper"))!.style.cssText = "display:inline-block;";
+          elSlotDiv!.querySelector(".invalid-pokemon")!.innerHTML = "";
+          // Pokemon Name
+          elSlotDiv!.querySelector("#poke-name")!.innerHTML = pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
+          // Pokemon Sprites
+          setFrontSprite(response[0], <HTMLElement>elSlotDiv!.querySelector("#front-sprite"));
+          // Pokemon Types
+          let pokeTypes : string[] = [];
+          response[0].types.forEach((item : any, index : number) => pokeTypes.push(response[0].types[index].type.name));
+          setTypes(pokeTypes, <HTMLElement>elSlotDiv!.querySelector(".types-wrapper"));
+          // Pokemon Abilities
+          let elPokeAbilities = elSlotDiv!.querySelector("#poke-abilities");
+          elPokeAbilities!.innerHTML = "" // remove previous children in case there was a previous search
+      
+          // Pokemon Stats (most recent generation)
+          //setStats(response[0], "search", slotNum);
 
-        // store subscribe response for ?
-        this.apiResponses[slotNum - 1] = response; 
-        console.log(this.apiResponses[slotNum - 1]);
-      }, 
-      (error: any) => {
-        (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:none;";
-        (<HTMLElement>document.querySelector(`.slot-${slotNum}`)).querySelector(".invalid-pokemon")!.innerHTML = "Pokémon does not exist!";
-        console.log("Pokémon not found")
-      });
+          // Pokemon Abilties | wait for abilities response, then make poke-info div visible to avoid pop-in
+          for (let [index, ability] of response[0].abilities.entries()){
+            obsAbilityDescriptions.push(this.pokeAPIService.getAbilityInfo(ability.ability.url));
+          }
+          // Nested forkJoin()
+          let obsForkJoin2 = forkJoin(obsAbilityDescriptions);
+          obsForkJoin2.subscribe((response : any[]) => {
+            (<HTMLElement>elSlotDiv!.querySelector(".slot-"+`${slotNum}`+"-info"))!.style.cssText = "display:flex;";
+            for (let [index, ability] of response.entries()){
+              try{
+                setAbilitiesTeams(ability.name, ability.effect_entries[1].short_effect, slotNum);
+              }
+              catch{
+                console.log("no ability description found");
+                setAbilitiesTeams(ability.name, "", slotNum);
+              }
+            }
+            this.isLoading = false;
+          },
+          (error: any) =>{
+            (<HTMLElement>elSlotDiv!.querySelector(".slot-"+`${slotNum}`+"-info"))!.style.cssText = "display:flex;";
+            console.log("nested subscribe ability desc error");
+            this.isLoading = false;
+          });
+          
+        },
+        (error: any) =>{
+          (<HTMLElement>elSlotDiv!.querySelector(".slot-"+`${slotNum}`+"-info"))!.style.cssText = "display:none;";
+          document.getElementById("slot"+`${slotNum}`)!.querySelector(".invalid-pokemon")!.innerHTML = "Pokémon does not exist!";
+          console.log("Pokémon not found")
+          this.isLoading = false;
+        });
+      }
     }
-    //console.log(this.apiResponses[0].moves[0].move.name);
 
   }
 

@@ -51,33 +51,29 @@ export function setSprites(response : any) {
     }
 }
 
-export function setFrontSprite(response : any, element : string){
-    document.getElementById("front-Sprite")!.setAttribute('src', response.sprites.front_default);
-    document.getElementById(element)!.style.cssText = "display:flex;justify-content:space-between;";
+export function setFrontSprite(response : any, elSpriteDiv : HTMLElement){
+    elSpriteDiv!.setAttribute('src', response.sprites.front_default);
+    elSpriteDiv!.style.cssText = "display:flex;justify-content:space-between;";
 }
 
 // set css attributes depending on the pokemon types
-export function setTypes(pokeTypes : string[]) {
+export function setTypes(pokeTypes : string[], elTypeDiv: HTMLElement) {
 
     if (pokeTypes.length < 2){
         // remove type 2 bg if not dual type
-        document.getElementById("type2")!.style.cssText = "display: none;";
-        document.getElementById("type2")!.innerHTML = "";
+        (<HTMLElement>elTypeDiv.querySelector("#type2"))!.style.cssText = "display: none;";
+        elTypeDiv.querySelector("#type2")!.innerHTML = "";
     }
     else{
-        document.getElementById("type2")!.style.cssText = "display: inline-block;";
+        (<HTMLElement>elTypeDiv.querySelector("#type2"))!.style.cssText = "display: inline-block;";
     }
 
     let i = 0; // shouldnt use a loop because there can only be 1 or 2 types, oh well
     while (i < pokeTypes.length){
-        let element = "type" + (i + 1)
+        let element = "#type" + (i + 1)
         let type = pokeTypes[i];
-
-        try{ 
-            document.getElementById(element)!.setAttribute("class", `${type} type-container`);
-            document.getElementById(element)!.innerHTML = pokeTypes[i].charAt(0).toUpperCase() + pokeTypes[i].slice(1); 
-        }
-        catch{ console.log("not a valid type") ;}
+        elTypeDiv.querySelector(element)!.setAttribute("class", `${type} type-container`);
+        elTypeDiv.querySelector(element)!.innerHTML = pokeTypes[i].charAt(0).toUpperCase() + pokeTypes[i].slice(1);
         i++;
     }
 }
@@ -130,26 +126,26 @@ export function setStats(response : any, route : string, slotNum : number = 0){
     (<HTMLElement>lstStatElements[5]!.children[1].children[0]).innerText = `${response.stats[5].base_stat}`;
 }
 
-export function selectAbilities(pokeAbilities : string[], slotNum : number){
-    // for each ability, append a child option to select tag
-    const element = (<HTMLElement>document.querySelector(`.slot-${slotNum}-abilities`));
+export function setAbilitiesTeams(abilityName : string, abilityDescription : string = "", slotNum : number){
+    // select tag
+    let elSelectAbility = (<HTMLElement>document.querySelector(`.slot-${slotNum}-abilities`));
+    /*
     if (element.hasChildNodes()){
         // remove ALL child nodes
         element.innerHTML = "";
     }
+    */
 
-    for (let ability of pokeAbilities){
-        // append options to select for each ability
-        let option = document.createElement("option");
-        option.text = ability;
-        option.value = ability;
-        element.appendChild(option);
-    }
+    // append options to select for each ability
+    let option = document.createElement("option");
+    option.text = abilityName;
+    option.value = abilityName;
+    elSelectAbility.appendChild(option);
 
 }
 
 export function setAbilityTooltip(abilityName : string, abilityDescription : string = "", isLastIndex : boolean = false, slotNum : number = 0){
-    const element = document.getElementById("poke-abilities");
+    let element = document.getElementById("poke-abilities");
     abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     
     let abilityTooltip = document.createElement("span");

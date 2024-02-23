@@ -83,7 +83,7 @@ export class PokemonSearchComponent implements OnInit{
           // Pokemon Types
           let pokeTypes : string[] = [];
           response[0].types.forEach((item : any, index : number) => pokeTypes.push(response[0].types[index].type.name));
-          setTypes(pokeTypes); // set type background color
+          setTypes(pokeTypes, <HTMLElement>document.querySelector(".types-wrapper")); // set type background color
 
           // Pokemon Abilities
           let elPokeAbilities = document.getElementById("poke-abilities");
@@ -135,9 +135,9 @@ export class PokemonSearchComponent implements OnInit{
             console.log("Pokédex description not found")
           }
           else{
-          document.getElementById("poke-info-search")!.style.cssText = "display:none;";
-          (<HTMLElement>document.querySelector(".invalid-pokemon"))!.innerHTML = "Pokémon does not exist!";
-          console.log("Pokémon not found")
+            document.getElementById("poke-info-search")!.style.cssText = "display:none;";
+            document.querySelector(".invalid-pokemon")!.innerHTML = "Pokémon does not exist!";
+            console.log("Pokémon not found")
           }
           this.isLoading = false;
         });

@@ -1,10 +1,9 @@
-<h1 style="text-align: center;">Team Builder</h1>
 <div class="teams-container">
-
+    <h1 class="header-main">Team Builder</h1>
     <div class="party-list">
-        <!--party-group holds 2 divs which wrap when width shrinks, keeps the order 1-6 -->
+        
         <div class="party-group">
-            <div class="slot-1">
+            <div id="slot-1">
                 <div class="slot-1-box" (click)="onClick(1)">+</div>
     
                 <div class="slot-1-input">
@@ -24,19 +23,25 @@
 
                 <div class="slot-1-info">
 
+                    <div class="lg-flex-group">
+                        <div id="poke-name" class="lg-header-cyan"></div>
+                    </div>
+
+
                     <div id="slot-1-sprite">
-                        <img id="front-Sprite" src="">
-                    </div>
-
-                    <div id="poke-Name"></div>
-                    <div>
-                        <span id="poke-Type">Type: </span>
-                        <span class="type-container" id="type1"></span>
-                        <span class="type-container" id="type2"></span>
+                        <img id="front-sprite" src="">
                     </div>
 
                     <div>
-                        <span id="poke-Abilities"></span>
+                        <span id="poke-type">Type: </span>
+                        <div class="types-wrapper">
+                            <span class="type-container" id="type1"></span>
+                            <span class="type-container" id="type2"></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span id="poke-abilities"></span>
                         <span><select name="ability" class="slot-1-abilities"></select></span>
                     </div>
                     
@@ -68,9 +73,10 @@
                     </div>
 
                 </div>
+                <div id="slot-1-remove" class="remove-btn-wrapper"><button>Remove</button></div>
             </div>
 
-            <div class="slot-2">
+            <div id="slot-2">
                 <div class="slot-2-box" (click)="onClick(2)">+</div>
                 <div class="slot-2-input">
                     <input type="text" [formControl]="pokeName2" (keyup.enter)="onSubmit(2, pokeName2)">
@@ -79,30 +85,26 @@
                 <div class="slot-2-info"></div>
             </div>
 
-        </div>
-
-        <div class="party-group">
-            <div class="slot-3">
+            <div id="slot-3">
                 <div class="slot-3-box">+</div>
                 <div class="slot-3-info"></div>
             </div>
 
-            <div class="slot-4">
+            <div id="slot-4">
                 <div class="slot-4-box">+</div>
                 <div class="slot-4-info"></div>
             </div>
-        </div>
 
-        <div class="party-group">
-            <div class="slot-5">
+            <div id="slot-5">
                 <div class="slot-5-box">+</div>
                 <div class="slot-5-info"></div>
             </div>
 
-            <div class="slot-6">
+            <div id="slot-6">
                 <div class="slot-6-box">+</div>
                 <div class="slot-6-info"></div>
             </div>
+
         </div>
 
 

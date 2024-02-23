@@ -103,9 +103,7 @@ router-outlet{
 
 .search-container{
     display: block;
-    flex-wrap: wrap;
     min-height: 100svh;
-    height: 100%;
     overflow: auto;
 }
 
@@ -403,11 +401,9 @@ router-outlet{
 
 /* Teams Classes */
 .teams-container{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: block;
     min-height: 100svh;
-    height: 100%;
+    overflow: auto;
 }
 
 .party-list{
@@ -421,17 +417,19 @@ router-outlet{
 .party-group{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     height: 100%;
-    width: 100%;
-    max-width: 1100px;
+    width: 95%;
+    gap: 5px;
 }
 
-.slot-1, .slot-2, .slot-3, .slot-4, .slot-5, .slot-6{
+#slot-1, #slot-2, #slot-3, #slot-4, #slot-5, #slot-6{
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     max-width: 500px;
     justify-content: center;
+    border: solid;
 }
 
 .slot-1-box, .slot-2-box, .slot-3-box, .slot-4-box, .slot-5-box, .slot-6-box{
@@ -471,8 +469,28 @@ router-outlet{
 }
 
 #slot-1-sprite, #slot-2-sprite, #slot-3-sprite, #slot-4-sprite, #slot-5-sprite, #slot-6-sprite{
+
+}
+
+.remove-btn-wrapper{
     display: none;
-    border: 3px solid;
+    text-align: center;
+    width: 100%;
+}
+
+.remove-btn-wrapper > button:hover{
+    outline: 2px solid #67e8f9;
+    background-color: #52525b;
+}
+
+.remove-btn-wrapper > button{
+    height: 35px;
+    width: 150px;
+    background-color: #3f3f46;
+    color: red;
+    border-style: none;
+    cursor: pointer;
+    transition: background-color 200ms;
 }
 
 .slot-1-abilities{
