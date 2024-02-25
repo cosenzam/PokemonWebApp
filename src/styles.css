@@ -96,6 +96,10 @@ router-outlet{
     margin-top: 10px;
 }
 
+.width-100{
+    width: 100%;
+}
+
 .header-main{
     width: 100%;
     text-align: center;
@@ -420,6 +424,7 @@ router-outlet{
     justify-content: center;
     height: 100%;
     width: 95%;
+    max-width: 1250px;
     gap: 5px;
 }
 
@@ -427,7 +432,7 @@ router-outlet{
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    max-width: 500px;
+    max-width: 400px;
     justify-content: center;
     border: solid;
 }
@@ -468,7 +473,41 @@ router-outlet{
     color: white;
 }
 
+.teams-group{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
+}
+
 #slot-1-sprite, #slot-2-sprite, #slot-3-sprite, #slot-4-sprite, #slot-5-sprite, #slot-6-sprite{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    width: 150px;
+}
+
+#front-sprite{
+    width: 90%;
+    height: auto;
+}
+
+.teams-subgroup{
+    flex: 1;
+}
+
+.teams-subgroup > div{
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+}
+
+.teams-type-wrapper{
+
+}
+
+.shiny-checkbox-wrapper{
 
 }
 
@@ -493,8 +532,15 @@ router-outlet{
     transition: background-color 200ms;
 }
 
-.slot-1-abilities{
+#slot-1-abilities{
+    height: 35px;
     width: 150px;
+    background-color: #3f3f46;
+    color: white;
+}
+
+#slot-1-ability-desc{
+    
 }
 
 /* Pokedex Classes */

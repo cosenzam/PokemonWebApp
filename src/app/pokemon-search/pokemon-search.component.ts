@@ -2,7 +2,7 @@ import { Component, OnInit, Input} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { setSprites, setTypes, setStats, setAbilityTooltip, setPokedexEntry, correctPokemonForms, autocompletePokedex, toHyphenFormat } from '../modules/info-module';
-import { forkJoin, pipe, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-search',

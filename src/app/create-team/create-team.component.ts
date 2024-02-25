@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { Pokemon } from '../interface/pokemon';
-import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilityTooltip, setAbilitiesTeams } from '../modules/info-module';
+import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilityTooltipTeams, setAbilitiesTeams } from '../modules/info-module';
 import { pokeNatures } from '../globals/global-constants';
-import { forkJoin, pipe, Observable } from 'rxjs';
+import { forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-create-team',
@@ -23,14 +23,30 @@ export class CreateTeamComponent {
   pokeName6 = new FormControl('');
   pokeNames: string[] = [];
   apiResponses: Pokemon[] = [];
+  abilityDescriptions = new Map(); // list of ability descriptions for each mon
   nationalPokedex = new Map();
   isLoading = false; // flag for preventing/allowing the start of the next API request OR execution of functions in parallel
   lastSearch : string | null = ""; // avoid submitting same input more than once
   
-  onClick(slotNum : number): void{
+  onClickAddMember(slotNum : number): void{
     console.log(`teams element ${slotNum} clicked`);
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-box`)).style.cssText = "display:none;";
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`)).style.cssText = "display:flex;";
+  }
+
+  onClickRemoveMember(slotNum : number) : void{
+    let elSlotDiv = document.getElementById("slot-"+`${slotNum}`);
+    console.log(`member ${slotNum} removed`);
+    (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:none;";
+    (<HTMLElement>elSlotDiv!.querySelector(".remove-btn-wrapper"))!.style.cssText = "display:none;";
+    (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`)).style.cssText = "display:flex;";
+  }
+
+  // when option on dropdown is clicked, show ability description when hovering ? symbol
+  onChangeAbilities(slotNum : number, abilityName : string) : void{
+    console.log(slotNum, abilityName);
+    let abilityDescription = this.abilityDescriptions.get(abilityName);
+    setAbilityTooltipTeams(abilityName, abilityDescription, slotNum);
   }
 
   onSubmit(slotNum : number, formPokeName : FormControl): void{
@@ -66,10 +82,9 @@ export class CreateTeamComponent {
           // Pokemon Types
           let pokeTypes : string[] = [];
           response[0].types.forEach((item : any, index : number) => pokeTypes.push(response[0].types[index].type.name));
-          setTypes(pokeTypes, <HTMLElement>elSlotDiv!.querySelector(".types-wrapper"));
+          setTypes(pokeTypes, <HTMLElement>elSlotDiv!.querySelector(".teams-type-wrapper"));
           // Pokemon Abilities
           let elPokeAbilities = elSlotDiv!.querySelector("#poke-abilities");
-          elPokeAbilities!.innerHTML = "" // remove previous children in case there was a previous search
       
           // Pokemon Stats (most recent generation)
           //setStats(response[0], "search", slotNum);
@@ -85,6 +100,7 @@ export class CreateTeamComponent {
             for (let [index, ability] of response.entries()){
               try{
                 setAbilitiesTeams(ability.name, ability.effect_entries[1].short_effect, slotNum);
+                this.abilityDescriptions.set(ability.name, ability.effect_entries[1].short_effect);
               }
               catch{
                 console.log("no ability description found");

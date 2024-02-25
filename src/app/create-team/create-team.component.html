@@ -4,7 +4,7 @@
         
         <div class="party-group">
             <div id="slot-1">
-                <div class="slot-1-box" (click)="onClick(1)">+</div>
+                <div class="slot-1-box" (click)="onClickAddMember(1)">+</div>
     
                 <div class="slot-1-input">
                     <div class="search-input-wrapper">
@@ -27,22 +27,33 @@
                         <div id="poke-name" class="lg-header-cyan"></div>
                     </div>
 
-
-                    <div id="slot-1-sprite">
-                        <img id="front-sprite" src="">
-                    </div>
-
-                    <div>
-                        <span id="poke-type">Type: </span>
-                        <div class="types-wrapper">
-                            <span class="type-container" id="type1"></span>
-                            <span class="type-container" id="type2"></span>
+                    <div class="teams-group">
+                        <div id="slot-1-sprite">
+                            <img id="front-sprite" src="">
                         </div>
+
+                        <div class="teams-subgroup">
+                            <div>
+                                <div class="teams-type-wrapper width-100">
+                                    <span id="poke-type">Type: </span>
+                                    <span class="type-container" id="type1"></span>
+                                    <span class="type-container" id="type2"></span>
+                                </div>
+
+                                <div class="shiny-checkbox-wrapper width-100">
+                                    <div>Shiny?<input type="checkbox"></div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div>
-                        <span id="poke-abilities"></span>
-                        <span><select name="ability" class="slot-1-abilities"></select></span>
+                        <span id="poke-abilities">Ability:</span>
+                        <span>
+                            <select #ability id="slot-1-abilities" (change)="onChangeAbilities(1, ability.value)"></select>
+                            <span id="slot-1-ability-desc">?</span>
+                        </span>
                     </div>
                     
                     <div id="slot-1-stats">
@@ -73,11 +84,11 @@
                     </div>
 
                 </div>
-                <div id="slot-1-remove" class="remove-btn-wrapper"><button>Remove</button></div>
+                <div id="slot-1-remove" class="remove-btn-wrapper"><button (click)="onClickRemoveMember(1)">Remove</button></div>
             </div>
 
             <div id="slot-2">
-                <div class="slot-2-box" (click)="onClick(2)">+</div>
+                <div class="slot-2-box" (click)="onClickAddMember(2)">+</div>
                 <div class="slot-2-input">
                     <input type="text" [formControl]="pokeName2" (keyup.enter)="onSubmit(2, pokeName2)">
                 </div>

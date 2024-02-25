@@ -128,7 +128,7 @@ export function setStats(response : any, route : string, slotNum : number = 0){
 
 export function setAbilitiesTeams(abilityName : string, abilityDescription : string = "", slotNum : number){
     // select tag
-    let elSelectAbility = (<HTMLElement>document.querySelector(`.slot-${slotNum}-abilities`));
+    let elSelectAbility = document.getElementById(`slot-${slotNum}-abilities`);
     /*
     if (element.hasChildNodes()){
         // remove ALL child nodes
@@ -140,10 +140,32 @@ export function setAbilitiesTeams(abilityName : string, abilityDescription : str
     let option = document.createElement("option");
     option.text = abilityName;
     option.value = abilityName;
-    elSelectAbility.appendChild(option);
-
+    elSelectAbility!.appendChild(option);
 }
 
+// change ability description to current <option> when hovering ? symbol
+export function setAbilityTooltipTeams(abilityName : string, abilityDescription : string = "", slotNum: number){
+    let element = document.getElementById(`slot-${slotNum}-ability-desc`);
+    abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
+
+    let abilityTooltip = document.createElement("span");
+    abilityTooltip.innerText = abilityName;
+    abilityTooltip.setAttribute("class", "ability-tooltip");
+
+    element!.appendChild(abilityTooltip);
+    // calculate abilityTooltipText's margin-left to center tooltip under parent
+    let tooltipMarginLeft = -100 + (abilityTooltip.offsetWidth / 2);
+
+    if (abilityDescription){
+        let abilityTooltipText = document.createElement("span");
+        abilityTooltipText.innerText = abilityDescription;
+        abilityTooltipText.setAttribute("class", "ability-tooltip-text");
+        abilityTooltip.appendChild(abilityTooltipText);
+        abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+    }
+}
+
+// ability name and tooltip for search
 export function setAbilityTooltip(abilityName : string, abilityDescription : string = "", isLastIndex : boolean = false, slotNum : number = 0){
     let element = document.getElementById("poke-abilities");
     abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);

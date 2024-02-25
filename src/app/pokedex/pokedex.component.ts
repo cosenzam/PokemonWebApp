@@ -43,12 +43,12 @@ export class PokedexComponent implements OnInit {
   }
 
   onClickToggleOnScroll(){
-    if (this.infiniteScrolling == false){
+    if (this.infiniteScrolling == false && this.isLoading == false){
       this.infiniteScrolling = true;
       document.getElementById("infinite-scroll-btn-wrapper")!.remove();
     }
     else{
-      console.log("infinite scrolling already toggled");
+      console.log("infinite scrolling already toggled or currently loading something");
     }
   }
 
