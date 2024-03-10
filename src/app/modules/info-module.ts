@@ -51,9 +51,13 @@ export function setSprites(response : any) {
     }
 }
 
-export function setFrontSprite(response : any, elSpriteDiv : HTMLElement){
-    elSpriteDiv!.setAttribute('src', response.sprites.front_default);
-    elSpriteDiv!.style.cssText = "display:flex;justify-content:space-between;";
+export function setFrontSprite(response : any, elSpriteDiv : HTMLElement, slotNum : number, shiny : boolean = false){
+    let elSpriteDefault = <HTMLElement>elSpriteDiv!.querySelector("#sprite-default");
+    elSpriteDefault!.setAttribute('src', response.sprites.front_default);
+    elSpriteDefault!.style.cssText = "display:flex;justify-content:space-between;";
+
+    let elSpriteShiny = <HTMLElement>elSpriteDiv!.querySelector("#sprite-shiny");
+    elSpriteShiny!.setAttribute('src', response.sprites.front_shiny);
 }
 
 // set css attributes depending on the pokemon types
@@ -138,31 +142,21 @@ export function setAbilitiesTeams(abilityName : string, abilityDescription : str
 
     // append options to select for each ability
     let option = document.createElement("option");
-    option.text = abilityName;
+    option.text = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     option.value = abilityName;
     elSelectAbility!.appendChild(option);
 }
 
 // change ability description to current <option> when hovering ? symbol
 export function setAbilityTooltipTeams(abilityName : string, abilityDescription : string = "", slotNum: number){
-    let element = document.getElementById(`slot-${slotNum}-ability-desc`);
+    let elAbilityDesc = document.getElementById(`slot-${slotNum}-ability-desc`);
     abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
 
-    let abilityTooltip = document.createElement("span");
-    abilityTooltip.innerText = abilityName;
-    abilityTooltip.setAttribute("class", "ability-tooltip");
+    let tooltipMarginLeft = -100 + (elAbilityDesc!.offsetWidth / 2);
 
-    element!.appendChild(abilityTooltip);
-    // calculate abilityTooltipText's margin-left to center tooltip under parent
-    let tooltipMarginLeft = -100 + (abilityTooltip.offsetWidth / 2);
-
-    if (abilityDescription){
-        let abilityTooltipText = document.createElement("span");
-        abilityTooltipText.innerText = abilityDescription;
-        abilityTooltipText.setAttribute("class", "ability-tooltip-text");
-        abilityTooltip.appendChild(abilityTooltipText);
-        abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
-    }
+    let abilityTooltipText = <HTMLElement>elAbilityDesc!.querySelector(".ability-tooltip-text");
+    abilityTooltipText.innerText = abilityDescription;
+    abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
 }
 
 // ability name and tooltip for search

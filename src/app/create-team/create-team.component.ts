@@ -35,7 +35,7 @@ export class CreateTeamComponent {
   }
 
   onClickRemoveMember(slotNum : number) : void{
-    let elSlotDiv = document.getElementById("slot-"+`${slotNum}`);
+    let elSlotDiv = document.getElementById(`slot-${slotNum}`);
     console.log(`member ${slotNum} removed`);
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:none;";
     (<HTMLElement>elSlotDiv!.querySelector(".remove-btn-wrapper"))!.style.cssText = "display:none;";
@@ -44,9 +44,23 @@ export class CreateTeamComponent {
 
   // when option on dropdown is clicked, show ability description when hovering ? symbol
   onChangeAbilities(slotNum : number, abilityName : string) : void{
-    console.log(slotNum, abilityName);
     let abilityDescription = this.abilityDescriptions.get(abilityName);
+    console.log(abilityName, abilityDescription);
     setAbilityTooltipTeams(abilityName, abilityDescription, slotNum);
+  }
+
+  onChangeShinyToggle(slotNum : number){
+    let elCheckbox = <HTMLInputElement>document.getElementById(`slot-${slotNum}-shiny`);
+    let elSpriteDefault = <HTMLElement>document.querySelector(`#slot-${slotNum}-sprite`)!.querySelector("#sprite-default");
+    let elSpriteShiny = <HTMLElement>document.querySelector(`#slot-${slotNum}-sprite`)!.querySelector("#sprite-shiny");
+    if (elCheckbox!.checked){
+      elSpriteDefault!.style.cssText = "display:none;justify-content:space-between;";
+      elSpriteShiny!.style.cssText = "display:flex;justify-content:space-between;";
+    }
+    else {
+      elSpriteDefault!.style.cssText = "display:flex;justify-content:space-between;";
+      elSpriteShiny!.style.cssText = "display:none;justify-content:space-between;";
+    }
   }
 
   onSubmit(slotNum : number, formPokeName : FormControl): void{
@@ -67,27 +81,23 @@ export class CreateTeamComponent {
         let obsAbilityDescriptions : any[] = []; // list of observables
         const obsForkJoin1 = forkJoin(obsPokeInfo);
         
-        // forkJoin() then subscribe to re-sync async API requests and keep the order they were called in
-        // response[0] = pokeAPIService.getPokemon(), response[1] = pokeAPIService.getPokedexEntry()
         obsForkJoin1.subscribe((response : any) => {
           this.isLoading = true;
-          (<HTMLElement>document.querySelector(".slot-"+`${slotNum}`+"-input"))!.style.cssText = "display:none;";
-          (<HTMLElement>elSlotDiv!.querySelector(".slot-"+`${slotNum}`+"-info"))!.style.cssText = "display:none;";
+          (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`))!.style.cssText = "display:none;";
+          (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:none;";
           (<HTMLElement>elSlotDiv!.querySelector(".remove-btn-wrapper"))!.style.cssText = "display:inline-block;";
           elSlotDiv!.querySelector(".invalid-pokemon")!.innerHTML = "";
           // Pokemon Name
           elSlotDiv!.querySelector("#poke-name")!.innerHTML = pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
           // Pokemon Sprites
-          setFrontSprite(response[0], <HTMLElement>elSlotDiv!.querySelector("#front-sprite"));
+          setFrontSprite(response[0], <HTMLElement>elSlotDiv!.querySelector(`#slot-${slotNum}-sprite`), slotNum);
           // Pokemon Types
           let pokeTypes : string[] = [];
           response[0].types.forEach((item : any, index : number) => pokeTypes.push(response[0].types[index].type.name));
           setTypes(pokeTypes, <HTMLElement>elSlotDiv!.querySelector(".teams-type-wrapper"));
           // Pokemon Abilities
+          document.getElementById("slot-1-abilities")!.innerHTML = "";
           let elPokeAbilities = elSlotDiv!.querySelector("#poke-abilities");
-      
-          // Pokemon Stats (most recent generation)
-          //setStats(response[0], "search", slotNum);
 
           // Pokemon Abilties | wait for abilities response, then make poke-info div visible to avoid pop-in
           for (let [index, ability] of response[0].abilities.entries()){
@@ -96,7 +106,8 @@ export class CreateTeamComponent {
           // Nested forkJoin()
           let obsForkJoin2 = forkJoin(obsAbilityDescriptions);
           obsForkJoin2.subscribe((response : any[]) => {
-            (<HTMLElement>elSlotDiv!.querySelector(".slot-"+`${slotNum}`+"-info"))!.style.cssText = "display:flex;";
+            (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
+            setAbilityTooltipTeams(response[0].name, response[0].effect_entries[1].short_effect, slotNum);
             for (let [index, ability] of response.entries()){
               try{
                 setAbilitiesTeams(ability.name, ability.effect_entries[1].short_effect, slotNum);
@@ -110,14 +121,17 @@ export class CreateTeamComponent {
             this.isLoading = false;
           },
           (error: any) =>{
-            (<HTMLElement>elSlotDiv!.querySelector(".slot-"+`${slotNum}`+"-info"))!.style.cssText = "display:flex;";
+            (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
             console.log("nested subscribe ability desc error");
             this.isLoading = false;
           });
+
+          // Pokemon Stats (most recent generation)
+          //setStats(response[0], "search", slotNum);
           
         },
         (error: any) =>{
-          (<HTMLElement>elSlotDiv!.querySelector(".slot-"+`${slotNum}`+"-info"))!.style.cssText = "display:none;";
+          (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:none;";
           document.getElementById("slot"+`${slotNum}`)!.querySelector(".invalid-pokemon")!.innerHTML = "Pokémon does not exist!";
           console.log("Pokémon not found")
           this.isLoading = false;

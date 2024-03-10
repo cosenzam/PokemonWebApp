@@ -5,7 +5,7 @@
         <div class="party-group">
             <div id="slot-1">
                 <div class="slot-1-box" (click)="onClickAddMember(1)">+</div>
-    
+
                 <div class="slot-1-input">
                     <div class="search-input-wrapper">
                         <span>
@@ -29,7 +29,8 @@
 
                     <div class="teams-group">
                         <div id="slot-1-sprite">
-                            <img id="front-sprite" src="">
+                            <img id="sprite-default" src="">
+                            <img id="sprite-shiny" src="">
                         </div>
 
                         <div class="teams-subgroup">
@@ -41,7 +42,7 @@
                                 </div>
 
                                 <div class="shiny-checkbox-wrapper width-100">
-                                    <div>Shiny?<input type="checkbox"></div>
+                                    <div>Shiny?<input id="slot-1-shiny" type="checkbox" (change)="onChangeShinyToggle(1)"><label for="shiny"></label></div>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +53,9 @@
                         <span id="poke-abilities">Ability:</span>
                         <span>
                             <select #ability id="slot-1-abilities" (change)="onChangeAbilities(1, ability.value)"></select>
-                            <span id="slot-1-ability-desc">?</span>
+                            <span id="slot-1-ability-desc">?
+                                <span class="ability-tooltip-text"></span>
+                            </span>
                         </span>
                     </div>
                     
