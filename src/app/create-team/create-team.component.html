@@ -49,15 +49,68 @@
 
                     </div>
 
-                    <div>
-                        <span id="poke-abilities">Ability:</span>
-                        <span>
-                            <select #ability id="slot-1-abilities" (change)="onChangeAbilities(1, ability.value)"></select>
-                            <span id="slot-1-ability-desc">?
-                                <span class="ability-tooltip-text"></span>
-                            </span>
-                        </span>
+                    <div class="dropdown-group">
+
+                        <div id="poke-abilities">
+                            <label class="dropdown-label">Ability:</label>
+                            <div>
+                                <select #slot_1_ability id="slot-1-abilities" class="md-dropdown" (change)="onChangeAbilities(1, slot_1_ability.value)"></select>
+                                <div id="slot-1-ability-tooltip" class="teams-ability-tooltip">?
+                                    <span class="ability-tooltip-text"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="poke-nature">
+                            <label class="dropdown-label">Nature:</label>
+                            <div>
+                                <select #slot_1_nature id="slot-1-natures" class="md-dropdown" (change)="onChangeNature(1, slot_1_nature.value)"></select>
+                                <div id="slot-1-nature-tooltip" class="teams-nature-tooltip">?
+                                    <span class="nature-tooltip-text"></span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <div id="poke-moves" class="width-100">
+
+                        <div class="dropdown-group">
+                            <div>
+                                <label class="dropdown-label">Moves:</label>
+                                <select #slot_1_move_1 id="slot-1-move-1" class="md-dropdown" (change)="onChangeMoves(1, 1, slot_1_move_1.value)"></select>
+                                <div id="slot-1-move-1-tooltip" class="teams-move-tooltip">?
+                                    <span class="move-1-tooltip-text"></span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <select #slot_1_move_2 id="slot-1-move-2" class="md-dropdown" (change)="onChangeMoves(1, 2, slot_1_move_2.value)"></select>
+                                <div id="slot-1-move-2-tooltip" class="teams-move-tooltip">?
+                                    <span class="move-2-tooltip-text"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dropdown-group">
+                            <div>
+                                <select #slot_1_move_3 id="slot-1-move-3" class="md-dropdown" (change)="onChangeMoves(1, 3, slot_1_move_3.value)"></select>
+                                <div id="slot-1-move-3-tooltip" class="teams-move-tooltip">?
+                                    <span class="move-3-tooltip-text"></span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <select #slot_1_move_4 id="slot-1-move-4" class="md-dropdown" (change)="onChangeMoves(1, 4, slot_1_move_4.value)"></select>
+                                <div id="slot-1-move-4-tooltip" class="teams-move-tooltip">?
+                                    <span class="move-4-tooltip-text"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                 
                     
                     <div id="slot-1-stats">
                         <div class="stat-hp">

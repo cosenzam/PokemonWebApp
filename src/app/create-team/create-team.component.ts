@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { Pokemon } from '../interface/pokemon';
-import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilityTooltipTeams, setAbilitiesTeams } from '../modules/info-module';
-import { pokeNatures } from '../globals/global-constants';
+import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilitiesTeams, setNatures, setTeamsTooltip, setMoves } from '../modules/info-module';
 import { forkJoin} from 'rxjs';
 
 @Component({
@@ -42,13 +41,6 @@ export class CreateTeamComponent {
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`)).style.cssText = "display:flex;";
   }
 
-  // when option on dropdown is clicked, show ability description when hovering ? symbol
-  onChangeAbilities(slotNum : number, abilityName : string) : void{
-    let abilityDescription = this.abilityDescriptions.get(abilityName);
-    console.log(abilityName, abilityDescription);
-    setAbilityTooltipTeams(abilityName, abilityDescription, slotNum);
-  }
-
   onChangeShinyToggle(slotNum : number){
     let elCheckbox = <HTMLInputElement>document.getElementById(`slot-${slotNum}-shiny`);
     let elSpriteDefault = <HTMLElement>document.querySelector(`#slot-${slotNum}-sprite`)!.querySelector("#sprite-default");
@@ -61,6 +53,21 @@ export class CreateTeamComponent {
       elSpriteDefault!.style.cssText = "display:flex;justify-content:space-between;";
       elSpriteShiny!.style.cssText = "display:none;justify-content:space-between;";
     }
+  }
+
+  // when option on dropdown is clicked, show ability description when hovering ? symbol
+  onChangeAbilities(slotNum : number, abilityName : string) : void{
+    let abilityDescription = this.abilityDescriptions.get(abilityName);
+    //console.log(abilityName, abilityDescription);
+    setTeamsTooltip("ability", slotNum, abilityDescription, "");
+  }
+
+  onChangeNature(slotNum : number, natureName : string){
+    setTeamsTooltip("nature", slotNum, "", natureName);
+  }
+
+  onChangeMoves(slotNum : number, moveNum : number, moveName : string){
+
   }
 
   onSubmit(slotNum : number, formPokeName : FormControl): void{
@@ -80,6 +87,10 @@ export class CreateTeamComponent {
 
         let obsAbilityDescriptions : any[] = []; // list of observables
         const obsForkJoin1 = forkJoin(obsPokeInfo);
+
+        // Natures
+        setNatures(elSlotDiv, slotNum); // * can create a flag to not set these static values every time
+        setTeamsTooltip("nature", slotNum, "", "hardy");
         
         obsForkJoin1.subscribe((response : any) => {
           this.isLoading = true;
@@ -99,6 +110,9 @@ export class CreateTeamComponent {
           document.getElementById("slot-1-abilities")!.innerHTML = "";
           let elPokeAbilities = elSlotDiv!.querySelector("#poke-abilities");
 
+          // Pokemon Moves
+          setMoves(response, elSlotDiv!);
+
           // Pokemon Abilties | wait for abilities response, then make poke-info div visible to avoid pop-in
           for (let [index, ability] of response[0].abilities.entries()){
             obsAbilityDescriptions.push(this.pokeAPIService.getAbilityInfo(ability.ability.url));
@@ -107,7 +121,7 @@ export class CreateTeamComponent {
           let obsForkJoin2 = forkJoin(obsAbilityDescriptions);
           obsForkJoin2.subscribe((response : any[]) => {
             (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
-            setAbilityTooltipTeams(response[0].name, response[0].effect_entries[1].short_effect, slotNum);
+            setTeamsTooltip("ability", slotNum, response[0].effect_entries[1].short_effect, "");
             for (let [index, ability] of response.entries()){
               try{
                 setAbilitiesTeams(ability.name, ability.effect_entries[1].short_effect, slotNum);

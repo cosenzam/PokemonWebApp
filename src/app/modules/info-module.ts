@@ -1,5 +1,94 @@
 import { pokeNatures, pokeForms} from "../globals/global-constants";
 
+// General Functions
+export function correctPokemonForms(pokeName : string){
+    // pokemon with multiple forms such as Giratina have different valid request params e.g /pokemon/giratina-altered and /pokemon-species/giratina
+    
+    // get list from pokeForms if in Map
+    if (pokeForms.get(pokeName)){
+        return pokeForms.get(pokeName);
+    }
+    else{
+        return [pokeName, pokeName, pokeName.charAt(0).toUpperCase() + pokeName.slice(1)];
+    }
+}
+
+export function toHyphenFormat(pokeName : string) : string{
+    // correct names like mr. mime to mr-mime, mr. rime, chien pao to chien-pao, porygon z to porygon-z, jangmo-o line, farfetch'd, sirfetch'd
+    // kyurem, deoxys, meowstic-male, meowstic-female, zygarde, hoopa, rotom, castform, tauros, basculin,
+    // giratina, dialga, palkia, shaymin, darmanitan, genie legendaries, enamorus, keldeo, hoopa, meloetta, urshifu,
+    // oricorio, lycanroc, wishiwashi, mimkyu, necrozma, cramorant, toxtricity, eiscue, indeedee, calyrex, oinkologne
+    // palafin, gimmighoul, ogerpon, wormadam
+
+    // special colors: minior, squawkabilly, maushold, tatsugiri, dudunsparce, gourgeist
+
+    let formMap = new Map([
+        ["alolan", "alola"],
+        ["galarian", "galar"],
+        ["hisuian", "hisui"],
+        ["paldean", "paldea"],
+    ]);
+    
+    // remove punctuation
+    let lstPunctuation = [".", "'"];
+    let index = 0;
+    for(let char of pokeName){
+        if(char == "("){ // remove parenthesis from datalist values
+            pokeName = pokeName.slice(0, index - 1);
+        }
+        else if(lstPunctuation.includes(char)){
+            pokeName = pokeName.replace(char, "");
+        }
+        index++;
+    }
+
+    let lstWords = pokeName.split(" ");
+    if(formMap.get(lstWords[0])){
+        lstWords.push(`${formMap.get(lstWords[0])}`);
+        lstWords.shift();
+    }
+    pokeName = lstWords.join("-");
+    
+    console.log(pokeName);
+    
+    return pokeName;
+}
+
+// set css attributes depending on the pokemon types
+export function setTypes(pokeTypes : string[], elTypeDiv: HTMLElement) {
+
+    if (pokeTypes.length < 2){
+        // remove type 2 bg if not dual type
+        (<HTMLElement>elTypeDiv.querySelector("#type2"))!.style.cssText = "display: none;";
+        elTypeDiv.querySelector("#type2")!.innerHTML = "";
+    }
+    else{
+        (<HTMLElement>elTypeDiv.querySelector("#type2"))!.style.cssText = "display: inline-block;";
+    }
+
+    let i = 0; // shouldnt use a loop because there can only be 1 or 2 types, oh well
+    while (i < pokeTypes.length){
+        let element = "#type" + (i + 1)
+        let type = pokeTypes[i];
+        elTypeDiv.querySelector(element)!.setAttribute("class", `${type} type-container`);
+        elTypeDiv.querySelector(element)!.innerHTML = pokeTypes[i].charAt(0).toUpperCase() + pokeTypes[i].slice(1);
+        i++;
+    }
+}
+
+export function autocompletePokedex(nationalPokedex : Map<any, any>){
+    // append to data list element
+    nationalPokedex.forEach((index: any, item: any) => {
+        // create option
+        let elOption = document.createElement("option");
+        elOption.setAttribute("label", "#" + index + ". ");
+        elOption.setAttribute("value", correctPokemonForms(item)![2]);
+        // append option to pokemon-list
+        document.getElementById("pokemon-list")?.appendChild(elOption);
+    });
+}
+
+//Search Functions
 export function setSprites(response : any) {
     // prevent invalid images from entering document
     /* can shorten with Map(["front-Sprite", response.sprites.front_default], ["back-Sprite", response.sprites.back_default]...)
@@ -51,37 +140,6 @@ export function setSprites(response : any) {
     }
 }
 
-export function setFrontSprite(response : any, elSpriteDiv : HTMLElement, slotNum : number, shiny : boolean = false){
-    let elSpriteDefault = <HTMLElement>elSpriteDiv!.querySelector("#sprite-default");
-    elSpriteDefault!.setAttribute('src', response.sprites.front_default);
-    elSpriteDefault!.style.cssText = "display:flex;justify-content:space-between;";
-
-    let elSpriteShiny = <HTMLElement>elSpriteDiv!.querySelector("#sprite-shiny");
-    elSpriteShiny!.setAttribute('src', response.sprites.front_shiny);
-}
-
-// set css attributes depending on the pokemon types
-export function setTypes(pokeTypes : string[], elTypeDiv: HTMLElement) {
-
-    if (pokeTypes.length < 2){
-        // remove type 2 bg if not dual type
-        (<HTMLElement>elTypeDiv.querySelector("#type2"))!.style.cssText = "display: none;";
-        elTypeDiv.querySelector("#type2")!.innerHTML = "";
-    }
-    else{
-        (<HTMLElement>elTypeDiv.querySelector("#type2"))!.style.cssText = "display: inline-block;";
-    }
-
-    let i = 0; // shouldnt use a loop because there can only be 1 or 2 types, oh well
-    while (i < pokeTypes.length){
-        let element = "#type" + (i + 1)
-        let type = pokeTypes[i];
-        elTypeDiv.querySelector(element)!.setAttribute("class", `${type} type-container`);
-        elTypeDiv.querySelector(element)!.innerHTML = pokeTypes[i].charAt(0).toUpperCase() + pokeTypes[i].slice(1);
-        i++;
-    }
-}
-
 // response.stats[0] - [5] and lstStatElements[0] - [5] = hp, atk, def, spatk, spdef, spd
 export function setStats(response : any, route : string, slotNum : number = 0){
     if (route == "search"){ 
@@ -130,35 +188,6 @@ export function setStats(response : any, route : string, slotNum : number = 0){
     (<HTMLElement>lstStatElements[5]!.children[1].children[0]).innerText = `${response.stats[5].base_stat}`;
 }
 
-export function setAbilitiesTeams(abilityName : string, abilityDescription : string = "", slotNum : number){
-    // select tag
-    let elSelectAbility = document.getElementById(`slot-${slotNum}-abilities`);
-    /*
-    if (element.hasChildNodes()){
-        // remove ALL child nodes
-        element.innerHTML = "";
-    }
-    */
-
-    // append options to select for each ability
-    let option = document.createElement("option");
-    option.text = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
-    option.value = abilityName;
-    elSelectAbility!.appendChild(option);
-}
-
-// change ability description to current <option> when hovering ? symbol
-export function setAbilityTooltipTeams(abilityName : string, abilityDescription : string = "", slotNum: number){
-    let elAbilityDesc = document.getElementById(`slot-${slotNum}-ability-desc`);
-    abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
-
-    let tooltipMarginLeft = -100 + (elAbilityDesc!.offsetWidth / 2);
-
-    let abilityTooltipText = <HTMLElement>elAbilityDesc!.querySelector(".ability-tooltip-text");
-    abilityTooltipText.innerText = abilityDescription;
-    abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
-}
-
 // ability name and tooltip for search
 export function setAbilityTooltip(abilityName : string, abilityDescription : string = "", isLastIndex : boolean = false, slotNum : number = 0){
     let element = document.getElementById("poke-abilities");
@@ -195,6 +224,7 @@ export function setPokedexEntry(entryDescription : string){
     element!.innerHTML = entryDescription;
 }
 
+// Pokedex Functions
 export function createCard(pokeName : string, pokedexNumber : number, pokeTypes : string[], spriteURL : string) : HTMLElement {
     // wrapper1 2 and 3 appended to elCardInner, elCard Inner appended to elCard
     let elCard = document.createElement("div");
@@ -286,75 +316,71 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     */
 }
 
-export function correctPokemonForms(pokeName : string){
-    // pokemon with multiple forms such as Giratina have different valid request params e.g /pokemon/giratina-altered and /pokemon-species/giratina
-    
-    // get list from pokeForms if in Map
-    if (pokeForms.get(pokeName)){
-        return pokeForms.get(pokeName);
+// Teams Functions
+export function setAbilitiesTeams(abilityName : string, abilityDescription : string = "", slotNum : number){
+    // select tag
+    let elSelectAbility = document.getElementById(`slot-${slotNum}-abilities`);
+    /*
+    if (element.hasChildNodes()){
+        // remove ALL child nodes
+        element.innerHTML = "";
     }
-    else{
-        return [pokeName, pokeName, pokeName.charAt(0).toUpperCase() + pokeName.slice(1)];
+    */
+
+    // append options to select for each ability
+    let option = document.createElement("option");
+    option.text = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
+    option.value = abilityName;
+    elSelectAbility!.appendChild(option);
+}
+
+export function setFrontSprite(response : any, elSpriteDiv : HTMLElement, slotNum : number, shiny : boolean = false){
+    let elSpriteDefault = <HTMLElement>elSpriteDiv!.querySelector("#sprite-default");
+    elSpriteDefault!.setAttribute('src', response.sprites.front_default);
+    elSpriteDefault!.style.cssText = "display:flex;justify-content:space-between;";
+
+    let elSpriteShiny = <HTMLElement>elSpriteDiv!.querySelector("#sprite-shiny");
+    elSpriteShiny!.setAttribute('src', response.sprites.front_shiny);
+}
+
+export function setNatures(elSlotDiv : any, slotNum : number){
+    let elSelectAbility = document.getElementById(`slot-${slotNum}-natures`);
+    for(let nature of pokeNatures.keys()){
+        let option = document.createElement("option");
+        option.text = nature.charAt(0).toUpperCase() + nature.slice(1);
+        option.value = nature;
+        elSelectAbility!.appendChild(option);
     }
 }
 
-export function toHyphenFormat(pokeName : string) : string{
-    // correct names like mr. mime to mr-mime, mr. rime, chien pao to chien-pao, porygon z to porygon-z, jangmo-o line, farfetch'd, sirfetch'd
-    // kyurem, deoxys, meowstic-male, meowstic-female, zygarde, hoopa, rotom, castform, tauros, basculin,
-    // giratina, dialga, palkia, shaymin, darmanitan, genie legendaries, enamorus, keldeo, hoopa, meloetta, urshifu,
-    // oricorio, lycanroc, wishiwashi, mimkyu, necrozma, cramorant, toxtricity, eiscue, indeedee, calyrex, oinkologne
-    // palafin, gimmighoul, ogerpon, wormadam
+// combine ability/nature/move functions
+export function setTeamsTooltip(tooltipName : string, slotNum : number, abilityDescription : string = "", natureName : string =""){
+    if (tooltipName == "ability"){
+        let elAbilityDesc = document.getElementById(`slot-${slotNum}-ability-tooltip`);
 
-    // special colors: minior, squawkabilly, maushold, tatsugiri, dudunsparce, gourgeist
+        let tooltipMarginLeft = -100 + (elAbilityDesc!.offsetWidth / 2);
 
-    let formMap = new Map([
-        ["alolan", "alola"],
-        ["galarian", "galar"],
-        ["hisuian", "hisui"],
-        ["paldean", "paldea"],
-    ]);
-    
-    // remove punctuation
-    let lstPunctuation = [".", "'"];
-    let index = 0;
-    for(let char of pokeName){
-        if(char == "("){ // remove parenthesis from datalist values
-            pokeName = pokeName.slice(0, index - 1);
-        }
-        else if(lstPunctuation.includes(char)){
-            pokeName = pokeName.replace(char, "");
-        }
-        index++;
+        let abilityTooltipText = <HTMLElement>elAbilityDesc!.querySelector(".ability-tooltip-text");
+        abilityTooltipText.innerText = abilityDescription;
+        abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
     }
+    else if (tooltipName == "nature"){
+        let elNatureDesc = document.getElementById(`slot-${slotNum}-nature-tooltip`);
+        let tooltipMarginLeft = -100 + (elNatureDesc!.offsetWidth / 2);
 
-    let lstWords = pokeName.split(" ");
-    if(formMap.get(lstWords[0])){
-        lstWords.push(`${formMap.get(lstWords[0])}`);
-        lstWords.shift();
+        let natureTooltipText = <HTMLElement>elNatureDesc!.querySelector(".nature-tooltip-text");
+        natureTooltipText.innerText = `${pokeNatures.get(natureName)![0]} up, ${pokeNatures.get(natureName)![1]} down`;
+        natureTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
     }
-    pokeName = lstWords.join("-");
-    
-    console.log(pokeName);
-    
-    return pokeName;
+    else {
+        console.log("invalid args")
+    }
 }
 
-export function autocompletePokedex(nationalPokedex : Map<any, any>){
-    // append to data list element
-    nationalPokedex.forEach((index: any, item: any) => {
-        // create option
-        let elOption = document.createElement("option");
-        elOption.setAttribute("label", "#" + index + ". ");
-        elOption.setAttribute("value", correctPokemonForms(item)![2]);
-        // append option to pokemon-list
-        document.getElementById("pokemon-list")?.appendChild(elOption);
-    });
-}
+export function setMoves(response: any, elSlotDiv : HTMLElement){
+    //console.log(response[0].moves);
+    for (let [index, move] of response[0].moves.entries()){
+        //console.log(move.move.name);
 
-export function setTeamsSprites(response : any){
-    return
-}
-
-export function toggleShiny(){
-    return
+    }
 }

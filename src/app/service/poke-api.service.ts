@@ -5,6 +5,7 @@ import { Pokemon } from '../interface/pokemon';
 import { AbilityInfo } from '../interface/ability-info';
 import { PokedexEntry } from '../interface/pokedex-entry';
 import { environment } from 'src/environments/environment';
+import { MoveInfo } from '../interface/move-info';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,10 @@ export class PokeAPIService {
 
   getAbilityInfo(abilityURL: string): Observable<AbilityInfo>{
     return this.http.get<AbilityInfo>(abilityURL);
+  }
+
+  getMoveInfo(moveURL: string) : Observable<MoveInfo>{
+    return this.http.get<MoveInfo>(moveURL);
   }
 
   getPokedexEntry(pokemonName: string | null): Observable<PokedexEntry>{
