@@ -1,6 +1,16 @@
 import { pokeNatures, pokeForms} from "../globals/global-constants";
 
-// General Functions
+// global vars
+let formMap = new Map([
+    ["alolan", "alola"],
+    ["galarian", "galar"],
+    ["hisuian", "hisui"],
+    ["paldean", "paldea"],
+]);
+
+let lstPunctuation = [".", "'"];
+
+// General Functions (non-page specific)
 export function correctPokemonForms(pokeName : string){
     // pokemon with multiple forms such as Giratina have different valid request params e.g /pokemon/giratina-altered and /pokemon-species/giratina
     
@@ -9,11 +19,11 @@ export function correctPokemonForms(pokeName : string){
         return pokeForms.get(pokeName);
     }
     else{
-        return [pokeName, pokeName, pokeName.charAt(0).toUpperCase() + pokeName.slice(1)];
+        return [pokeName, pokeName, capitalizeFirst(pokeName)];
     }
 }
 
-export function toHyphenFormat(pokeName : string) : string{
+export function toHyphenFormat(name : string) : string{
     // correct names like mr. mime to mr-mime, mr. rime, chien pao to chien-pao, porygon z to porygon-z, jangmo-o line, farfetch'd, sirfetch'd
     // kyurem, deoxys, meowstic-male, meowstic-female, zygarde, hoopa, rotom, castform, tauros, basculin,
     // giratina, dialga, palkia, shaymin, darmanitan, genie legendaries, enamorus, keldeo, hoopa, meloetta, urshifu,
@@ -21,37 +31,51 @@ export function toHyphenFormat(pokeName : string) : string{
     // palafin, gimmighoul, ogerpon, wormadam
 
     // special colors: minior, squawkabilly, maushold, tatsugiri, dudunsparce, gourgeist
-
-    let formMap = new Map([
-        ["alolan", "alola"],
-        ["galarian", "galar"],
-        ["hisuian", "hisui"],
-        ["paldean", "paldea"],
-    ]);
     
     // remove punctuation
-    let lstPunctuation = [".", "'"];
     let index = 0;
-    for(let char of pokeName){
+    for(let char of name){
         if(char == "("){ // remove parenthesis from datalist values
-            pokeName = pokeName.slice(0, index - 1);
+            name = name.slice(0, index - 1);
         }
         else if(lstPunctuation.includes(char)){
-            pokeName = pokeName.replace(char, "");
+            name = name.replace(char, "");
         }
         index++;
     }
 
-    let lstWords = pokeName.split(" ");
+    let lstWords = name.split(" ");
     if(formMap.get(lstWords[0])){
         lstWords.push(`${formMap.get(lstWords[0])}`);
         lstWords.shift();
     }
-    pokeName = lstWords.join("-");
     
-    console.log(pokeName);
-    
-    return pokeName;
+    name = lstWords.join("-");
+    return name;
+}
+
+export function removePunctuationCapitalize(name : string) : string{
+    // remove hyphen and capitalize every word in string
+    let lstWords = name.split("-");
+    if(formMap.get(lstWords[0])){
+        lstWords.push(`${formMap.get(lstWords[0])}`);
+        lstWords.shift();
+    }
+
+    for(let [index, word] of lstWords.entries()){
+        lstWords[index] = capitalizeFirst(word);
+    }
+
+    name = lstWords.join(" ");
+    return name;
+}
+
+export function capitalizeFirst(name : string) : string{
+    // capitalize first letter of a string
+    if (!(name.charCodeAt(0) > 47 && name.charCodeAt(0) < 58) ){
+        name = name.charAt(0).toUpperCase() + name.slice(1)
+    }
+    return name;
 }
 
 // set css attributes depending on the pokemon types
@@ -191,7 +215,6 @@ export function setStats(response : any, route : string, slotNum : number = 0){
 // ability name and tooltip for search
 export function setAbilityTooltip(abilityName : string, abilityDescription : string = "", isLastIndex : boolean = false, slotNum : number = 0){
     let element = document.getElementById("poke-abilities");
-    abilityName = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
     
     let abilityTooltip = document.createElement("span");
     /*
@@ -202,7 +225,7 @@ export function setAbilityTooltip(abilityName : string, abilityDescription : str
         abilityTooltip.innerText = abilityName;
     }
     */
-    abilityTooltip.innerText = abilityName; // not using commas for now
+    abilityTooltip.innerText = capitalizeFirst(abilityName); // not using commas for now
     abilityTooltip.setAttribute("class", "ability-tooltip");
 
     element!.appendChild(abilityTooltip);
@@ -243,7 +266,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     elPokedexNumber.innerText = "#" + pokedexNumber.toString();
 
     let elPokemonName = document.createElement("span");
-    elPokemonName.innerText = pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
+    elPokemonName.innerText = capitalizeFirst(pokeName);
 
     //sprite
     let elWrapper2 = document.createElement("div");
@@ -262,7 +285,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     elTypeWrapper.setAttribute("class", "types-wrapper");
 
     let elType1 = document.createElement("span");
-    elType1.innerText = pokeTypes[0].charAt(0).toUpperCase() + pokeTypes[0].slice(1);
+    elType1.innerText = capitalizeFirst(pokeTypes[0]);
     elType1.setAttribute("class", `${pokeTypes[0]} type-container`);
 
     // append header to card inner
@@ -278,7 +301,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     // add type2 if dual type
     if (pokeTypes.length == 2){
         let elType2 = document.createElement("span");
-        elType2.innerText = pokeTypes[1].charAt(0).toUpperCase() + pokeTypes[1].slice(1);
+        elType2.innerText = capitalizeFirst(pokeTypes[1]);
         elType2.setAttribute("class", `${pokeTypes[1]} type-container`);
         elTypeWrapper.appendChild(elType2);
     }
@@ -328,10 +351,10 @@ export function setAbilitiesTeams(abilityName : string, abilityDescription : str
     */
 
     // append options to select for each ability
-    let option = document.createElement("option");
-    option.text = abilityName.charAt(0).toUpperCase() + abilityName.slice(1);
-    option.value = abilityName;
-    elSelectAbility!.appendChild(option);
+    let elOption = document.createElement("option");
+    elOption.text = capitalizeFirst(abilityName);
+    elOption.value = abilityName;
+    elSelectAbility!.appendChild(elOption);
 }
 
 export function setFrontSprite(response : any, elSpriteDiv : HTMLElement, slotNum : number, shiny : boolean = false){
@@ -347,40 +370,67 @@ export function setNatures(elSlotDiv : any, slotNum : number){
     let elSelectAbility = document.getElementById(`slot-${slotNum}-natures`);
     for(let nature of pokeNatures.keys()){
         let option = document.createElement("option");
-        option.text = nature.charAt(0).toUpperCase() + nature.slice(1);
+        option.text = capitalizeFirst(nature);
         option.value = nature;
         elSelectAbility!.appendChild(option);
     }
 }
 
-// combine ability/nature/move functions
-export function setTeamsTooltip(tooltipName : string, slotNum : number, abilityDescription : string = "", natureName : string =""){
-    if (tooltipName == "ability"){
-        let elAbilityDesc = document.getElementById(`slot-${slotNum}-ability-tooltip`);
-
-        let tooltipMarginLeft = -100 + (elAbilityDesc!.offsetWidth / 2);
-
-        let abilityTooltipText = <HTMLElement>elAbilityDesc!.querySelector(".ability-tooltip-text");
-        abilityTooltipText.innerText = abilityDescription;
-        abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
-    }
-    else if (tooltipName == "nature"){
-        let elNatureDesc = document.getElementById(`slot-${slotNum}-nature-tooltip`);
-        let tooltipMarginLeft = -100 + (elNatureDesc!.offsetWidth / 2);
-
-        let natureTooltipText = <HTMLElement>elNatureDesc!.querySelector(".nature-tooltip-text");
-        natureTooltipText.innerText = `${pokeNatures.get(natureName)![0]} up, ${pokeNatures.get(natureName)![1]} down`;
-        natureTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
-    }
-    else {
-        console.log("invalid args")
-    }
+export function setTeamsAbilityTooltip(slotNum : number, abilityDescription : string = ""){
+    let elAbilityDesc = document.getElementById(`slot-${slotNum}-ability-tooltip`);
+    let tooltipMarginLeft = -100 + (elAbilityDesc!.offsetWidth / 2);
+    let abilityTooltipText = <HTMLElement>elAbilityDesc!.querySelector(".ability-tooltip-text");
+    abilityTooltipText.innerText = abilityDescription;
+    abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
 }
 
-export function setMoves(response: any, elSlotDiv : HTMLElement){
+export function setTeamsNatureTooltip(slotNum : number, natureName : string = ""){
+    let elNatureDesc = document.getElementById(`slot-${slotNum}-nature-tooltip`);
+    let tooltipMarginLeft = -100 + (elNatureDesc!.offsetWidth / 2);
+    let natureTooltipText = <HTMLElement>elNatureDesc!.querySelector(".nature-tooltip-text");
+    natureTooltipText.innerText = `${pokeNatures.get(natureName)![0]} up, ${pokeNatures.get(natureName)![1]} down`;
+    natureTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+}
+
+export function setMoves(response: any, slotNum : number, elMovesDiv : HTMLElement){
     //console.log(response[0].moves);
     for (let [index, move] of response[0].moves.entries()){
         //console.log(move.move.name);
+        // append all moves as options to all 4 select tags
+        for(let i = 0; i <= 3; i++){
 
+            let moveName = removePunctuationCapitalize(move.move.name);
+
+            let elOption = document.createElement("option");
+            elOption.text = capitalizeFirst(moveName);
+            elOption.value = move.move.name;
+
+            let elSelectMove = elMovesDiv.querySelector(`#slot-${slotNum}-move-${i + 1}`);
+            elSelectMove!.appendChild(elOption);
+        }      
     }
+    // set tooltip margin
+    for(let i = 0; i <= 3; i++){
+        let elMoveDesc = document.getElementById(`slot-${slotNum}-move-${i + 1}-tooltip`);
+        let tooltipMarginLeft = -100 + (elMoveDesc!.offsetWidth / 2);
+        let abilityTooltipText = <HTMLElement>elMoveDesc!.querySelector(".move-tooltip-text");
+        abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+    }
+}
+
+export function setMoveTooltip(moveDescription : any, slotNum : number, moveNum : number){
+    let elMoveDesc = document.getElementById(`slot-${slotNum}-move-${moveNum}-tooltip`);
+    let tooltipMarginLeft = -100 + (elMoveDesc!.offsetWidth / 2);
+    let abilityTooltipText = <HTMLElement>elMoveDesc!.querySelector(".move-tooltip-text");
+    abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+    // type
+    let elTypeDiv = <HTMLElement>abilityTooltipText.querySelector(".type-container");
+    elTypeDiv.innerText = capitalizeFirst(moveDescription.type.name);
+    elTypeDiv.setAttribute("class", `type-container ${moveDescription.type.name}`);
+    // pp
+    (<HTMLElement>abilityTooltipText.querySelector(".pp")).innerText = moveDescription.pp;
+    // accuracy
+    (<HTMLElement>abilityTooltipText.querySelector(".accuracy")).innerText = moveDescription.accuracy + "%";
+    // description
+    (<HTMLElement>abilityTooltipText.querySelector(".move-description")).innerText = moveDescription.effect_entries[0].effect;
 }

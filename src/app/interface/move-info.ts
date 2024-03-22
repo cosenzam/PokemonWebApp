@@ -6,5 +6,5 @@ export interface MoveInfo {
     pp: number;
     priority: number;
     stat_changes: any[];
-    effect_entries: {effect: string};
+    effect_entries: any[];
 }

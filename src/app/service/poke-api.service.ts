@@ -24,8 +24,8 @@ export class PokeAPIService {
     return this.http.get<AbilityInfo>(abilityURL);
   }
 
-  getMoveInfo(moveURL: string) : Observable<MoveInfo>{
-    return this.http.get<MoveInfo>(moveURL);
+  getMoveInfo(moveName: string) : Observable<MoveInfo>{
+    return this.http.get<MoveInfo>(`${this.apiURL}move/${moveName}`);
   }
 
   getPokedexEntry(pokemonName: string | null): Observable<PokedexEntry>{
