@@ -104,6 +104,7 @@ export class CreateTeamComponent {
         //console.log(pokeName);
         this.lastSearch = pokeName;
         var elSlotDiv = document.getElementById("slot-"+`${slotNum}`);
+        (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
 
         // correct names for pokemon with different forms
         const lstPokeNames = correctPokemonForms(pokeName);
@@ -120,7 +121,7 @@ export class CreateTeamComponent {
         obsForkJoin1.subscribe((response : any) => {
           this.isLoading = true;
           (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`))!.style.cssText = "display:none;";
-          (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:none;";
+          //(<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:none;";
           (<HTMLElement>elSlotDiv!.querySelector(".remove-btn-wrapper"))!.style.cssText = "display:inline-block;";
           elSlotDiv!.querySelector(".invalid-pokemon")!.innerHTML = "";
           // Pokemon Name
@@ -145,7 +146,7 @@ export class CreateTeamComponent {
           // Nested forkJoin()
           let obsForkJoin2 = forkJoin(obsAbilityDescriptions);
           obsForkJoin2.subscribe((response : any[]) => {
-            (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
+            //(<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
             setTeamsAbilityTooltip(slotNum, response[0].effect_entries[1].short_effect);
             for (let [index, ability] of response.entries()){
               try{
@@ -160,7 +161,7 @@ export class CreateTeamComponent {
             this.isLoading = false;
           },
           (error: any) =>{
-            (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
+            //(<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
             console.log("nested subscribe ability desc error");
             this.isLoading = false;
           });
@@ -170,7 +171,7 @@ export class CreateTeamComponent {
           
         },
         (error: any) =>{
-          (<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:none;";
+          //(<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:none;";
           document.getElementById("slot"+`${slotNum}`)!.querySelector(".invalid-pokemon")!.innerHTML = "Pokémon does not exist!";
           console.log("Pokémon not found")
           this.isLoading = false;

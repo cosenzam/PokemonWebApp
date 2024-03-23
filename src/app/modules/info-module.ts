@@ -216,7 +216,7 @@ export function setStats(response : any, route : string, slotNum : number = 0){
 export function setAbilityTooltip(abilityName : string, abilityDescription : string = "", isLastIndex : boolean = false, slotNum : number = 0){
     let element = document.getElementById("poke-abilities");
     
-    let abilityTooltip = document.createElement("span");
+    let elAbilityTooltip = document.createElement("span");
     /*
     if (!isLastIndex){ // not working every time because subscribe can return out of order/async! ****
         abilityTooltip.innerText = abilityName + ","; // using margin instead of spaces after each ","
@@ -225,19 +225,20 @@ export function setAbilityTooltip(abilityName : string, abilityDescription : str
         abilityTooltip.innerText = abilityName;
     }
     */
-    abilityTooltip.innerText = capitalizeFirst(abilityName); // not using commas for now
-    abilityTooltip.setAttribute("class", "ability-tooltip");
+    elAbilityTooltip.innerText = capitalizeFirst(abilityName); // not using commas for now
+    elAbilityTooltip.setAttribute("class", "ability-tooltip");
 
-    element!.appendChild(abilityTooltip);
-    // calculate abilityTooltipText's margin-left to center tooltip under parent
-    let tooltipMarginLeft = -100 + (abilityTooltip.offsetWidth / 2);
+    element!.appendChild(elAbilityTooltip);
 
     if (abilityDescription){
-        let abilityTooltipText = document.createElement("span");
-        abilityTooltipText.innerText = abilityDescription;
-        abilityTooltipText.setAttribute("class", "ability-tooltip-text");
-        abilityTooltip.appendChild(abilityTooltipText);
-        abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+        let elAbilityTooltipText = document.createElement("span");
+        elAbilityTooltipText.innerText = abilityDescription;
+        elAbilityTooltipText.setAttribute("class", "ability-tooltip-text");
+        elAbilityTooltip.appendChild(elAbilityTooltipText);
+        elAbilityTooltipText.style.display = "flex";
+        let tooltipMarginLeft = -(elAbilityTooltipText!.offsetWidth / 2) + elAbilityTooltip!.offsetWidth / 2;
+        elAbilityTooltipText.style.display = "none";
+        elAbilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
     }
 
 }
@@ -377,19 +378,23 @@ export function setNatures(elSlotDiv : any, slotNum : number){
 }
 
 export function setTeamsAbilityTooltip(slotNum : number, abilityDescription : string = ""){
-    let elAbilityDesc = document.getElementById(`slot-${slotNum}-ability-tooltip`);
-    let tooltipMarginLeft = -100 + (elAbilityDesc!.offsetWidth / 2);
-    let abilityTooltipText = <HTMLElement>elAbilityDesc!.querySelector(".ability-tooltip-text");
-    abilityTooltipText.innerText = abilityDescription;
-    abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+    let elAbilityTooltip = document.getElementById(`slot-${slotNum}-ability-tooltip`);
+    let elAbilityTooltipText = <HTMLElement>elAbilityTooltip!.querySelector(".ability-tooltip-text");
+    elAbilityTooltipText.innerText = abilityDescription;
+    elAbilityTooltipText.style.display = "flex";
+    let tooltipMarginLeft = -(elAbilityTooltipText!.offsetWidth / 2) + (elAbilityTooltip!.offsetWidth / 2);
+    elAbilityTooltipText.style.display = "none";
+    elAbilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
 }
 
 export function setTeamsNatureTooltip(slotNum : number, natureName : string = ""){
-    let elNatureDesc = document.getElementById(`slot-${slotNum}-nature-tooltip`);
-    let tooltipMarginLeft = -100 + (elNatureDesc!.offsetWidth / 2);
-    let natureTooltipText = <HTMLElement>elNatureDesc!.querySelector(".nature-tooltip-text");
-    natureTooltipText.innerText = `${pokeNatures.get(natureName)![0]} up, ${pokeNatures.get(natureName)![1]} down`;
-    natureTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+    let elNatureTooltip = document.getElementById(`slot-${slotNum}-nature-tooltip`);
+    let elNatureTooltipText = <HTMLElement>elNatureTooltip!.querySelector(".nature-tooltip-text");
+    elNatureTooltipText.innerText = `${pokeNatures.get(natureName)![0]} up, ${pokeNatures.get(natureName)![1]} down`;
+    elNatureTooltipText.style.display = "flex";
+    let tooltipMarginLeft = -(elNatureTooltipText!.offsetWidth / 2) + (elNatureTooltip!.offsetWidth / 2);
+    elNatureTooltipText.style.display = "none";
+    elNatureTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
 }
 
 export function setMoves(response: any, slotNum : number, elMovesDiv : HTMLElement){
@@ -411,26 +416,31 @@ export function setMoves(response: any, slotNum : number, elMovesDiv : HTMLEleme
     }
     // set tooltip margin
     for(let i = 0; i <= 3; i++){
-        let elMoveDesc = document.getElementById(`slot-${slotNum}-move-${i + 1}-tooltip`);
-        let tooltipMarginLeft = -100 + (elMoveDesc!.offsetWidth / 2);
-        let abilityTooltipText = <HTMLElement>elMoveDesc!.querySelector(".move-tooltip-text");
-        abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+        let elMoveTooltip = document.getElementById(`slot-${slotNum}-move-${i + 1}-tooltip`);
+        let elMoveTooltipText = <HTMLElement>elMoveTooltip!.querySelector(".move-tooltip-text");
+        elMoveTooltipText.style.display = "flex";
+        let tooltipMarginLeft = -(elMoveTooltipText!.offsetWidth / 2) + (elMoveTooltip!.offsetWidth / 2);
+        elMoveTooltipText.style.display = "none";
+        elMoveTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
     }
 }
 
 export function setMoveTooltip(moveDescription : any, slotNum : number, moveNum : number){
-    let elMoveDesc = document.getElementById(`slot-${slotNum}-move-${moveNum}-tooltip`);
-    let tooltipMarginLeft = -100 + (elMoveDesc!.offsetWidth / 2);
-    let abilityTooltipText = <HTMLElement>elMoveDesc!.querySelector(".move-tooltip-text");
-    abilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+    let elMoveTooltip = document.getElementById(`slot-${slotNum}-move-${moveNum}-tooltip`);
+    let elMoveTooltipText = <HTMLElement>elMoveTooltip!.querySelector(".move-tooltip-text");
     // type
-    let elTypeDiv = <HTMLElement>abilityTooltipText.querySelector(".type-container");
+    let elTypeDiv = <HTMLElement>elMoveTooltipText.querySelector(".type-container");
     elTypeDiv.innerText = capitalizeFirst(moveDescription.type.name);
     elTypeDiv.setAttribute("class", `type-container ${moveDescription.type.name}`);
     // pp
-    (<HTMLElement>abilityTooltipText.querySelector(".pp")).innerText = moveDescription.pp;
+    (<HTMLElement>elMoveTooltipText.querySelector(".pp")).innerText = moveDescription.pp;
     // accuracy
-    (<HTMLElement>abilityTooltipText.querySelector(".accuracy")).innerText = moveDescription.accuracy + "%";
+    (<HTMLElement>elMoveTooltipText.querySelector(".accuracy")).innerText = moveDescription.accuracy + "%";
     // description
-    (<HTMLElement>abilityTooltipText.querySelector(".move-description")).innerText = moveDescription.effect_entries[0].effect;
+    //(<HTMLElement>elMoveTooltipText.querySelector(".move-description")).innerText = moveDescription.effect_entries[0].effect;
+    (<HTMLElement>elMoveTooltipText.querySelector(".move-description")).innerText = moveDescription.effect_entries[0].short_effect;
+    elMoveTooltipText.style.display = "flex";
+    let tooltipMarginLeft = -(elMoveTooltipText!.offsetWidth / 2) + (elMoveTooltip!.offsetWidth / 2);
+    elMoveTooltipText.style.display = "none";
+    elMoveTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
 }

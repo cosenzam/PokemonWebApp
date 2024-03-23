@@ -55,6 +55,8 @@ export class PokemonSearchComponent implements OnInit{
         let obsPokeInfo : any;
         let obsPokedexEntry : any;
 
+        document.getElementById("poke-info-search")!.style.cssText = "display:flex;";
+
         // correct names for pokemon with different forms
         const lstPokeNames = correctPokemonForms(pokeName);
         pokeName = lstPokeNames![2];
@@ -63,13 +65,13 @@ export class PokemonSearchComponent implements OnInit{
 
         let obsAbilityDescriptions : any[] = []; // list of observables
         const obsForkJoin1 = forkJoin([obsPokeInfo, obsPokedexEntry]);
-        
+
         // forkJoin() then subscribe to re-sync async API requests and keep the order they were called in
         // response[0] = pokeAPIService.getPokemon(), response[1] = pokeAPIService.getPokedexEntry()
         obsForkJoin1.subscribe((response : any[]) => {
           this.isLoading = true;
           // avoid async ability pop in while ability request is being received
-          document.getElementById("poke-info-search")!.style.cssText = "display:none;";
+          //document.getElementById("poke-info-search")!.style.cssText = "display:none;";
 
           // remove text if previous input was invalid
           (<HTMLElement>document.querySelector(".invalid-pokemon"))!.innerHTML = "";
@@ -110,7 +112,7 @@ export class PokemonSearchComponent implements OnInit{
           // Nested forkJoin()
           let obsForkJoin2 = forkJoin(obsAbilityDescriptions);
           obsForkJoin2.subscribe((response : any[]) => {
-            document.getElementById("poke-info-search")!.style.cssText = "display:flex;";
+            //document.getElementById("poke-info-search")!.style.cssText = "display:flex;";
             for (let [index, ability] of response.entries()){
               try{
                 setAbilityTooltip(ability.name, ability.effect_entries[1].short_effect);
@@ -123,7 +125,7 @@ export class PokemonSearchComponent implements OnInit{
             this.isLoading = false;
           },
           (error: any) =>{
-            document.getElementById("poke-info-search")!.style.cssText = "display:flex;";
+            //document.getElementById("poke-info-search")!.style.cssText = "display:flex;";
             console.log("nested subscribe ability desc error");
             this.isLoading = false;
           });

@@ -356,16 +356,24 @@ input[type="checkbox"]{
     text-align: center;
     position: absolute;
     z-index: 1;
-    width: 200px;
     background-color: #52525b;
     border-radius: 5px;
     margin-top: 10px;
+    width: max-content; 
+    min-width: 200px;
+    max-width: 400px;
 }
 
 .ability-tooltip:hover .ability-tooltip-text, .teams-ability-tooltip:hover .ability-tooltip-text, .teams-nature-tooltip:hover .nature-tooltip-text, .teams-move-tooltip:hover .move-tooltip-text{
     display: flex;
 }
-/* can't make tooltips line up perfectly horizontal :(
+
+.teams-move-tooltip-wrapper{
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+}
+/* need to do this in TS or smth
 .ability-tooltip-text::before, .nature-tooltip-text::before, .move-tooltip-text::before{
     content: "";
     position: absolute;
@@ -593,12 +601,6 @@ input[type="checkbox"]{
     border-style: none;
     cursor: pointer;
     transition: background-color 200ms;
-}
-
-.teams-move-tooltip-wrapper{
-    display: flex;
-    position: relative;
-    flex-wrap: wrap;
 }
 
 /* Pokedex Classes */
