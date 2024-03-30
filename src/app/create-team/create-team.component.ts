@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { Pokemon } from '../interface/pokemon';
-import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilitiesTeams, setNatures, setTeamsAbilityTooltip, setTeamsNatureTooltip, setMoves, setMoveTooltip} from '../modules/info-module';
+import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilitiesTeams, setNatures, setAbilityTooltipTeams, setNatureTooltipTeams, setMoves, setMoveTooltip} from '../modules/info-module';
 import { forkJoin} from 'rxjs';
 
 @Component({
@@ -28,6 +28,12 @@ export class CreateTeamComponent {
   isLoading = false; // flag for preventing/allowing the start of the next API request OR execution of functions in parallel
   lastSearch : string | null = ""; // avoid submitting same input more than once
   
+  ngOnInit(){
+    // set natures for each slot
+    //setNatures(elSlotDiv, slotNum);
+    //setNatureTooltipTeams("hardy", slotNum);
+  }
+
   onClickAddMember(slotNum : number): void{
     //console.log(`teams element ${slotNum} clicked`);
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-box`)).style.cssText = "display:none;";
@@ -56,44 +62,37 @@ export class CreateTeamComponent {
     }
   }
 
-  // when option on dropdown is clicked, show ability description when hovering ? symbol
   onChangeAbilities(slotNum : number, abilityName : string) : void{
     let abilityDescription = this.abilityDescriptions.get(abilityName);
     //console.log(abilityName, abilityDescription);
-    setTeamsAbilityTooltip(slotNum, abilityDescription);
+    setAbilityTooltipTeams(abilityDescription, slotNum);
   }
 
   onChangeNature(slotNum : number, natureName : string){
-    setTeamsNatureTooltip(slotNum, natureName);
+    setNatureTooltipTeams(natureName, slotNum);
   }
 
   onChangeMoves(slotNum : number, moveNum : number, moveName : string){
-    // change tooltip and request a move
     let elSelectMove = <HTMLInputElement>document.getElementById(`slot-${slotNum}-move-${moveNum}`);
-    // if not in moveDescriptions or option.value == "default"
-    if (!(this.moveDescription.get(moveName) || elSelectMove.value == "---")){
-
+    if (!(this.moveDescription.get(moveName) || elSelectMove.value == "default")){
       this.moveDescription.set(moveName, ""); // avoid potential duplicate key by not waiting on api response before creating key
-
       let obsMoveInfo = this.pokeAPIService.getMoveInfo(moveName);
       obsMoveInfo.subscribe((response : any) => {
-        // set moveDescription value
-        console.log(response.effect_entries[0].effect);
+        //console.log(response.effect_entries[0].effect);
         this.moveDescription.set(moveName, response);
-        // change tooltip
-        setMoveTooltip(response, slotNum, moveNum);
+        setMoveTooltip(response, moveNum, slotNum);
       },
       (error: any) =>{
         console.log("move desc error");
       });
     }
     else{
-      // get existing moveDescription and set tooltip
-      console.log(this.moveDescription.get(moveName));
+      //console.log(this.moveDescription.get(moveName));
       setMoveTooltip(this.moveDescription.get(moveName), slotNum, moveNum);
     }
 
     // **** selecting one move then immediately choosing another could result in incorrect tooltips bc async requests | edge case
+    // maybe create a class to keep state of each slot
   }
 
   onSubmit(slotNum : number, formPokeName : FormControl): void{
@@ -109,45 +108,40 @@ export class CreateTeamComponent {
         // correct names for pokemon with different forms
         const lstPokeNames = correctPokemonForms(pokeName);
         pokeName = lstPokeNames![2];
+
         let obsPokeInfo = this.pokeAPIService.getPokemon(lstPokeNames![0]);
-
-        let obsAbilityDescriptions : any[] = []; // list of observables
-        const obsForkJoin1 = forkJoin(obsPokeInfo);
-
-        // Natures
-        setNatures(elSlotDiv, slotNum); // * can create a flag to not set these static values every time
-        setTeamsNatureTooltip(slotNum, "hardy");
-        
-        obsForkJoin1.subscribe((response : any) => {
+        obsPokeInfo.subscribe((response : any) => {
           this.isLoading = true;
+          setNatures(elSlotDiv, slotNum);
+          setNatureTooltipTeams("hardy", slotNum);
           (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`))!.style.cssText = "display:none;";
           //(<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:none;";
           (<HTMLElement>elSlotDiv!.querySelector(".remove-btn-wrapper"))!.style.cssText = "display:inline-block;";
           elSlotDiv!.querySelector(".invalid-pokemon")!.innerHTML = "";
-          // Pokemon Name
+
           elSlotDiv!.querySelector("#poke-name")!.innerHTML = pokeName.charAt(0).toUpperCase() + pokeName.slice(1);
-          // Pokemon Sprites
-          setFrontSprite(response[0], <HTMLElement>elSlotDiv!.querySelector(`#slot-${slotNum}-sprite`), slotNum);
-          // Pokemon Types
+
+          setFrontSprite(response, <HTMLElement>elSlotDiv!.querySelector(`#slot-${slotNum}-sprite`));
+
           let pokeTypes : string[] = [];
-          response[0].types.forEach((item : any, index : number) => pokeTypes.push(response[0].types[index].type.name));
+          response.types.forEach((item : any, index : number) => pokeTypes.push(response.types[index].type.name));
           setTypes(pokeTypes, <HTMLElement>elSlotDiv!.querySelector(".teams-type-wrapper"));
-          // Pokemon Abilities
+
           document.getElementById("slot-1-abilities")!.innerHTML = "";
           let elPokeAbilities = elSlotDiv!.querySelector("#poke-abilities");
 
-          // Pokemon Moves
-          setMoves(response, slotNum, <HTMLElement>elSlotDiv!.querySelector("#poke-moves"));
+          setMoves(response, <HTMLElement>elSlotDiv!.querySelector("#poke-moves"), slotNum);
 
-          // Pokemon Abilties | wait for abilities response, then make poke-info div visible to avoid pop-in
-          for (let [index, ability] of response[0].abilities.entries()){
+          setStats(response, "teams", slotNum);
+
+          let obsAbilityDescriptions : any[] = [];
+          for (let [index, ability] of response.abilities.entries()){
             obsAbilityDescriptions.push(this.pokeAPIService.getAbilityInfo(ability.ability.url));
           }
-          // Nested forkJoin()
           let obsForkJoin2 = forkJoin(obsAbilityDescriptions);
           obsForkJoin2.subscribe((response : any[]) => {
             //(<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
-            setTeamsAbilityTooltip(slotNum, response[0].effect_entries[1].short_effect);
+            setAbilityTooltipTeams(response[0].effect_entries[1].short_effect, slotNum);
             for (let [index, ability] of response.entries()){
               try{
                 setAbilitiesTeams(ability.name, ability.effect_entries[1].short_effect, slotNum);
@@ -165,9 +159,6 @@ export class CreateTeamComponent {
             console.log("nested subscribe ability desc error");
             this.isLoading = false;
           });
-
-          // Pokemon Stats (most recent generation)
-          //setStats(response[0], "search", slotNum);
           
         },
         (error: any) =>{

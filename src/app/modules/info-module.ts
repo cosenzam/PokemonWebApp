@@ -14,7 +14,6 @@ let lstPunctuation = [".", "'"];
 export function correctPokemonForms(pokeName : string){
     // pokemon with multiple forms such as Giratina have different valid request params e.g /pokemon/giratina-altered and /pokemon-species/giratina
     
-    // get list from pokeForms if in Map
     if (pokeForms.get(pokeName)){
         return pokeForms.get(pokeName);
     }
@@ -71,7 +70,6 @@ export function removePunctuationCapitalize(name : string) : string{
 }
 
 export function capitalizeFirst(name : string) : string{
-    // capitalize first letter of a string
     if (!(name.charCodeAt(0) > 47 && name.charCodeAt(0) < 58) ){
         name = name.charAt(0).toUpperCase() + name.slice(1)
     }
@@ -101,13 +99,10 @@ export function setTypes(pokeTypes : string[], elTypeDiv: HTMLElement) {
 }
 
 export function autocompletePokedex(nationalPokedex : Map<any, any>){
-    // append to data list element
     nationalPokedex.forEach((index: any, item: any) => {
-        // create option
         let elOption = document.createElement("option");
         elOption.setAttribute("label", "#" + index + ". ");
         elOption.setAttribute("value", correctPokemonForms(item)![2]);
-        // append option to pokemon-list
         document.getElementById("pokemon-list")?.appendChild(elOption);
     });
 }
@@ -236,7 +231,7 @@ export function setAbilityTooltip(abilityName : string, abilityDescription : str
         elAbilityTooltipText.setAttribute("class", "ability-tooltip-text");
         elAbilityTooltip.appendChild(elAbilityTooltipText);
         elAbilityTooltipText.style.display = "flex";
-        let tooltipMarginLeft = -(elAbilityTooltipText!.offsetWidth / 2) + elAbilityTooltip!.offsetWidth / 2;
+        let tooltipMarginLeft = (-elAbilityTooltipText!.offsetWidth + elAbilityTooltip!.offsetWidth) / 2;
         elAbilityTooltipText.style.display = "none";
         elAbilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
     }
@@ -250,7 +245,7 @@ export function setPokedexEntry(entryDescription : string){
 
 // Pokedex Functions
 export function createCard(pokeName : string, pokedexNumber : number, pokeTypes : string[], spriteURL : string) : HTMLElement {
-    // wrapper1 2 and 3 appended to elCardInner, elCard Inner appended to elCard
+
     let elCard = document.createElement("div");
     elCard.setAttribute("class", `card ${pokeTypes[0]}`);
 
@@ -289,15 +284,15 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     elType1.innerText = capitalizeFirst(pokeTypes[0]);
     elType1.setAttribute("class", `${pokeTypes[0]} type-container`);
 
-    // append header to card inner
+
     elCardHeader.appendChild(elPokedexNumber);
     elCardHeader.appendChild(elPokemonName);
     elWrapper.appendChild(elCardHeader);
     elCardInner.appendChild(elWrapper);
-    // append front sprite to card inner
+
     elWrapper2.appendChild(elSprite);
     elCardInner.appendChild(elWrapper2);
-    // append types wrapper to card inner
+
     elTypeWrapper.appendChild(elType1);
     // add type2 if dual type
     if (pokeTypes.length == 2){
@@ -309,7 +304,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     elWrapper3.appendChild(elTypeLabel);
     elWrapper3.appendChild(elTypeWrapper);
     elCardInner.appendChild(elWrapper3);
-    // append card inner to card
+
     elCard.appendChild(elCardInner);
 
     return elCard;
@@ -342,23 +337,16 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
 
 // Teams Functions
 export function setAbilitiesTeams(abilityName : string, abilityDescription : string = "", slotNum : number){
-    // select tag
-    let elSelectAbility = document.getElementById(`slot-${slotNum}-abilities`);
-    /*
-    if (element.hasChildNodes()){
-        // remove ALL child nodes
-        element.innerHTML = "";
-    }
-    */
 
-    // append options to select for each ability
+    let elSelectAbility = document.getElementById(`slot-${slotNum}-abilities`);
+
     let elOption = document.createElement("option");
     elOption.text = capitalizeFirst(abilityName);
     elOption.value = abilityName;
     elSelectAbility!.appendChild(elOption);
 }
 
-export function setFrontSprite(response : any, elSpriteDiv : HTMLElement, slotNum : number, shiny : boolean = false){
+export function setFrontSprite(response : any, elSpriteDiv : HTMLElement){
     let elSpriteDefault = <HTMLElement>elSpriteDiv!.querySelector("#sprite-default");
     elSpriteDefault!.setAttribute('src', response.sprites.front_default);
     elSpriteDefault!.style.cssText = "display:flex;justify-content:space-between;";
@@ -377,29 +365,29 @@ export function setNatures(elSlotDiv : any, slotNum : number){
     }
 }
 
-export function setTeamsAbilityTooltip(slotNum : number, abilityDescription : string = ""){
+export function setAbilityTooltipTeams(abilityDescription : string = "", slotNum : number){
     let elAbilityTooltip = document.getElementById(`slot-${slotNum}-ability-tooltip`);
     let elAbilityTooltipText = <HTMLElement>elAbilityTooltip!.querySelector(".ability-tooltip-text");
     elAbilityTooltipText.innerText = abilityDescription;
     elAbilityTooltipText.style.display = "flex";
-    let tooltipMarginLeft = -(elAbilityTooltipText!.offsetWidth / 2) + (elAbilityTooltip!.offsetWidth / 2);
+    let tooltipMarginLeft = (-elAbilityTooltipText!.offsetWidth + elAbilityTooltip!.offsetWidth) / 2;
     elAbilityTooltipText.style.display = "none";
     elAbilityTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
 }
 
-export function setTeamsNatureTooltip(slotNum : number, natureName : string = ""){
+export function setNatureTooltipTeams(natureName : string = "", slotNum : number){
     let elNatureTooltip = document.getElementById(`slot-${slotNum}-nature-tooltip`);
     let elNatureTooltipText = <HTMLElement>elNatureTooltip!.querySelector(".nature-tooltip-text");
     elNatureTooltipText.innerText = `${pokeNatures.get(natureName)![0]} up, ${pokeNatures.get(natureName)![1]} down`;
     elNatureTooltipText.style.display = "flex";
-    let tooltipMarginLeft = -(elNatureTooltipText!.offsetWidth / 2) + (elNatureTooltip!.offsetWidth / 2);
+    let tooltipMarginLeft = (-elNatureTooltipText!.offsetWidth + elNatureTooltip!.offsetWidth) / 2;
     elNatureTooltipText.style.display = "none";
     elNatureTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
 }
 
-export function setMoves(response: any, slotNum : number, elMovesDiv : HTMLElement){
+export function setMoves(response: any, elMovesDiv : HTMLElement, slotNum : number){
     //console.log(response[0].moves);
-    for (let [index, move] of response[0].moves.entries()){
+    for (let [index, move] of response.moves.entries()){
         //console.log(move.move.name);
         // append all moves as options to all 4 select tags
         for(let i = 0; i <= 3; i++){
@@ -419,28 +407,39 @@ export function setMoves(response: any, slotNum : number, elMovesDiv : HTMLEleme
         let elMoveTooltip = document.getElementById(`slot-${slotNum}-move-${i + 1}-tooltip`);
         let elMoveTooltipText = <HTMLElement>elMoveTooltip!.querySelector(".move-tooltip-text");
         elMoveTooltipText.style.display = "flex";
-        let tooltipMarginLeft = -(elMoveTooltipText!.offsetWidth / 2) + (elMoveTooltip!.offsetWidth / 2);
+        let tooltipMarginLeft = (-elMoveTooltipText!.offsetWidth + elMoveTooltip!.offsetWidth) / 2;
         elMoveTooltipText.style.display = "none";
         elMoveTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
     }
 }
 
-export function setMoveTooltip(moveDescription : any, slotNum : number, moveNum : number){
+export function setMoveTooltip(moveDescription : any, moveNum : number, slotNum : number){
     let elMoveTooltip = document.getElementById(`slot-${slotNum}-move-${moveNum}-tooltip`);
     let elMoveTooltipText = <HTMLElement>elMoveTooltip!.querySelector(".move-tooltip-text");
-    // type
     let elTypeDiv = <HTMLElement>elMoveTooltipText.querySelector(".type-container");
-    elTypeDiv.innerText = capitalizeFirst(moveDescription.type.name);
-    elTypeDiv.setAttribute("class", `type-container ${moveDescription.type.name}`);
-    // pp
-    (<HTMLElement>elMoveTooltipText.querySelector(".pp")).innerText = moveDescription.pp;
-    // accuracy
-    (<HTMLElement>elMoveTooltipText.querySelector(".accuracy")).innerText = moveDescription.accuracy + "%";
-    // description
-    //(<HTMLElement>elMoveTooltipText.querySelector(".move-description")).innerText = moveDescription.effect_entries[0].effect;
-    (<HTMLElement>elMoveTooltipText.querySelector(".move-description")).innerText = moveDescription.effect_entries[0].short_effect;
+
+    if (!moveDescription){
+        elTypeDiv.innerText = "---";
+        elTypeDiv.setAttribute("class", "type-container");
+        (<HTMLElement>elMoveTooltipText.querySelector(".pp")).innerText = "---";
+        (<HTMLElement>elMoveTooltipText.querySelector(".accuracy")).innerText = "---";
+        (<HTMLElement>elMoveTooltipText.querySelector(".move-description")).innerText = "Description: ---";
+    }
+    else{
+        elTypeDiv.innerText = capitalizeFirst(moveDescription.type.name);
+        elTypeDiv.setAttribute("class", `type-container ${moveDescription.type.name}`);
+        (<HTMLElement>elMoveTooltipText.querySelector(".pp")).innerText = moveDescription.pp;
+        (<HTMLElement>elMoveTooltipText.querySelector(".accuracy")).innerText = moveDescription.accuracy + "%";
+        //(<HTMLElement>elMoveTooltipText.querySelector(".move-description")).innerText = moveDescription.effect_entries[0].effect;
+        (<HTMLElement>elMoveTooltipText.querySelector(".move-description")).innerText = "Description: " + moveDescription.effect_entries[0].short_effect;
+    }
     elMoveTooltipText.style.display = "flex";
-    let tooltipMarginLeft = -(elMoveTooltipText!.offsetWidth / 2) + (elMoveTooltip!.offsetWidth / 2);
+    let tooltipMarginLeft = (-elMoveTooltipText!.offsetWidth + elMoveTooltip!.offsetWidth) / 2;
     elMoveTooltipText.style.display = "none";
     elMoveTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
+    
+}
+
+export function updateStats(nature : string, slotNum : number){
+    
 }
