@@ -4,6 +4,7 @@ import { PokeAPIService } from '../service/poke-api.service';
 import { Pokemon } from '../interface/pokemon';
 import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilitiesTeams, setNatures, setAbilityTooltipTeams, setNatureTooltipTeams, setMoves, setMoveTooltip} from '../modules/info-module';
 import { forkJoin} from 'rxjs';
+import { Member } from '../modules/teams-class';
 
 @Component({
   selector: 'app-create-team',
@@ -21,12 +22,12 @@ export class CreateTeamComponent {
   pokeName5 = new FormControl('');
   pokeName6 = new FormControl('');
   pokeNames: string[] = [];
-  apiResponses: Pokemon[] = [];
   abilityDescriptions = new Map(); // list of ability descriptions for each mon
   moveDescription = new Map();
   nationalPokedex = new Map();
   isLoading = false; // flag for preventing/allowing the start of the next API request OR execution of functions in parallel
   lastSearch : string | null = ""; // avoid submitting same input more than once
+  lstMembers : any[] = ["", "", "", "", "", ""]; // list of party members
   
   ngOnInit(){
     // set natures for each slot
@@ -46,6 +47,7 @@ export class CreateTeamComponent {
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-info`)).style.cssText = "display:none;";
     (<HTMLElement>elSlotDiv!.querySelector(".remove-btn-wrapper"))!.style.cssText = "display:none;";
     (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`)).style.cssText = "display:flex;";
+    this.lstMembers[slotNum - 1] = "";
   }
 
   onChangeShinyToggle(slotNum : number){
@@ -112,6 +114,9 @@ export class CreateTeamComponent {
         let obsPokeInfo = this.pokeAPIService.getPokemon(lstPokeNames![0]);
         obsPokeInfo.subscribe((response : any) => {
           this.isLoading = true;
+
+          this.lstMembers[slotNum - 1] = new Member(pokeName, response, slotNum);
+
           setNatures(elSlotDiv, slotNum);
           setNatureTooltipTeams("hardy", slotNum);
           (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`))!.style.cssText = "display:none;";
