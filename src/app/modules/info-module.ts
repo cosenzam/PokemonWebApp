@@ -70,7 +70,7 @@ export function removePunctuationCapitalize(name : string) : string{
 }
 
 export function capitalizeFirst(name : string) : string{
-    if (!(name.charCodeAt(0) > 47 && name.charCodeAt(0) < 58) ){
+    if (!(name.charCodeAt(0) > 47 && name.charCodeAt(0) < 65) ){
         name = name.charAt(0).toUpperCase() + name.slice(1)
     }
     return name;
@@ -354,7 +354,7 @@ export function setFrontSprite(response : any, elSpriteDiv : HTMLElement){
     let elSpriteShiny = <HTMLElement>elSpriteDiv!.querySelector("#sprite-shiny");
     elSpriteShiny!.setAttribute('src', response.sprites.front_shiny);
 }
-
+/*
 export function setNatures(elSlotDiv : any, slotNum : number){
     let elSelectAbility = document.getElementById(`slot-${slotNum}-natures`);
     for(let nature of pokeNatures.keys()){
@@ -439,7 +439,4 @@ export function setMoveTooltip(moveDescription : any, moveNum : number, slotNum 
     elMoveTooltipText.style.cssText = `margin-left: ${tooltipMarginLeft}px;`;
     
 }
-
-export function updateStats(nature : string, slotNum : number){
-    
-}
+*/

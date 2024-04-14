@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PokeAPIService } from '../service/poke-api.service';
 import { Pokemon } from '../interface/pokemon';
-import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilitiesTeams, setNatures, setAbilityTooltipTeams, setNatureTooltipTeams, setMoves, setMoveTooltip} from '../modules/info-module';
+import { setTypes, setFrontSprite, setStats, toHyphenFormat, correctPokemonForms, setAbilitiesTeams} from '../modules/info-module';
 import { forkJoin} from 'rxjs';
 import { Member } from '../modules/teams-class';
 
@@ -23,11 +23,11 @@ export class CreateTeamComponent {
   pokeName6 = new FormControl('');
   pokeNames: string[] = [];
   abilityDescriptions = new Map(); // list of ability descriptions for each mon
-  moveDescription = new Map();
+  moveResponses = new Map();
   nationalPokedex = new Map();
   isLoading = false; // flag for preventing/allowing the start of the next API request OR execution of functions in parallel
   lastSearch : string | null = ""; // avoid submitting same input more than once
-  lstMembers : any[] = ["", "", "", "", "", ""]; // list of party members
+  lstMembers : any[] = ["", "", "", "", "", ""]; // list of party members | type : Member
   
   ngOnInit(){
     // set natures for each slot
@@ -67,22 +67,22 @@ export class CreateTeamComponent {
   onChangeAbilities(slotNum : number, abilityName : string) : void{
     let abilityDescription = this.abilityDescriptions.get(abilityName);
     //console.log(abilityName, abilityDescription);
-    setAbilityTooltipTeams(abilityDescription, slotNum);
+    this.lstMembers[slotNum - 1].ability = abilityDescription;
   }
 
   onChangeNature(slotNum : number, natureName : string){
-    setNatureTooltipTeams(natureName, slotNum);
+    this.lstMembers[slotNum - 1].nature = natureName;
   }
 
   onChangeMoves(slotNum : number, moveNum : number, moveName : string){
     let elSelectMove = <HTMLInputElement>document.getElementById(`slot-${slotNum}-move-${moveNum}`);
-    if (!(this.moveDescription.get(moveName) || elSelectMove.value == "default")){
-      this.moveDescription.set(moveName, ""); // avoid potential duplicate key by not waiting on api response before creating key
+    if (!(this.moveResponses.get(moveName) || elSelectMove.value == "default")){
+      this.moveResponses.set(moveName, ""); // avoid potential duplicate key by not waiting on api response before creating key
       let obsMoveInfo = this.pokeAPIService.getMoveInfo(moveName);
       obsMoveInfo.subscribe((response : any) => {
         //console.log(response.effect_entries[0].effect);
-        this.moveDescription.set(moveName, response);
-        setMoveTooltip(response, moveNum, slotNum);
+        this.moveResponses.set(moveName, response);
+        this.lstMembers[slotNum - 1].moves = [moveNum, response];
       },
       (error: any) =>{
         console.log("move desc error");
@@ -90,7 +90,7 @@ export class CreateTeamComponent {
     }
     else{
       //console.log(this.moveDescription.get(moveName));
-      setMoveTooltip(this.moveDescription.get(moveName), slotNum, moveNum);
+      this.lstMembers[slotNum - 1].moves = [moveNum, this.moveResponses.get(moveName)];
     }
 
     // **** selecting one move then immediately choosing another could result in incorrect tooltips bc async requests | edge case
@@ -115,10 +115,9 @@ export class CreateTeamComponent {
         obsPokeInfo.subscribe((response : any) => {
           this.isLoading = true;
 
-          this.lstMembers[slotNum - 1] = new Member(pokeName, response, slotNum);
+          this.lstMembers[slotNum - 1] = new Member(pokeName, response, slotNum, elSlotDiv);
 
-          setNatures(elSlotDiv, slotNum);
-          setNatureTooltipTeams("hardy", slotNum);
+          this.lstMembers[slotNum - 1].nature = "hardy";
           (<HTMLElement>document.querySelector(`.slot-${slotNum}-input`))!.style.cssText = "display:none;";
           //(<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:none;";
           (<HTMLElement>elSlotDiv!.querySelector(".remove-btn-wrapper"))!.style.cssText = "display:inline-block;";
@@ -135,8 +134,6 @@ export class CreateTeamComponent {
           document.getElementById("slot-1-abilities")!.innerHTML = "";
           let elPokeAbilities = elSlotDiv!.querySelector("#poke-abilities");
 
-          setMoves(response, <HTMLElement>elSlotDiv!.querySelector("#poke-moves"), slotNum);
-
           setStats(response, "teams", slotNum);
 
           let obsAbilityDescriptions : any[] = [];
@@ -146,7 +143,7 @@ export class CreateTeamComponent {
           let obsForkJoin2 = forkJoin(obsAbilityDescriptions);
           obsForkJoin2.subscribe((response : any[]) => {
             //(<HTMLElement>elSlotDiv!.querySelector(`.slot-${slotNum}-info`))!.style.cssText = "display:flex;";
-            setAbilityTooltipTeams(response[0].effect_entries[1].short_effect, slotNum);
+            this.lstMembers[slotNum - 1].ability = response[0].effect_entries[1].short_effect;
             for (let [index, ability] of response.entries()){
               try{
                 setAbilitiesTeams(ability.name, ability.effect_entries[1].short_effect, slotNum);

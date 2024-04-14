@@ -417,26 +417,32 @@ input[type="checkbox"]{
 }
 
 .stat-hp > div{
+    text-align: right;
     background-color: #CA3F3F;
 }
 
 .stat-atk > div{
+    text-align: right;
     background-color: #13538D;
 }
 
 .stat-def > div{
+    text-align: right;
     background-color: #038E00;
 }
 
 .stat-spatk > div{
+    text-align: right;
     background-color: #80008B;
 }
 
 .stat-spdef > div{
+    text-align: right;
     background-color: #FF9900;
 }
 
 .stat-spd > div{
+    text-align: right;
     background-color: #F172D5;
 }
 
