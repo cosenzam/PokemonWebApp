@@ -12,6 +12,7 @@ import { CreateTeamComponent } from './create-team/create-team.component';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { PokedexComponent } from './pokedex/pokedex.component';
+import { CsstestComponent } from './csstest/csstest.component';
 
 const appRoute: Routes = [
   { path: '', component: PokemonSearchComponent /*HomeComponent*/},
@@ -19,6 +20,7 @@ const appRoute: Routes = [
   { path: 'team', component: CreateTeamComponent},
   { path: 'about', component: AboutComponent},
   { path: 'pokedex', component: PokedexComponent},
+  { path: 'csstest', component: CsstestComponent},
 ]
 
 @NgModule({
@@ -29,6 +31,7 @@ const appRoute: Routes = [
     AboutComponent,
     HomeComponent,
     PokedexComponent,
+    CsstestComponent,
   ],
   imports: [
     BrowserModule,

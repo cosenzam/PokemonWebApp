@@ -28,8 +28,8 @@ export class PokedexComponent implements OnInit {
         this.isLoading = true;
         response.pokemon_entries.forEach((item: any, index: number) => this.pokedexMap.set(item.entry_number, item.pokemon_species.name));
         // create first 16 cards
-        let lstObsPokemon : any[] = []; // Observable<Pokemon>[]
-        this.loadCards(lstObsPokemon, 16);
+        let lstObsPokemon : any[] = [];
+        this.loadCards(lstObsPokemon, 12);
       },
       (error: any) =>{
         console.log("Failed to retrieve national pokedex")
@@ -64,8 +64,8 @@ export class PokedexComponent implements OnInit {
 
       if (this.isLoading == false && this.currentIndex <= 1017){
         this.isLoading = true;
-        let lstObsPokemon : any[] = []; // Observable<Pokemon>[]
-        this.loadCards(lstObsPokemon, 16);
+        let lstObsPokemon : any[] = [];
+        this.loadCards(lstObsPokemon, 12);
       }
       else{
         console.log("already loading or max pokedex # reached");
@@ -76,7 +76,7 @@ export class PokedexComponent implements OnInit {
   loadCards(lstObsPokemon : any[], numToLoad : number){
 
     for (let i=this.currentIndex; i < this.currentIndex + numToLoad && i <= 1017; i++){
-      // API request for first 16 cards (4 rows)
+      // API request for numToLoad cards | Use a # that is a common multiple of all of: 1,2,3,4
       let pokeName = correctPokemonForms(this.pokedexMap.get(i))![0];
       lstObsPokemon.push(this.pokeAPIService.getPokemon(pokeName));
     }

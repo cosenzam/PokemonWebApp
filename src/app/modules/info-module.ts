@@ -310,7 +310,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
     return elCard;
 
     /*
-    <div class="card"> | elCard
+    <div class="card pokeType"> | elCard
         <div class="card-inner"> | elCardInner
             <div> elWrapper
                 <div class="card-header-cyan"> | elCardHeader
@@ -320,7 +320,7 @@ export function createCard(pokeName : string, pokedexNumber : number, pokeTypes 
             </div>
 
             <div class="card-sprite-wrapper"> | elWrapper2
-                <img src="../assets/images/1200px-DP142.png"> | elSprite
+                <img src=spriteURL> | elSprite
             </div>
 
             <div> | elWrapper3
